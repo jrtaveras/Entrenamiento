@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<codeSmith xmlns="http://www.codesmithtools.com/schema/csp.xsd">
+  <variables>
+    <add key="ConnectionString1" value="Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=curso;Data Source=libra&#xD;&#xA;" />
+  </variables>
+  <propertySets>
+    <propertySet name="KillMaintenance.cs" output="KillMaintenance.cs" template="..\CodeSmithTemplates\KillMaintenance.cst">
+      <property name="GenerateBusinessObjects">True</property>
+      <property name="GeneratePresenters">True</property>
+      <property name="GenerateInterfaces">True</property>
+      <property name="GenerateUserControl">True</property>
+      <property name="GenerateWindowsSearch">True</property>
+      <property name="modelBuilder">//modelBuider no remueva esto usado por CodeSmith</property>
+      <property name="dbSetVirtual">//property no remueva esto usado por CodeSmith</property>
+      <property name="SourceTable">
+        <connectionString>$(ConnectionString1)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+        <table>
+          <owner>dbo</owner>
+          <name>Customers</name>
+        </table>
+      </property>
+      <property name="QueryTableColumns">
+        <connectionString>$(ConnectionString1)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+        <tableColumnList>
+          <tableColumn>
+            <tableOwner>dbo</tableOwner>
+            <tableName>Customers</tableName>
+            <name>Id</name>
+          </tableColumn>
+          <tableColumn>
+            <tableOwner>dbo</tableOwner>
+            <tableName>Customers</tableName>
+            <name>CustName</name>
+          </tableColumn>
+          <tableColumn>
+            <tableOwner>dbo</tableOwner>
+            <tableName>Customers</tableName>
+            <name>Adress</name>
+          </tableColumn>
+          <tableColumn>
+            <tableOwner>dbo</tableOwner>
+            <tableName>Customers</tableName>
+            <name>Status</name>
+          </tableColumn>
+          <tableColumn>
+            <tableOwner>dbo</tableOwner>
+            <tableName>Customers</tableName>
+            <name>CustomerTypeId</name>
+          </tableColumn>
+          <tableColumn>
+            <tableOwner>dbo</tableOwner>
+            <tableName>Customers</tableName>
+            <name>FechaModificado</name>
+          </tableColumn>
+        </tableColumnList>
+      </property>
+      <property name="NameSpaceBusinessObjects">BusinessObjects</property>
+      <property name="Licence">Frederic Schad (Todos los derechos Reservados)</property>
+      <property name="NameSpaceUI">CommonUserControls</property>
+      <property name="NameSpaceCommonUI">Common</property>
+      <property name="OutPutDirBusinessObjects">C:\sistemas_github\Entrenamiento\WisejWebApplication1\BusinessObjects</property>
+      <property name="OutPutDirUserControls">C:\sistemas_github\Entrenamiento\WisejWebApplication1\WisejWebApplication1</property>
+      <property name="OutPutDirCommonUI">C:\sistemas_github\Entrenamiento\WisejWebApplication1\Commons</property>
+      <property name="OutPutDirUnitTestBusinessObjects">C:\sistemas_github\Entrenamiento\WisejWebApplication1\UnitTestProject</property>
+    </propertySet>
+  </propertySets>
+</codeSmith>
