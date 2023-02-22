@@ -14,6 +14,7 @@ namespace WisejWebApplication1
     public partial class Window1 : Page
     {
         private readonly IKernel kernel;
+        private MyContext _context;
         readonly HelperCalculo helperCalculo = new HelperCalculo();
         
         public Window1()
@@ -28,6 +29,17 @@ namespace WisejWebApplication1
         private void initControls()
         {
             comboBoxOperacion.DataSource = Enum.GetValues(typeof(Calculos));
+
+            _context = new MyContext("Entrenamiento");
+            _context.LocalizationName = "es-DO";
+            _context.TenantId = 1;
+            _context.UserName = "Kiefer";
+            var culture = new System.Globalization.CultureInfo(_context.LocalizationName);
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+            Application.CurrentCulture = culture;
+            Resource.Culture = culture;
+            _context.ResourceManager = Resource.ResourceManager;
         }
 
         private void buttonCalcular_Click(object sender, EventArgs e)
@@ -61,18 +73,25 @@ namespace WisejWebApplication1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MyContext _context = new MyContext("Entrenamiento");
-            _context.LocalizationName = "es-DO";
-            _context.TenantId = 1;
-            _context.UserName = "Kiefer";
-            var culture = new System.Globalization.CultureInfo(_context.LocalizationName);
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
-            Application.CurrentCulture = culture;
-            Resource.Culture = culture;
-            _context.ResourceManager = Resource.ResourceManager;
             Page page = new Page();
             page.Controls.Add(new UserControlCustomers(_context));
+            page.Show();
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Page page = new Page();
+            page.Controls.Add(new UserControlCustomerTypes(_context));
+            page.Show();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            UserControlInvoiceDetails details = new UserControlInvoiceDetails(_context);
+
+            Page page = new Page();
+            page.Controls.Add(new UserControlInvoices(_context, details));
             page.Show();
 
         }

@@ -100,6 +100,18 @@
     <Compile Include="UserControls\UserControlCustomerTypes.Designer.cs">
       <DependentUpon>UserControlCustomerTypes.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UserControlInvoiceDetails.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UserControlInvoiceDetails.designer.cs">
+      <DependentUpon>UserControlInvoiceDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UserControlInvoices.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UserControlInvoices.designer.cs">
+      <DependentUpon>UserControlInvoices.cs</DependentUpon>
+    </Compile>
     <Compile Include="Window1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -142,6 +154,9 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Wisej.Ext.MaterialDesign">
+      <HintPath>..\..\..\dll2019\Wisej.Ext.MaterialDesign.dll</HintPath>
+    </Reference>
     <Reference Include="Wisej.Framework" />
     <Reference Include="Wisej.Web.Ext.NavigationBar, Version=2.0.0.0, Culture=neutral, PublicKeyToken=653fbd0440795259, processorArchitecture=MSIL" />
   </ItemGroup>
@@ -157,6 +172,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\UserControlCustomerTypes.resx">
       <DependentUpon>UserControlCustomerTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UserControlInvoiceDetails.resx">
+      <DependentUpon>UserControlInvoiceDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UserControlInvoices.resx">
+      <DependentUpon>UserControlInvoices.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Window1.resx">
       <DependentUpon>Window1.cs</DependentUpon>

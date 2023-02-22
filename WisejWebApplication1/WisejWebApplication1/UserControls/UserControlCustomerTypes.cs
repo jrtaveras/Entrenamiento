@@ -1,6 +1,6 @@
 ﻿//Autor:Jose Roberto Taveras
 //Email:roberto.taveras@hotmail.com
-//Fecha:2/21/2023 9:15:49 AM
+//Fecha:2/21/2023 2:49:58 PM
 //Licencia:Frederic Schad (Todos los derechos Reservados)
 using System;
 using Wisej.Web;
@@ -20,7 +20,7 @@ using Common.Constants;
 
 namespace CommonUserControls
 {
-    public partial class UserControlCustomerTypes : UserControlBase, ICustomerTypes, IValidate
+    public partial class UserControlCustomerTypes : UserControlBase, ICustomerTypes, IValidate, IDataSource
     {
 
         private readonly IPresenter customerTypesPresenter;
@@ -202,10 +202,14 @@ namespace CommonUserControls
 		{
 			get; set;
 		}
-		
-		
-       
-       #endregion
+        public object DataGridSource { 
+            get => dataGridView1.DataSource; 
+            set => dataGridView1.DataSource = value; 
+        }
+
+
+
+        #endregion
 
         private void toolBar1_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
         {
@@ -329,6 +333,14 @@ namespace CommonUserControls
             helperControls.ClearErrors(customerTypesPresenter.ValidationResult);
         }
 
-       
+        private void dataGridView1_DoubleClick(object sender, EventArgs e)
+        {
+            if(dataGridView1.SelectedRows.Count > 0)
+            {
+                int id = (int) dataGridView1.SelectedRows[0][nameof(CustomerTypes.Id)].Value;
+                customerTypesPresenter.Find(id);
+            }
+        }
+
     }
 }

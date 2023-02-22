@@ -38,6 +38,8 @@ namespace WisejWebApplication1
             this.buttonCalcular = new Wisej.Web.Button();
             this.comboBoxOperacion = new Wisej.Web.ComboBox();
             this.button1 = new Wisej.Web.Button();
+            this.button2 = new Wisej.Web.Button();
+            this.button3 = new Wisej.Web.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumero1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumeric2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResultado)).BeginInit();
@@ -134,17 +136,37 @@ namespace WisejWebApplication1
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(396, 126);
+            this.button1.Location = new System.Drawing.Point(119, 232);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 27);
+            this.button1.Size = new System.Drawing.Size(120, 27);
             this.button1.TabIndex = 8;
-            this.button1.Text = "button1";
+            this.button1.Text = "Clientes";
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(119, 276);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(120, 27);
+            this.button2.TabIndex = 9;
+            this.button2.Text = "Tipos de cliente";
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(119, 319);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(120, 27);
+            this.button3.TabIndex = 10;
+            this.button3.Text = "Facturas";
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // Window1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = Wisej.Web.AutoScaleMode.Font;
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.comboBoxOperacion);
             this.Controls.Add(this.buttonCalcular);
@@ -155,7 +177,7 @@ namespace WisejWebApplication1
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "Window1";
-            this.Size = new System.Drawing.Size(1437, 803);
+            this.Size = new System.Drawing.Size(1235, 610);
             this.Text = "Window1";
             this.Load += new System.EventHandler(this.Window1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumero1)).EndInit();
@@ -177,6 +199,8 @@ namespace WisejWebApplication1
         private Wisej.Web.Button buttonCalcular;
         private Wisej.Web.ComboBox comboBoxOperacion;
         private Wisej.Web.Button button1;
+        private Wisej.Web.Button button2;
+        private Wisej.Web.Button button3;
     }
 }
 

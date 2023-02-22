@@ -1,7 +1,7 @@
 ﻿//Author: Jose Roberto Taveras
 //Email:roberto.taveras@hotmail.com
 //Description: Poco de entidad IPresenter
-//Fecha:2/21/2023 9:15:49 AM
+//Fecha:2/21/2023 2:50:38 PM
 //Licencia:Frederic Schad (Todos los derechos Reservados)
 
 namespace BusinessObjects.Interfaces

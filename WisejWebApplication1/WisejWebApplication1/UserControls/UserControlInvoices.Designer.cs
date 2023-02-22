@@ -3,7 +3,7 @@
 namespace CommonUserControls
 {
 
-    partial  class UserControlCustomerTypes
+    partial  class UserControlInvoices
     {
         /// <summary> 
         /// Required designer variable.
@@ -36,7 +36,10 @@ namespace CommonUserControls
             this.panelRight = new Wisej.Web.Panel();
             this.panelLeft = new Wisej.Web.Panel();
             this.textBoxId = new Wisej.Web.TextBox();
-            this.textBoxDescription = new Wisej.Web.TextBox();
+            this.comboBoxCustomerId = new Wisej.Web.ComboBox();
+            this.numericUpDownTotalItbis = new Wisej.Web.NumericUpDown();
+            this.numericUpDownSubTotal = new Wisej.Web.NumericUpDown();
+            this.numericUpDownTotal = new Wisej.Web.NumericUpDown();
             this.checkBoxIsActivo = new Wisej.Web.CheckBox();
             this.toolBar1 = new Wisej.Web.ToolBar();
             this.toolBarButtonNuevo = new Wisej.Web.ToolBarButton();
@@ -49,11 +52,14 @@ namespace CommonUserControls
             this.toolBarButtonExcel = new Wisej.Web.ToolBarButton();
             this.toolBarButtonInfo = new Wisej.Web.ToolBarButton();
             this.toolBarButtonRecargaCombo = new Wisej.Web.ToolBarButton();
-            this.dataGridView1 = new Wisej.Web.DataGridView();
+            this.panelDetalles = new Wisej.Web.Panel();
             this.panelPricipal.SuspendLayout();
             this.panelContenido.SuspendLayout();
+            this.panelRight.SuspendLayout();
             this.panelLeft.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotalItbis)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSubTotal)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotal)).BeginInit();
             this.SuspendLayout();
             // 
             // panelPricipal
@@ -67,11 +73,11 @@ namespace CommonUserControls
             this.panelPricipal.Location = new System.Drawing.Point(0, 0);
             this.panelPricipal.Name = "panelPricipal";
             this.panelPricipal.ShowHeader = true;
-            this.panelPricipal.Size = new System.Drawing.Size(650, 175);
+            this.panelPricipal.Size = new System.Drawing.Size(650, 181);
             this.panelPricipal.TabIndex = 0;
             this.panelPricipal.TabStop = true;
             this.panelPricipal.Tag = "";
-            this.panelPricipal.Text = "CustomerTypes";
+            this.panelPricipal.Text = "Invoices";
             this.panelPricipal.PanelCollapsed += new System.EventHandler(this.panelPricipal_PanelCollapsed);
             this.panelPricipal.PanelExpanded += new System.EventHandler(this.panelPricipal_PanelExpanded);
             // 
@@ -84,30 +90,33 @@ namespace CommonUserControls
             this.panelContenido.HeaderSize = 34;
             this.panelContenido.Location = new System.Drawing.Point(0, 33);
             this.panelContenido.Name = "panelContenido";
-            this.panelContenido.Size = new System.Drawing.Size(622, 142);
+            this.panelContenido.Size = new System.Drawing.Size(622, 148);
             this.panelContenido.TabIndex = 1;
             this.panelContenido.TabStop = true;
             // 
             // panelRight
             // 
+            this.panelRight.Controls.Add(this.numericUpDownSubTotal);
+            this.panelRight.Controls.Add(this.checkBoxIsActivo);
+            this.panelRight.Controls.Add(this.numericUpDownTotal);
             this.panelRight.Dock = Wisej.Web.DockStyle.Left;
             this.panelRight.Location = new System.Drawing.Point(306, 0);
             this.panelRight.Name = "panelRight";
-            this.panelRight.Size = new System.Drawing.Size(306, 142);
+            this.panelRight.Size = new System.Drawing.Size(306, 148);
             this.panelRight.TabIndex = 28;
             this.panelRight.TabStop = true;
             // 
             // panelLeft
             // 
             this.panelLeft.Controls.Add(this.textBoxId);
-            this.panelLeft.Controls.Add(this.textBoxDescription);
-            this.panelLeft.Controls.Add(this.checkBoxIsActivo);
+            this.panelLeft.Controls.Add(this.comboBoxCustomerId);
+            this.panelLeft.Controls.Add(this.numericUpDownTotalItbis);
             this.panelLeft.Dock = Wisej.Web.DockStyle.Left;
             this.panelLeft.HeaderAlignment = Wisej.Web.HorizontalAlignment.Center;
             this.panelLeft.Location = new System.Drawing.Point(0, 0);
             this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(306, 142);
-            this.panelLeft.TabIndex = 5;
+            this.panelLeft.Size = new System.Drawing.Size(306, 148);
+            this.panelLeft.TabIndex = 8;
             this.panelLeft.TabStop = true;
             // 
             // textBoxId
@@ -119,22 +128,74 @@ namespace CommonUserControls
             this.textBoxId.Size = new System.Drawing.Size(150, 37);
             this.textBoxId.TabIndex = 2;
             // 
-            // textBoxDescription
+            // comboBoxCustomerId
             // 
-            this.textBoxDescription.Label.Position = Wisej.Web.LabelPosition.Inside;
-            this.textBoxDescription.LabelText = "Description";
-            this.textBoxDescription.Location = new System.Drawing.Point(6, 48);
-            this.textBoxDescription.Name = "textBoxDescription";
-            this.textBoxDescription.Size = new System.Drawing.Size(265, 37);
-            this.textBoxDescription.TabIndex = 3;
+            this.comboBoxCustomerId.DropDownStyle = Wisej.Web.ComboBoxStyle.DropDownList;
+            this.comboBoxCustomerId.Label.Position = Wisej.Web.LabelPosition.Inside;
+            this.comboBoxCustomerId.LabelText = "CustomerId";
+            this.comboBoxCustomerId.Location = new System.Drawing.Point(6, 48);
+            this.comboBoxCustomerId.Name = "comboBoxCustomerId";
+            this.comboBoxCustomerId.ShowToolTips = true;
+            this.comboBoxCustomerId.Size = new System.Drawing.Size(265, 37);
+            this.comboBoxCustomerId.TabIndex = 3;
+            // 
+            // numericUpDownTotalItbis
+            // 
+            this.numericUpDownTotalItbis.DecimalPlaces = 2;
+            this.numericUpDownTotalItbis.Label.Position = Wisej.Web.LabelPosition.Inside;
+            this.numericUpDownTotalItbis.LabelText = "TotalItbis";
+            this.numericUpDownTotalItbis.Location = new System.Drawing.Point(6, 90);
+            this.numericUpDownTotalItbis.Maximum = new decimal(new int[] {
+            276447231,
+            23283,
+            0,
+            0});
+            this.numericUpDownTotalItbis.Name = "numericUpDownTotalItbis";
+            this.numericUpDownTotalItbis.Size = new System.Drawing.Size(175, 37);
+            this.numericUpDownTotalItbis.TabIndex = 4;
+            this.numericUpDownTotalItbis.ThousandsSeparator = true;
+            // 
+            // numericUpDownSubTotal
+            // 
+            this.numericUpDownSubTotal.DecimalPlaces = 2;
+            this.numericUpDownSubTotal.Enabled = false;
+            this.numericUpDownSubTotal.Label.Position = Wisej.Web.LabelPosition.Inside;
+            this.numericUpDownSubTotal.LabelText = "SubTotal";
+            this.numericUpDownSubTotal.Location = new System.Drawing.Point(22, 6);
+            this.numericUpDownSubTotal.Maximum = new decimal(new int[] {
+            276447231,
+            23283,
+            0,
+            0});
+            this.numericUpDownSubTotal.Name = "numericUpDownSubTotal";
+            this.numericUpDownSubTotal.Size = new System.Drawing.Size(175, 37);
+            this.numericUpDownSubTotal.TabIndex = 5;
+            this.numericUpDownSubTotal.ThousandsSeparator = true;
+            // 
+            // numericUpDownTotal
+            // 
+            this.numericUpDownTotal.DecimalPlaces = 2;
+            this.numericUpDownTotal.Enabled = false;
+            this.numericUpDownTotal.Label.Position = Wisej.Web.LabelPosition.Inside;
+            this.numericUpDownTotal.LabelText = "Total";
+            this.numericUpDownTotal.Location = new System.Drawing.Point(22, 48);
+            this.numericUpDownTotal.Maximum = new decimal(new int[] {
+            276447231,
+            23283,
+            0,
+            0});
+            this.numericUpDownTotal.Name = "numericUpDownTotal";
+            this.numericUpDownTotal.Size = new System.Drawing.Size(175, 37);
+            this.numericUpDownTotal.TabIndex = 6;
+            this.numericUpDownTotal.ThousandsSeparator = true;
             // 
             // checkBoxIsActivo
             // 
             this.checkBoxIsActivo.Appearance = Wisej.Web.Appearance.Switch;
-            this.checkBoxIsActivo.Location = new System.Drawing.Point(6, 90);
+            this.checkBoxIsActivo.Location = new System.Drawing.Point(22, 90);
             this.checkBoxIsActivo.Name = "checkBoxIsActivo";
             this.checkBoxIsActivo.Size = new System.Drawing.Size(98, 24);
-            this.checkBoxIsActivo.TabIndex = 4;
+            this.checkBoxIsActivo.TabIndex = 7;
             this.checkBoxIsActivo.Text = "IsActivo";
             // 
             // toolBar1
@@ -223,30 +284,34 @@ namespace CommonUserControls
             this.toolBarButtonRecargaCombo.Name = "toolBarButtonRecargaCombo";
             this.toolBarButtonRecargaCombo.Click += new System.EventHandler(this.toolBarButtonRecargaCombo_Click);
             // 
-            // dataGridView1
+            // panelDetalles
             // 
-            this.dataGridView1.Dock = Wisej.Web.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 175);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(650, 825);
-            this.dataGridView1.TabIndex = 1;
-            this.dataGridView1.DoubleClick += new System.EventHandler(this.dataGridView1_DoubleClick);
+            this.panelDetalles.BackColor = System.Drawing.Color.FromName("@tabSelected");
+            this.panelDetalles.Dock = Wisej.Web.DockStyle.Fill;
+            this.panelDetalles.Location = new System.Drawing.Point(0, 181);
+            this.panelDetalles.Name = "panelDetalles";
+            this.panelDetalles.Size = new System.Drawing.Size(650, 819);
+            this.panelDetalles.TabIndex = 1;
+            this.panelDetalles.TabStop = true;
             // 
-            // UserControlCustomerTypes
+            // UserControlInvoices
             // 
             this.AutoScroll = true;
             this.AutoSizeMode = Wisej.Web.AutoSizeMode.GrowAndShrink;
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.panelDetalles);
             this.Controls.Add(this.panelPricipal);
-            this.Name = "UserControlCustomerTypes";
+            this.Name = "UserControlInvoices";
             this.Size = new System.Drawing.Size(650, 1000);
             this.panelPricipal.ResumeLayout(false);
             this.panelPricipal.PerformLayout();
             this.panelContenido.ResumeLayout(false);
+            this.panelRight.ResumeLayout(false);
+            this.panelRight.PerformLayout();
             this.panelLeft.ResumeLayout(false);
             this.panelLeft.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotalItbis)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSubTotal)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotal)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -269,9 +334,12 @@ namespace CommonUserControls
         private Wisej.Web.ToolBarButton toolBarButtonExcel;
         private Wisej.Web.ToolBarButton toolBarButtonRecargaCombo;
         private Wisej.Web.TextBox textBoxId;
-		private Wisej.Web.TextBox textBoxDescription;
+		private Wisej.Web.ComboBox comboBoxCustomerId;
+		private Wisej.Web.NumericUpDown numericUpDownTotalItbis;
+		private Wisej.Web.NumericUpDown numericUpDownSubTotal;
+		private Wisej.Web.NumericUpDown numericUpDownTotal;
 		private Wisej.Web.CheckBox checkBoxIsActivo;
-        private Wisej.Web.DataGridView dataGridView1;
+        private Wisej.Web.Panel panelDetalles;
     }
 
 }

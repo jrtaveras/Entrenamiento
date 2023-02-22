@@ -1,6 +1,6 @@
 ﻿//Autor:Jose Roberto Taveras
 //Email:roberto.taveras@hotmail.com
-//Fecha:2/21/2023 2:49:39 PM
+//Fecha:2/21/2023 2:50:38 PM
 //Licencia:Frederic Schad (Todos los derechos Reservados)
 using System;
 using Wisej.Web;
@@ -16,69 +16,75 @@ using SmartXLS;
 using Common.Helpers;
 using System.IO;
 using Common.Constants;
-
+using System.Linq;
+using System.Collections.Generic;
 
 namespace CommonUserControls
 {
-    public partial class UserControlCustomers : UserControlBase, ICustomers, IValidate, IDataSource
+	public delegate void RaiseHeader();
+    public partial class UserControlInvoiceDetails : UserControlBase, IInvoiceDetails, IValidate, IDataSource
     {
 
-        private readonly IPresenter customersPresenter;
+        private readonly IPresenter invoiceDetailsPresenter;
         private readonly HelperControlsToValidate helperControls;
         private bool _canEdit;
-        private ISearchPresenter<CustomerTypes> _searchPresenterCustomerTypeId;
-		
+        private ISearchPresenter<Invoices> _searchPresenterInvoiceId;
+
+		public event RaiseHeader OnRaiseHeader;
       
-        private UserControlCustomers(){
+        private UserControlInvoiceDetails(){
              InitializeComponent();
         }
         
-        public UserControlCustomers(IContext context):base(context)
+        public UserControlInvoiceDetails(IContext context):base(context)
         {
-            Title = "Customers";
+            Title = "InvoiceDetails";
             InitializeComponent();
             setControls();
-            customersPresenter = new CustomersPresenter(context, this);
-            helperControls = new HelperControlsToValidate(this.panelPricipal);
+            invoiceDetailsPresenter = new InvoiceDetailsPresenter(context, this);
+			invoiceDetailsPresenter.BeforeSave += calcularTotales;
+			invoiceDetailsPresenter.AfterSave += calcularTotalesHeader;
+
+			helperControls = new HelperControlsToValidate(this.panelPricipal);
             this.toolBar1.ButtonClick += toolBar1_ButtonClick;
             CanEdit  = true;
+        }
 
-            
-            try
-            {
-               
-                fillComboBox();
-                
-            }
-            catch(Exception ex )
-            {
-				MessageBox.Show(GetMessageException() + ex.Message, GetMessageNotice(), MessageBoxButtons.OK,MessageBoxIcon.Error);
-            }
-        }
-        
-        private void fillComboBox()
+        private void calcularTotalesHeader()
         {
-            _searchPresenterCustomerTypeId = GeneralSearchFactory.MakeCustomerTypesSearch(_context);
-			comboBoxCustomerTypeId.DisplayMember = nameof(CustomerTypes.Description);
-			comboBoxCustomerTypeId.ValueMember = nameof(CustomerTypes.Id);
-			comboBoxCustomerTypeId.DataSource = _searchPresenterCustomerTypeId.GetAll();
-			        
+			Invoices invoice = _context.Invoices.FirstOrDefault(i => i.Id == InvoiceId);
+			if (invoice != null)
+			{
+				invoice.SubTotal = 0;
+				invoice.TotalItbis = 0;
+				invoice.Total = 0;
+
+				List<InvoiceDetails> detalles = _context.InvoiceDetails.Where(i => i.InvoiceId == invoice.Id).ToList();
+				foreach (InvoiceDetails detalle in detalles)
+                {
+					invoice.SubTotal += detalle.SubTotal;
+					invoice.TotalItbis += detalle.TotalItbis;
+					invoice.Total += detalle.Total;
+				}
+
+				_context.Entry(invoice).State = System.Data.Entity.EntityState.Modified;
+				_context.SaveChanges();
+				OnRaiseHeader?.Invoke();
+			}
+		}
+
+        private void calcularTotales()
+        {
+			/*SubTotal = Qty * Price;
+			TotalItbis = SubTotal * 0.18m;
+			Total = SubTotal + TotalItbis;*/
         }
-        
-     
+
         private void toolBarButtonRecargaCombo_Click(object sender, EventArgs e)
 		{
 			try
 			{
-                var objCustomerTypeId = comboBoxCustomerTypeId.SelectedValue;
-				
-				fillComboBox();
-                
-                if(objCustomerTypeId != null )
-					comboBoxCustomerTypeId.SelectedValue = objCustomerTypeId;
-				
-				
-				
+
 			}
 			catch (Exception ex)
 			{
@@ -88,12 +94,14 @@ namespace CommonUserControls
         
         private void setControls()
         {
-            textBoxId.Tag = nameof(Customers.Id);
-			textBoxCustName.Tag = nameof(Customers.CustName);
-			textBoxAdress.Tag = nameof(Customers.Adress);
-			checkBoxStatus.Tag = nameof(Customers.Status);
-			comboBoxCustomerTypeId.Tag = nameof(Customers.CustomerTypeId);
-			checkBoxIsActivo.Tag = nameof(Customers.IsActivo);
+            textBoxId.Tag = nameof(InvoiceDetails.Id);
+			textBoxInvoiceId.Tag = nameof(InvoiceDetails.InvoiceId);
+			numericUpDownQty.Tag = nameof(InvoiceDetails.Qty);
+			numericUpDownPrice.Tag = nameof(InvoiceDetails.Price);
+			numericUpDownTotalItbis.Tag = nameof(InvoiceDetails.TotalItbis);
+			numericUpDownSubTotal.Tag = nameof(InvoiceDetails.SubTotal);
+			numericUpDownTotal.Tag = nameof(InvoiceDetails.Total);
+			checkBoxIsActivo.Tag = nameof(InvoiceDetails.IsActivo);
 			
         }
 
@@ -121,13 +129,14 @@ namespace CommonUserControls
 			toolBarButtonEliminar.Enabled = !CanEdit;
 
             textBoxId.ReadOnly = true;
-			textBoxCustName.ReadOnly = !CanEdit;
-			textBoxAdress.ReadOnly = !CanEdit;
-			checkBoxStatus.ReadOnly = !CanEdit;
-			comboBoxCustomerTypeId.ReadOnly = !CanEdit;
+			textBoxInvoiceId.ReadOnly = true;
+			numericUpDownQty.ReadOnly = !CanEdit;
+			numericUpDownPrice.ReadOnly = !CanEdit;
+			numericUpDownTotalItbis.ReadOnly = !CanEdit;
+			numericUpDownSubTotal.ReadOnly = !CanEdit;
+			numericUpDownTotal.ReadOnly = !CanEdit;
 			checkBoxIsActivo.ReadOnly = !CanEdit;
-			
-        
+
 		}
         
       
@@ -149,7 +158,7 @@ namespace CommonUserControls
 		}
         
         
-       #region Properties Customers
+       #region Properties InvoiceDetails
        
        private int _Id;
 		public  int Id
@@ -169,62 +178,83 @@ namespace CommonUserControls
 			}
 		}
 		
-		public string CustName
+		private int _InvoiceId;
+		public  int InvoiceId
 		{
 			get
 			{
-				 return textBoxCustName.Text;
-			}
-			set
-			{
-				textBoxCustName.Text = value;
-			}
-		}
-		
-		public string Adress
-		{
-			get
-			{
-				 return textBoxAdress.Text;
-			}
-			set
-			{
-				textBoxAdress.Text = value;
-			}
-		}
-		
-		public bool Status
-		{
-			get
-			{
-				 return checkBoxStatus.Checked;
-			}
-			set
-			{
-				checkBoxStatus.Checked  = value;
-			}
-		}
-		
-		private int _CustomerTypeId;
-		public  int CustomerTypeId
-		{
-			get
-			{
-				if(comboBoxCustomerTypeId.SelectedValue != null)
-					_CustomerTypeId = Convert.ToInt32(comboBoxCustomerTypeId.SelectedValue);
+				if(textBoxInvoiceId.Text != null)
+					_InvoiceId = Convert.ToInt32(textBoxInvoiceId.Text);
 
-				return _CustomerTypeId;
+				return _InvoiceId;
 			}
 			set
 			{
-				_CustomerTypeId = value;
-				comboBoxCustomerTypeId.SelectedValue = value;
+				_InvoiceId = value;
+				textBoxInvoiceId.Text = value.ToString();
+				if(invoiceDetailsPresenter != null)
+					invoiceDetailsPresenter.FillDataSource();
 			}
 		}
 		
-		public  long TenantId
+		public int Qty
 		{
-			get; set;
+			get
+			{
+				 return (int) numericUpDownQty.Value;
+			}
+			set
+			{
+				numericUpDownQty.Value  = value;
+			}
+		}
+		
+		public decimal Price
+		{
+			get
+			{
+				 return (decimal) numericUpDownPrice.Value;
+			}
+			set
+			{
+				numericUpDownPrice.Value  = value;
+			}
+		}
+		
+		public decimal TotalItbis
+		{
+			get
+			{
+				 return (decimal) numericUpDownTotalItbis.Value;
+			}
+			set
+			{
+				numericUpDownTotalItbis.Value  = value;
+			}
+		}
+		
+		public decimal SubTotal
+		{
+			get
+			{
+				 return (decimal) numericUpDownSubTotal.Value;
+			}
+			set
+			{
+				numericUpDownSubTotal.Value  = value;
+			}
+		}
+		
+		public decimal Total
+		{
+			get
+			{
+				 return (decimal) numericUpDownTotal.Value;
+			}
+			set
+			{
+				numericUpDownTotal.Value  = value;
+			}
 		}
 		
 		public bool IsActivo
@@ -258,12 +288,12 @@ namespace CommonUserControls
 		{
 			get; set;
 		}
+        public object DataGridSource { 
+			get => dataGridViewInvoiceDetails.DataSource; 
+			set => dataGridViewInvoiceDetails.DataSource = value; 
+		}
 
-        public object DataGridSource
-        {
-            get => dataGridView1.DataSource;
-            set => dataGridView1.DataSource = value; 
-        }
+
 
         #endregion
 
@@ -272,7 +302,7 @@ namespace CommonUserControls
             switch (e.Button.Name)
             {
                 case ToolBarButtonConstants.Nuevo:
-                    customersPresenter.Add();
+                    invoiceDetailsPresenter.Add();
                     CanEdit = true;
                     break;
 
@@ -280,7 +310,7 @@ namespace CommonUserControls
 
                     try
                     {
-                        if (customersPresenter.Save())
+                        if (invoiceDetailsPresenter.Save())
                         {
                             AlertBox.Show(GetMessageSavedFields());
                             CanEdit = false;
@@ -300,14 +330,14 @@ namespace CommonUserControls
 
                 case ToolBarButtonConstants.Cancelar:
                     ClearErrorsValidations();
-                    customersPresenter.Undo();
+                    invoiceDetailsPresenter.Undo();
                     CanEdit = false;
                     break;
 
                 case ToolBarButtonConstants.Eliminar:
                     try
                     {
-                        if( customersPresenter.Delete())
+                        if( invoiceDetailsPresenter.Delete())
                         {
                             AlertBox.Show(GetMessageDeletedFields());
                             CanEdit = true;
@@ -315,20 +345,20 @@ namespace CommonUserControls
                     }
                     catch (Exception ex)
                     {
-                        customersPresenter.Add();
+                        invoiceDetailsPresenter.Add();
                         MessageBox.Show(GetMessageException() + ex.Message, GetMessageNotice(), MessageBoxButtons.OK,MessageBoxIcon.Error);
                     }
                     break;
 
                 case ToolBarButtonConstants.Buscar:
                 
-                    WindowSearch<Customers> search = new WindowSearch<Customers>(GeneralSearchFactory.MakeCustomersSearch(_context), GetMessageFinding() + " " + GetTitle());
+                    WindowSearch<InvoiceDetails> search = new WindowSearch<InvoiceDetails>(GeneralSearchFactory.MakeInvoiceDetailsSearch(_context), GetMessageFinding() + " " + GetTitle());
                     search.FormClosed += (senderX, eX) => {
                         try
                         {
                             if (search.Id != null)
                             {
-                                if(this.customersPresenter.Find(search.Id))
+                                if(this.invoiceDetailsPresenter.Find(search.Id))
                                 {
                                     CanEdit = true;
                                     ClearErrorsValidations();
@@ -353,7 +383,7 @@ namespace CommonUserControls
                 
                     try
                     {
-                        using (WorkBook wb = HelperDataTableToExcel.MakeDataTableToExcel(this.customersPresenter.GetDataTable()))
+                        using (WorkBook wb = HelperDataTableToExcel.MakeDataTableToExcel(this.invoiceDetailsPresenter.GetDataTable()))
                         {
                         	using (Stream stream = new MemoryStream())
                         	{
@@ -380,21 +410,21 @@ namespace CommonUserControls
 
         public void ShowErrors()
         {
-            helperControls.ValidateMembers(customersPresenter.ValidationResult);
+            helperControls.ValidateMembers(invoiceDetailsPresenter.ValidationResult);
 
         }
 
         public void ClearErrorsValidations()
         {
-            helperControls.ClearErrors(customersPresenter.ValidationResult);
+            helperControls.ClearErrors(invoiceDetailsPresenter.ValidationResult);
         }
 
-        private void dataGridView1_DoubleClick(object sender, EventArgs e)
+        private void dataGridViewInvoiceDetails_DoubleClick(object sender, EventArgs e)
         {
-            if(dataGridView1.SelectedRows.Count > 0)
+			if(dataGridViewInvoiceDetails.SelectedRows.Count > 0)
             {
-                int id = (int) dataGridView1.SelectedRows[0][nameof(Customers.Id)].Value;
-                customersPresenter.Find(id);
+				int id = (int)dataGridViewInvoiceDetails.SelectedRows[0][nameof(InvoiceDetails.Id)].Value;
+				invoiceDetailsPresenter.Find(id);
             }
         }
     }

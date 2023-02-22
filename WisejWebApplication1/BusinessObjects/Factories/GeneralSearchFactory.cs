@@ -22,6 +22,18 @@ namespace BusinessObjects.Factories
 			ISearchPresenter<CustomerTypes> instance = new SearchCustomerTypesPresenter(context);
 			return instance;
 		}
+				
+		public static ISearchPresenter<Invoices> MakeInvoicesSearch(IContext context)
+		{
+			ISearchPresenter<Invoices> instance = new SearchInvoicesPresenter(context);
+			return instance;
+		}
+		
+		public static ISearchPresenter<InvoiceDetails> MakeInvoiceDetailsSearch(IContext context)
+		{
+			ISearchPresenter<InvoiceDetails> instance = new SearchInvoiceDetailsPresenter(context);
+			return instance;
+		}
 		
 		//Requerido por el generador de CodeSmith no modifique esto
 

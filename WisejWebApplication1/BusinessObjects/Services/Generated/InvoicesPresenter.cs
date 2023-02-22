@@ -1,7 +1,7 @@
 ﻿//Author: Jose Roberto Taveras
 //Email:roberto.taveras@hotmail.com
-//Description: Busines Object  Presenter CustomerTypes
-//Fecha:2/21/2023 2:49:58 PM
+//Description: Busines Object  Presenter Invoices
+//Fecha:2/21/2023 2:50:15 PM
 //Licencia:Frederic Schad (Todos los derechos Reservados)
 //No toques esto por que al regenerar se sobreescribe el codigo
 
@@ -19,13 +19,13 @@ using BusinessObjects.Repository;
 
 namespace  BusinessObjects.Services
 {
-    public partial class CustomerTypesPresenter 
+    public partial class InvoicesPresenter 
     {
         private readonly IContext _context;
         public ICollection<ValidationResult> ValidationResult { get; set; }
         private readonly HelperValidateEntity helperValidateEntity = new HelperValidateEntity();
-        private CustomerTypes customerTypes { get; set; }
-        private ICustomerTypes _customerTypes;
+        private Invoices invoices { get; set; }
+        private IInvoices _invoices;
         public event Validate BeforeSave;
         public event Validate AfterSave;
         public event RaiseRefresh OnRefresh;
@@ -36,56 +36,59 @@ namespace  BusinessObjects.Services
                         
         private bool validateService()
         {
-            return helperValidateEntity.ValidateService(customerTypes);
+            return helperValidateEntity.ValidateService(invoices);
         }
 
         private void gatherFields()
         {
             
-            customerTypes.Id = _customerTypes.Id;
-			customerTypes.Description = _customerTypes.Description;
-			customerTypes.TenantId = _customerTypes.TenantId;
-			customerTypes.IsActivo = _customerTypes.IsActivo;
-			if(string.IsNullOrEmpty(customerTypes.Creado)){
-				customerTypes.Creado = _context.UserName;
+            invoices.Id = _invoices.Id;
+			invoices.CustomerId = _invoices.CustomerId;
+			invoices.TotalItbis = _invoices.TotalItbis;
+			invoices.SubTotal = _invoices.SubTotal;
+			invoices.Total = _invoices.Total;
+			invoices.IsActivo = _invoices.IsActivo;
+			if(string.IsNullOrEmpty(invoices.Creado)){
+				invoices.Creado = _context.UserName;
  			}
-			if(customerTypes.FechaCreado == null || customerTypes.FechaCreado.Year <= 1900) {
-				customerTypes.FechaCreado = DateTime.Now;
+			if(invoices.FechaCreado == null || invoices.FechaCreado.Year <= 1900) {
+				invoices.FechaCreado = DateTime.Now;
 			}
-			customerTypes.Modificado = _context.UserName;
- 			customerTypes.FechaModificado = DateTime.Now;
+			invoices.Modificado = _context.UserName;
+ 			invoices.FechaModificado = DateTime.Now;
 			
         }
         
         private void scatterFields()
         {
-            _customerTypes.Id = customerTypes.Id;
- 			_customerTypes.Description = customerTypes.Description;
- 			_customerTypes.TenantId = customerTypes.TenantId;
- 			_customerTypes.IsActivo = customerTypes.IsActivo;
- 			_customerTypes.Creado = customerTypes.Creado;
- 			_customerTypes.FechaCreado = customerTypes.FechaCreado;
- 			_customerTypes.Modificado = customerTypes.Modificado;
- 			_customerTypes.FechaModificado = customerTypes.FechaModificado;
+            _invoices.Id = invoices.Id;
+ 			_invoices.CustomerId = invoices.CustomerId;
+ 			_invoices.TotalItbis = invoices.TotalItbis;
+ 			_invoices.SubTotal = invoices.SubTotal;
+ 			_invoices.Total = invoices.Total;
+ 			_invoices.IsActivo = invoices.IsActivo;
+ 			_invoices.Creado = invoices.Creado;
+ 			_invoices.FechaCreado = invoices.FechaCreado;
+ 			_invoices.Modificado = invoices.Modificado;
+ 			_invoices.FechaModificado = invoices.FechaModificado;
  			
         }
         
         public void Add()
         {
             
-            customerTypes = new CustomerTypes();
-            customerTypes.TenantId = _context.TenantId;
-			if(string.IsNullOrEmpty(customerTypes.Creado)){
-				customerTypes.Creado = _context.UserName;
+            invoices = new Invoices();
+            if(string.IsNullOrEmpty(invoices.Creado)){
+				invoices.Creado = _context.UserName;
  			}
-			if(customerTypes.FechaCreado == null || customerTypes.FechaCreado.Year <= 1900) {
-				customerTypes.FechaCreado = DateTime.Now;
+			if(invoices.FechaCreado == null || invoices.FechaCreado.Year <= 1900) {
+				invoices.FechaCreado = DateTime.Now;
 			}
-			customerTypes.Modificado = _context.UserName;
- 			customerTypes.FechaModificado = DateTime.Now;
+			invoices.Modificado = _context.UserName;
+ 			invoices.FechaModificado = DateTime.Now;
 			
             //Inicializando el Id se necesita en los id de tipo Guid
-            customerTypes.Id = 0;
+            invoices.Id = 0;
             afterSetUserAndCreateDate();
             scatterFields();
             OnRefresh?.Invoke();
@@ -106,13 +109,13 @@ namespace  BusinessObjects.Services
         public bool Find(object Id)
         {
            
-            _context.Entry(this.customerTypes).State = EntityState.Detached;
+            _context.Entry(this.invoices).State = EntityState.Detached;
              
             Add();
 
-            customerTypes =  _context.CustomerTypes.Find(Id);
+            invoices =  _context.Invoices.Find(Id);
             
-             if (customerTypes == null) {
+             if (invoices == null) {
                 
                 Add();
                 
@@ -124,7 +127,7 @@ namespace  BusinessObjects.Services
                 return false;
             }
 
-            _context.Entry(customerTypes).State = EntityState.Modified;
+            _context.Entry(invoices).State = EntityState.Modified;
             
             afterSetUserAndCreateDate();
 

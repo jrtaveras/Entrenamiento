@@ -1,6 +1,6 @@
 ﻿//Autor:Jose Roberto Taveras
 //Email:roberto.taveras@hotmail.com
-//Fecha:2/21/2023 2:49:39 PM
+//Fecha:2/21/2023 2:50:16 PM
 //Licencia:Frederic Schad (Todos los derechos Reservados)
 using System;
 using Wisej.Web;
@@ -20,25 +20,32 @@ using Common.Constants;
 
 namespace CommonUserControls
 {
-    public partial class UserControlCustomers : UserControlBase, ICustomers, IValidate, IDataSource
+    public partial class UserControlInvoices : UserControlBase, IInvoices, IValidate
     {
 
-        private readonly IPresenter customersPresenter;
+        private readonly IPresenter invoicesPresenter;
         private readonly HelperControlsToValidate helperControls;
+        private readonly UserControlInvoiceDetails userControlInvoiceDetails;
+
         private bool _canEdit;
-        private ISearchPresenter<CustomerTypes> _searchPresenterCustomerTypeId;
+        private ISearchPresenter<Customers> _searchPresenterCustomerId;
 		
       
-        private UserControlCustomers(){
-             InitializeComponent();
-        }
-        
-        public UserControlCustomers(IContext context):base(context)
+
+        public UserControlInvoices(IContext context, UserControlInvoiceDetails userControlInvoiceDetails):base(context)
         {
-            Title = "Customers";
+            Title = "Invoices";
             InitializeComponent();
+
+            this.userControlInvoiceDetails = userControlInvoiceDetails;
+
+            panelDetalles.Controls.Add(userControlInvoiceDetails);
+            userControlInvoiceDetails.Dock = DockStyle.Fill;
+            userControlInvoiceDetails.OnRaiseHeader += refreshHeader;
+
             setControls();
-            customersPresenter = new CustomersPresenter(context, this);
+            invoicesPresenter = new InvoicesPresenter(context, this);
+
             helperControls = new HelperControlsToValidate(this.panelPricipal);
             this.toolBar1.ButtonClick += toolBar1_ButtonClick;
             CanEdit  = true;
@@ -54,14 +61,24 @@ namespace CommonUserControls
             {
 				MessageBox.Show(GetMessageException() + ex.Message, GetMessageNotice(), MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
+
+            
         }
-        
+
+        private void refreshHeader()
+        {
+            if(Id > 0)
+            {
+                invoicesPresenter.Find(Id);
+            }
+        }
+
         private void fillComboBox()
         {
-            _searchPresenterCustomerTypeId = GeneralSearchFactory.MakeCustomerTypesSearch(_context);
-			comboBoxCustomerTypeId.DisplayMember = nameof(CustomerTypes.Description);
-			comboBoxCustomerTypeId.ValueMember = nameof(CustomerTypes.Id);
-			comboBoxCustomerTypeId.DataSource = _searchPresenterCustomerTypeId.GetAll();
+            _searchPresenterCustomerId = GeneralSearchFactory.MakeCustomersSearch(_context);
+			comboBoxCustomerId.DisplayMember = nameof(Customers.CustName);
+			comboBoxCustomerId.ValueMember = nameof(Customers.Id);
+			comboBoxCustomerId.DataSource = _searchPresenterCustomerId.GetAll();
 			        
         }
         
@@ -70,12 +87,12 @@ namespace CommonUserControls
 		{
 			try
 			{
-                var objCustomerTypeId = comboBoxCustomerTypeId.SelectedValue;
+                var objCustomerId = comboBoxCustomerId.SelectedValue;
 				
 				fillComboBox();
                 
-                if(objCustomerTypeId != null )
-					comboBoxCustomerTypeId.SelectedValue = objCustomerTypeId;
+                if(objCustomerId != null )
+					comboBoxCustomerId.SelectedValue = objCustomerId;
 				
 				
 				
@@ -88,12 +105,12 @@ namespace CommonUserControls
         
         private void setControls()
         {
-            textBoxId.Tag = nameof(Customers.Id);
-			textBoxCustName.Tag = nameof(Customers.CustName);
-			textBoxAdress.Tag = nameof(Customers.Adress);
-			checkBoxStatus.Tag = nameof(Customers.Status);
-			comboBoxCustomerTypeId.Tag = nameof(Customers.CustomerTypeId);
-			checkBoxIsActivo.Tag = nameof(Customers.IsActivo);
+            textBoxId.Tag = nameof(Invoices.Id);
+			comboBoxCustomerId.Tag = nameof(Invoices.CustomerId);
+			numericUpDownTotalItbis.Tag = nameof(Invoices.TotalItbis);
+			numericUpDownSubTotal.Tag = nameof(Invoices.SubTotal);
+			numericUpDownTotal.Tag = nameof(Invoices.Total);
+			checkBoxIsActivo.Tag = nameof(Invoices.IsActivo);
 			
         }
 
@@ -121,13 +138,13 @@ namespace CommonUserControls
 			toolBarButtonEliminar.Enabled = !CanEdit;
 
             textBoxId.ReadOnly = true;
-			textBoxCustName.ReadOnly = !CanEdit;
-			textBoxAdress.ReadOnly = !CanEdit;
-			checkBoxStatus.ReadOnly = !CanEdit;
-			comboBoxCustomerTypeId.ReadOnly = !CanEdit;
+			comboBoxCustomerId.ReadOnly = !CanEdit;
+			numericUpDownTotalItbis.ReadOnly = !CanEdit;
+			numericUpDownSubTotal.ReadOnly = !CanEdit;
+			numericUpDownTotal.ReadOnly = !CanEdit;
 			checkBoxIsActivo.ReadOnly = !CanEdit;
-			
-        
+
+            panelDetalles.Enabled = Id > 0 && !CanEdit;
 		}
         
       
@@ -149,7 +166,7 @@ namespace CommonUserControls
 		}
         
         
-       #region Properties Customers
+       #region Properties Invoices
        
        private int _Id;
 		public  int Id
@@ -166,65 +183,62 @@ namespace CommonUserControls
 				textBoxId.Text = value.ToString();
 				this.toolBarButtonInfo.ToolTipText =   $"{GetCreated()} : {Creado} {FechaCreado}  {GetModified()}: {Modificado} {FechaModificado}";
 				this.panelPricipal.Text = GetTitle() + " (" + value.ToString() + ")";
-			}
-		}
-		
-		public string CustName
-		{
-			get
-			{
-				 return textBoxCustName.Text;
-			}
-			set
-			{
-				textBoxCustName.Text = value;
-			}
-		}
-		
-		public string Adress
-		{
-			get
-			{
-				 return textBoxAdress.Text;
-			}
-			set
-			{
-				textBoxAdress.Text = value;
-			}
-		}
-		
-		public bool Status
-		{
-			get
-			{
-				 return checkBoxStatus.Checked;
-			}
-			set
-			{
-				checkBoxStatus.Checked  = value;
-			}
-		}
-		
-		private int _CustomerTypeId;
-		public  int CustomerTypeId
-		{
-			get
-			{
-				if(comboBoxCustomerTypeId.SelectedValue != null)
-					_CustomerTypeId = Convert.ToInt32(comboBoxCustomerTypeId.SelectedValue);
 
-				return _CustomerTypeId;
+                userControlInvoiceDetails.InvoiceId = this.Id;
+            }
+		}
+		
+		private int _CustomerId;
+		public  int CustomerId
+		{
+			get
+			{
+				if(comboBoxCustomerId.SelectedValue != null)
+					_CustomerId = Convert.ToInt32(comboBoxCustomerId.SelectedValue);
+
+				return _CustomerId;
 			}
 			set
 			{
-				_CustomerTypeId = value;
-				comboBoxCustomerTypeId.SelectedValue = value;
+				_CustomerId = value;
+				comboBoxCustomerId.SelectedValue = value;
 			}
 		}
 		
-		public  long TenantId
+		public decimal TotalItbis
 		{
-			get; set;
+			get
+			{
+				 return (decimal) numericUpDownTotalItbis.Value;
+			}
+			set
+			{
+				numericUpDownTotalItbis.Value  = value;
+			}
+		}
+		
+		public decimal SubTotal
+		{
+			get
+			{
+				 return (decimal) numericUpDownSubTotal.Value;
+			}
+			set
+			{
+				numericUpDownSubTotal.Value  = value;
+			}
+		}
+		
+		public decimal Total
+		{
+			get
+			{
+				 return (decimal) numericUpDownTotal.Value;
+			}
+			set
+			{
+				numericUpDownTotal.Value  = value;
+			}
 		}
 		
 		public bool IsActivo
@@ -258,21 +272,17 @@ namespace CommonUserControls
 		{
 			get; set;
 		}
-
-        public object DataGridSource
-        {
-            get => dataGridView1.DataSource;
-            set => dataGridView1.DataSource = value; 
-        }
-
-        #endregion
+		
+		
+       
+       #endregion
 
         private void toolBar1_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
         {
             switch (e.Button.Name)
             {
                 case ToolBarButtonConstants.Nuevo:
-                    customersPresenter.Add();
+                    invoicesPresenter.Add();
                     CanEdit = true;
                     break;
 
@@ -280,7 +290,7 @@ namespace CommonUserControls
 
                     try
                     {
-                        if (customersPresenter.Save())
+                        if (invoicesPresenter.Save())
                         {
                             AlertBox.Show(GetMessageSavedFields());
                             CanEdit = false;
@@ -300,14 +310,14 @@ namespace CommonUserControls
 
                 case ToolBarButtonConstants.Cancelar:
                     ClearErrorsValidations();
-                    customersPresenter.Undo();
+                    invoicesPresenter.Undo();
                     CanEdit = false;
                     break;
 
                 case ToolBarButtonConstants.Eliminar:
                     try
                     {
-                        if( customersPresenter.Delete())
+                        if( invoicesPresenter.Delete())
                         {
                             AlertBox.Show(GetMessageDeletedFields());
                             CanEdit = true;
@@ -315,22 +325,22 @@ namespace CommonUserControls
                     }
                     catch (Exception ex)
                     {
-                        customersPresenter.Add();
+                        invoicesPresenter.Add();
                         MessageBox.Show(GetMessageException() + ex.Message, GetMessageNotice(), MessageBoxButtons.OK,MessageBoxIcon.Error);
                     }
                     break;
 
                 case ToolBarButtonConstants.Buscar:
                 
-                    WindowSearch<Customers> search = new WindowSearch<Customers>(GeneralSearchFactory.MakeCustomersSearch(_context), GetMessageFinding() + " " + GetTitle());
+                    WindowSearch<Invoices> search = new WindowSearch<Invoices>(GeneralSearchFactory.MakeInvoicesSearch(_context), GetMessageFinding() + " " + GetTitle());
                     search.FormClosed += (senderX, eX) => {
                         try
                         {
                             if (search.Id != null)
                             {
-                                if(this.customersPresenter.Find(search.Id))
+                                if(this.invoicesPresenter.Find(search.Id))
                                 {
-                                    CanEdit = true;
+                                    CanEdit = false;
                                     ClearErrorsValidations();
                                     toolBarButtonRecargaCombo_Click(null,null);
                                 }
@@ -353,7 +363,7 @@ namespace CommonUserControls
                 
                     try
                     {
-                        using (WorkBook wb = HelperDataTableToExcel.MakeDataTableToExcel(this.customersPresenter.GetDataTable()))
+                        using (WorkBook wb = HelperDataTableToExcel.MakeDataTableToExcel(this.invoicesPresenter.GetDataTable()))
                         {
                         	using (Stream stream = new MemoryStream())
                         	{
@@ -380,22 +390,15 @@ namespace CommonUserControls
 
         public void ShowErrors()
         {
-            helperControls.ValidateMembers(customersPresenter.ValidationResult);
+            helperControls.ValidateMembers(invoicesPresenter.ValidationResult);
 
         }
 
         public void ClearErrorsValidations()
         {
-            helperControls.ClearErrors(customersPresenter.ValidationResult);
+            helperControls.ClearErrors(invoicesPresenter.ValidationResult);
         }
 
-        private void dataGridView1_DoubleClick(object sender, EventArgs e)
-        {
-            if(dataGridView1.SelectedRows.Count > 0)
-            {
-                int id = (int) dataGridView1.SelectedRows[0][nameof(Customers.Id)].Value;
-                customersPresenter.Find(id);
-            }
-        }
+       
     }
 }

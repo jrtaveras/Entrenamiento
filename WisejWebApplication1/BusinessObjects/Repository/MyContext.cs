@@ -41,6 +41,8 @@ namespace BusinessObjects.Repository
         {
             modelBuilder.Entity<Customers>();
 			modelBuilder.Entity<CustomerTypes>();
+			modelBuilder.Entity<Invoices>();
+			modelBuilder.Entity<InvoiceDetails>();
 			//modelBuider no remueva esto usado por CodeSmith
             base.OnModelCreating(modelBuilder);
             
@@ -52,6 +54,8 @@ namespace BusinessObjects.Repository
         public long TenantId { get; set; }
         public virtual DbSet<Customers> Customers { get; set; }
 		public virtual DbSet<CustomerTypes> CustomerTypes { get; set; }
+		public virtual DbSet<Invoices> Invoices { get; set; }
+		public virtual DbSet<InvoiceDetails> InvoiceDetails { get; set; }
 		//property no remueva esto usado por CodeSmith
     }
 }

@@ -1,7 +1,7 @@
 ﻿//Author: Jose Roberto Taveras
 //Email:roberto.taveras@hotmail.com
 //Description: Poco de entidad ICustomers
-//Fecha:2/21/2023 9:15:16 AM
+//Fecha:2/21/2023 2:49:38 PM
 //Licencia:Frederic Schad (Todos los derechos Reservados)
 //No toques esto por que al regenerar se sobreescribe el codigo
 

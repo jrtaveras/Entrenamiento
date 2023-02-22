@@ -32,9 +32,8 @@ namespace CommonUserControls
         private void InitializeComponent()
         {
             this.panelPricipal = new Wisej.Web.Panel();
-            this.panelCenter = new Wisej.Web.Panel();
-            this.DataGridData = new Wisej.Web.DataGridView();
             this.panelContenido = new Wisej.Web.Panel();
+            this.panelRight = new Wisej.Web.Panel();
             this.panelLeft = new Wisej.Web.Panel();
             this.textBoxId = new Wisej.Web.TextBox();
             this.textBoxCustName = new Wisej.Web.TextBox();
@@ -53,26 +52,25 @@ namespace CommonUserControls
             this.toolBarButtonExcel = new Wisej.Web.ToolBarButton();
             this.toolBarButtonInfo = new Wisej.Web.ToolBarButton();
             this.toolBarButtonRecargaCombo = new Wisej.Web.ToolBarButton();
+            this.dataGridView1 = new Wisej.Web.DataGridView();
             this.panelPricipal.SuspendLayout();
-            this.panelCenter.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DataGridData)).BeginInit();
             this.panelContenido.SuspendLayout();
             this.panelLeft.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // panelPricipal
             // 
             this.panelPricipal.CollapseSide = Wisej.Web.HeaderPosition.Left;
-            this.panelPricipal.Controls.Add(this.panelCenter);
             this.panelPricipal.Controls.Add(this.panelContenido);
             this.panelPricipal.Controls.Add(this.toolBar1);
-            this.panelPricipal.Dock = Wisej.Web.DockStyle.Fill;
+            this.panelPricipal.Dock = Wisej.Web.DockStyle.Top;
             this.panelPricipal.HeaderAlignment = Wisej.Web.HorizontalAlignment.Center;
             this.panelPricipal.HeaderPosition = Wisej.Web.HeaderPosition.Left;
             this.panelPricipal.Location = new System.Drawing.Point(0, 0);
             this.panelPricipal.Name = "panelPricipal";
             this.panelPricipal.ShowHeader = true;
-            this.panelPricipal.Size = new System.Drawing.Size(650, 949);
+            this.panelPricipal.Size = new System.Drawing.Size(650, 301);
             this.panelPricipal.TabIndex = 0;
             this.panelPricipal.TabStop = true;
             this.panelPricipal.Tag = "";
@@ -80,38 +78,27 @@ namespace CommonUserControls
             this.panelPricipal.PanelCollapsed += new System.EventHandler(this.panelPricipal_PanelCollapsed);
             this.panelPricipal.PanelExpanded += new System.EventHandler(this.panelPricipal_PanelExpanded);
             // 
-            // panelCenter
-            // 
-            this.panelCenter.BackColor = System.Drawing.Color.FromName("@tabHighlight");
-            this.panelCenter.Controls.Add(this.DataGridData);
-            this.panelCenter.Dock = Wisej.Web.DockStyle.Fill;
-            this.panelCenter.Location = new System.Drawing.Point(0, 284);
-            this.panelCenter.Name = "panelCenter";
-            this.panelCenter.Size = new System.Drawing.Size(622, 665);
-            this.panelCenter.TabIndex = 2;
-            this.panelCenter.TabStop = true;
-            // 
-            // DataGridData
-            // 
-            this.DataGridData.Dock = Wisej.Web.DockStyle.Fill;
-            this.DataGridData.Location = new System.Drawing.Point(0, 0);
-            this.DataGridData.Name = "DataGridData";
-            this.DataGridData.ReadOnly = true;
-            this.DataGridData.Size = new System.Drawing.Size(622, 665);
-            this.DataGridData.TabIndex = 0;
-            this.DataGridData.DoubleClick += new System.EventHandler(this.DataGridData_DoubleClick);
-            // 
             // panelContenido
             // 
+            this.panelContenido.Controls.Add(this.panelRight);
             this.panelContenido.Controls.Add(this.panelLeft);
-            this.panelContenido.Dock = Wisej.Web.DockStyle.Top;
+            this.panelContenido.Dock = Wisej.Web.DockStyle.Fill;
             this.panelContenido.HeaderAlignment = Wisej.Web.HorizontalAlignment.Center;
             this.panelContenido.HeaderSize = 34;
             this.panelContenido.Location = new System.Drawing.Point(0, 33);
             this.panelContenido.Name = "panelContenido";
-            this.panelContenido.Size = new System.Drawing.Size(622, 251);
+            this.panelContenido.Size = new System.Drawing.Size(622, 268);
             this.panelContenido.TabIndex = 1;
             this.panelContenido.TabStop = true;
+            // 
+            // panelRight
+            // 
+            this.panelRight.Dock = Wisej.Web.DockStyle.Left;
+            this.panelRight.Location = new System.Drawing.Point(306, 0);
+            this.panelRight.Name = "panelRight";
+            this.panelRight.Size = new System.Drawing.Size(306, 268);
+            this.panelRight.TabIndex = 28;
+            this.panelRight.TabStop = true;
             // 
             // panelLeft
             // 
@@ -125,7 +112,7 @@ namespace CommonUserControls
             this.panelLeft.HeaderAlignment = Wisej.Web.HorizontalAlignment.Center;
             this.panelLeft.Location = new System.Drawing.Point(0, 0);
             this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(306, 251);
+            this.panelLeft.Size = new System.Drawing.Size(306, 268);
             this.panelLeft.TabIndex = 8;
             this.panelLeft.TabStop = true;
             // 
@@ -271,20 +258,30 @@ namespace CommonUserControls
             this.toolBarButtonRecargaCombo.Name = "toolBarButtonRecargaCombo";
             this.toolBarButtonRecargaCombo.Click += new System.EventHandler(this.toolBarButtonRecargaCombo_Click);
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.Dock = Wisej.Web.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 301);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.Size = new System.Drawing.Size(650, 699);
+            this.dataGridView1.TabIndex = 1;
+            this.dataGridView1.DoubleClick += new System.EventHandler(this.dataGridView1_DoubleClick);
+            // 
             // UserControlCustomers
             // 
             this.AutoScroll = true;
             this.AutoSizeMode = Wisej.Web.AutoSizeMode.GrowAndShrink;
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.panelPricipal);
             this.Name = "UserControlCustomers";
-            this.Size = new System.Drawing.Size(650, 949);
+            this.Size = new System.Drawing.Size(650, 1000);
             this.panelPricipal.ResumeLayout(false);
             this.panelPricipal.PerformLayout();
-            this.panelCenter.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.DataGridData)).EndInit();
             this.panelContenido.ResumeLayout(false);
             this.panelLeft.ResumeLayout(false);
             this.panelLeft.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -295,6 +292,7 @@ namespace CommonUserControls
         private Wisej.Web.Panel panelPricipal;
         private Wisej.Web.Panel panelContenido;
         private Wisej.Web.Panel panelLeft;
+        private Wisej.Web.Panel panelRight;
         private Wisej.Web.ToolBarButton toolBarButtonNuevo;
         private Wisej.Web.ToolBarButton toolBarButtonSalvar;
         private Wisej.Web.ToolBarButton toolBarButtonEditar;
@@ -311,8 +309,7 @@ namespace CommonUserControls
 		private Wisej.Web.CheckBox checkBoxStatus;
 		private Wisej.Web.ComboBox comboBoxCustomerTypeId;
 		private Wisej.Web.CheckBox checkBoxIsActivo;
-        private Wisej.Web.Panel panelCenter;
-        private Wisej.Web.DataGridView DataGridData;
+        private Wisej.Web.DataGridView dataGridView1;
     }
 
 }
