@@ -1,7 +1,7 @@
 ﻿//Author: Jose Roberto Taveras
 //Email:roberto.taveras@hotmail.com
 //Description: Busines Object  Presenter InvoiceDetails
-//Fecha:2/21/2023 2:50:38 PM
+//Fecha:2/22/2023 8:16:33 AM
 //Licencia:Frederic Schad (Todos los derechos Reservados)
 //No toques esto por que al regenerar se sobreescribe el codigo
 
@@ -44,11 +44,13 @@ namespace  BusinessObjects.Services
             
             invoiceDetails.Id = _invoiceDetails.Id;
 			invoiceDetails.InvoiceId = _invoiceDetails.InvoiceId;
+			invoiceDetails.productId = _invoiceDetails.productId;
 			invoiceDetails.Qty = _invoiceDetails.Qty;
 			invoiceDetails.Price = _invoiceDetails.Price;
 			invoiceDetails.TotalItbis = _invoiceDetails.TotalItbis;
 			invoiceDetails.SubTotal = _invoiceDetails.SubTotal;
 			invoiceDetails.Total = _invoiceDetails.Total;
+			invoiceDetails.TenantId = _invoiceDetails.TenantId;
 			invoiceDetails.IsActivo = _invoiceDetails.IsActivo;
 			if(string.IsNullOrEmpty(invoiceDetails.Creado)){
 				invoiceDetails.Creado = _context.UserName;
@@ -65,11 +67,13 @@ namespace  BusinessObjects.Services
         {
             _invoiceDetails.Id = invoiceDetails.Id;
  			_invoiceDetails.InvoiceId = invoiceDetails.InvoiceId;
+ 			_invoiceDetails.productId = invoiceDetails.productId;
  			_invoiceDetails.Qty = invoiceDetails.Qty;
  			_invoiceDetails.Price = invoiceDetails.Price;
  			_invoiceDetails.TotalItbis = invoiceDetails.TotalItbis;
  			_invoiceDetails.SubTotal = invoiceDetails.SubTotal;
  			_invoiceDetails.Total = invoiceDetails.Total;
+ 			_invoiceDetails.TenantId = invoiceDetails.TenantId;
  			_invoiceDetails.IsActivo = invoiceDetails.IsActivo;
  			_invoiceDetails.Creado = invoiceDetails.Creado;
  			_invoiceDetails.FechaCreado = invoiceDetails.FechaCreado;
@@ -82,7 +86,8 @@ namespace  BusinessObjects.Services
         {
             
             invoiceDetails = new InvoiceDetails();
-            if(string.IsNullOrEmpty(invoiceDetails.Creado)){
+            invoiceDetails.TenantId = _context.TenantId;
+			if(string.IsNullOrEmpty(invoiceDetails.Creado)){
 				invoiceDetails.Creado = _context.UserName;
  			}
 			if(invoiceDetails.FechaCreado == null || invoiceDetails.FechaCreado.Year <= 1900) {

@@ -1,7 +1,7 @@
 ﻿//Author: Jose Roberto Taveras
 //Email:roberto.taveras@hotmail.com
 //Description: Poco de entidad IInvoices
-//Fecha:2/21/2023 2:50:15 PM
+//Fecha:2/22/2023 8:16:59 AM
 //Licencia:Frederic Schad (Todos los derechos Reservados)
 //No toques esto por que al regenerar se sobreescribe el codigo
 
@@ -17,6 +17,7 @@ namespace BusinessObjects.Interfaces {
 		decimal TotalItbis {get; set;}
 		decimal SubTotal {get; set;}
 		decimal Total {get; set;}
+		long TenantId {get; set;}
 		bool IsActivo {get; set;}
 		string Creado {get; set;}
 		DateTime FechaCreado {get; set;}

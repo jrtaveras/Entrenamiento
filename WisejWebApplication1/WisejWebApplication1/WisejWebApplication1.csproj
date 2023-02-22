@@ -112,6 +112,12 @@
     <Compile Include="UserControls\UserControlInvoices.designer.cs">
       <DependentUpon>UserControlInvoices.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UserControlProducts.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UserControlProducts.designer.cs">
+      <DependentUpon>UserControlProducts.cs</DependentUpon>
+    </Compile>
     <Compile Include="Window1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -178,6 +184,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\UserControlInvoices.resx">
       <DependentUpon>UserControlInvoices.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UserControlProducts.resx">
+      <DependentUpon>UserControlProducts.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Window1.resx">
       <DependentUpon>Window1.cs</DependentUpon>

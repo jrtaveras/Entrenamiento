@@ -73,27 +73,67 @@ namespace WisejWebApplication1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Page page = new Page();
-            page.Controls.Add(new UserControlCustomers(_context));
-            page.Show();
+            //Page page = new Page();
+            //page.Controls.Add();
+            //page.Show();
+
+            if(tabPageClientes.Controls.Count == 0)
+            {
+                var customers = new UserControlCustomers(_context);
+                tabPageClientes.Controls.Add(customers);
+            
+                customers.Dock = DockStyle.Fill;
+            }
 
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Page page = new Page();
-            page.Controls.Add(new UserControlCustomerTypes(_context));
-            page.Show();
+            //Page page = new Page();
+            //page.Controls.Add(new UserControlCustomerTypes(_context));
+            //page.Show();
+
+            if (tabPageTiposClientes.Controls.Count == 0)
+            {
+                var userControlCustomerTypes = new UserControlCustomerTypes(_context);
+                tabPageTiposClientes.Controls.Add(userControlCustomerTypes);
+
+                userControlCustomerTypes.Dock = DockStyle.Fill;
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            UserControlInvoiceDetails details = new UserControlInvoiceDetails(_context);
+            //Page page = new Page();
+            //page.Controls.Add(new UserControlInvoices(_context, details));
+            //page.Show();
 
-            Page page = new Page();
-            page.Controls.Add(new UserControlInvoices(_context, details));
-            page.Show();
+            if (tabPageFacturas.Controls.Count == 0)
+            {
+                UserControlInvoiceDetails details = new UserControlInvoiceDetails(_context);
+                var userControlInvoices = new UserControlInvoices(_context, details);
+
+                tabPageFacturas.Controls.Add(userControlInvoices);
+                userControlInvoices.Dock = DockStyle.Fill;
+            }
 
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            //Page page = new Page();
+            //page.Controls.Add(new UserControlProducts(_context));
+            //page.Show();
+
+            if (tabPageProductos.Controls.Count == 0)
+            {
+                var userControlProducts = new UserControlProducts(_context);
+                tabPageProductos.Controls.Add(userControlProducts);
+
+                userControlProducts.Dock = DockStyle.Fill;
+            }
+
+        }
+
     }
 }

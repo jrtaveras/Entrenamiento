@@ -1,6 +1,6 @@
 ﻿//Autor:Jose Roberto Taveras
 //Email:roberto.taveras@hotmail.com
-//Fecha:2/21/2023 2:50:15 PM
+//Fecha:2/22/2023 8:16:59 AM
 //Licencia:Frederic Schad (Todos los derechos Reservados)
 
 using System;
@@ -18,6 +18,7 @@ namespace BusinessObjects.Mocks
 		public decimal TotalItbis {get; set;}
 		public decimal SubTotal {get; set;}
 		public decimal Total {get; set;}
+		public long TenantId {get; set;}
 		public bool IsActivo {get; set;}
 		public string Creado {get; set;}
 		public DateTime FechaCreado {get; set;}

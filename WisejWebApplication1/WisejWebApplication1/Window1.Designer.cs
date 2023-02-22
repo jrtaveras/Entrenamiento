@@ -29,6 +29,7 @@ namespace WisejWebApplication1
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new Wisej.Web.Label();
             this.label2 = new Wisej.Web.Label();
             this.numericUpDownNumero1 = new Wisej.Web.NumericUpDown();
@@ -40,9 +41,17 @@ namespace WisejWebApplication1
             this.button1 = new Wisej.Web.Button();
             this.button2 = new Wisej.Web.Button();
             this.button3 = new Wisej.Web.Button();
+            this.button4 = new Wisej.Web.Button();
+            this.tabControl = new Wisej.Web.TabControl();
+            this.tabPageClientes = new Wisej.Web.TabPage();
+            this.tabPageTiposClientes = new Wisej.Web.TabPage();
+            this.tabOrderManager1 = new Wisej.Web.TabOrderManager(this.components);
+            this.tabPageFacturas = new Wisej.Web.TabPage();
+            this.tabPageProductos = new Wisej.Web.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumero1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumeric2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResultado)).BeginInit();
+            this.tabControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -161,10 +170,61 @@ namespace WisejWebApplication1
             this.button3.Text = "Facturas";
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(119, 366);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(120, 27);
+            this.button4.TabIndex = 11;
+            this.button4.Text = "Productos";
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // tabControl
+            // 
+            this.tabControl.Controls.Add(this.tabPageClientes);
+            this.tabControl.Controls.Add(this.tabPageTiposClientes);
+            this.tabControl.Controls.Add(this.tabPageFacturas);
+            this.tabControl.Controls.Add(this.tabPageProductos);
+            this.tabControl.Location = new System.Drawing.Point(277, 3);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.PageInsets = new Wisej.Web.Padding(1, 35, 1, 1);
+            this.tabControl.Size = new System.Drawing.Size(866, 563);
+            this.tabControl.TabIndex = 12;
+            // 
+            // tabPageClientes
+            // 
+            this.tabPageClientes.Location = new System.Drawing.Point(1, 35);
+            this.tabPageClientes.Name = "tabPageClientes";
+            this.tabPageClientes.Size = new System.Drawing.Size(864, 527);
+            this.tabPageClientes.Text = "Clientes";
+            // 
+            // tabPageTiposClientes
+            // 
+            this.tabPageTiposClientes.Location = new System.Drawing.Point(1, 35);
+            this.tabPageTiposClientes.Name = "tabPageTiposClientes";
+            this.tabPageTiposClientes.Size = new System.Drawing.Size(864, 527);
+            this.tabPageTiposClientes.Text = "Tipos de clientes";
+            // 
+            // tabPageFacturas
+            // 
+            this.tabPageFacturas.Location = new System.Drawing.Point(1, 35);
+            this.tabPageFacturas.Name = "tabPageFacturas";
+            this.tabPageFacturas.Size = new System.Drawing.Size(864, 527);
+            this.tabPageFacturas.Text = "Facturas";
+            // 
+            // tabPageProductos
+            // 
+            this.tabPageProductos.Location = new System.Drawing.Point(1, 35);
+            this.tabPageProductos.Name = "tabPageProductos";
+            this.tabPageProductos.Size = new System.Drawing.Size(864, 527);
+            this.tabPageProductos.Text = "Productos";
+            // 
             // Window1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = Wisej.Web.AutoScaleMode.Font;
+            this.Controls.Add(this.tabControl);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -177,12 +237,13 @@ namespace WisejWebApplication1
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "Window1";
-            this.Size = new System.Drawing.Size(1235, 610);
+            this.Size = new System.Drawing.Size(1129, 510);
             this.Text = "Window1";
             this.Load += new System.EventHandler(this.Window1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumero1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumeric2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResultado)).EndInit();
+            this.tabControl.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -201,6 +262,13 @@ namespace WisejWebApplication1
         private Wisej.Web.Button button1;
         private Wisej.Web.Button button2;
         private Wisej.Web.Button button3;
+        private Wisej.Web.Button button4;
+        private Wisej.Web.TabControl tabControl;
+        private Wisej.Web.TabPage tabPageClientes;
+        private Wisej.Web.TabPage tabPageTiposClientes;
+        private Wisej.Web.TabPage tabPageFacturas;
+        private Wisej.Web.TabPage tabPageProductos;
+        private Wisej.Web.TabOrderManager tabOrderManager1;
     }
 }
 

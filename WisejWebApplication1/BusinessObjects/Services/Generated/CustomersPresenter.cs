@@ -1,7 +1,7 @@
 ﻿//Author: Jose Roberto Taveras
 //Email:roberto.taveras@hotmail.com
 //Description: Busines Object  Presenter Customers
-//Fecha:2/21/2023 2:49:38 PM
+//Fecha:2/22/2023 8:15:28 AM
 //Licencia:Frederic Schad (Todos los derechos Reservados)
 //No toques esto por que al regenerar se sobreescribe el codigo
 

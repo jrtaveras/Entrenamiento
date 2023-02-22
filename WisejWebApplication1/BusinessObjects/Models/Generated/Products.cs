@@ -1,7 +1,7 @@
 ﻿//Author: Jose Roberto Taveras
 //Email:roberto.taveras@hotmail.com
-//Description: Poco de entidad Customers
-//Fecha:2/22/2023 8:15:27 AM
+//Description: Poco de entidad Products
+//Fecha:2/22/2023 8:17:55 AM
 //Licencia:Frederic Schad (Todos los derechos Reservados)
 //No toques esto por que al regenerar se sobreescribe el codigo
 
@@ -14,20 +14,13 @@ using System.Linq;
 using BusinessObjects.Interfaces;
 
 namespace BusinessObjects.Models {
-    [Table("Customers")]
-    public partial class Customers  {
+    [Table("Products")]
+    public partial class Products  {
         [Key]
 		public int Id {get; set;}
 		[MaxLength(70,ErrorMessageResourceName = "MaxLengthErrorMessage",ErrorMessageResourceType = typeof(Resource))]
 		[Required(ErrorMessageResourceName = "RequiredErrorMessage",ErrorMessageResourceType = typeof(Resource))]
-		public string CustName {get; set;}
-		[MaxLength(120,ErrorMessageResourceName = "MaxLengthErrorMessage",ErrorMessageResourceType = typeof(Resource))]
-		[Required(ErrorMessageResourceName = "RequiredErrorMessage",ErrorMessageResourceType = typeof(Resource))]
-		public string Adress {get; set;}
-		[Required(ErrorMessageResourceName = "RequiredErrorMessage",ErrorMessageResourceType = typeof(Resource))]
-		public bool Status {get; set;}
-		[Required(ErrorMessageResourceName = "RequiredErrorMessage",ErrorMessageResourceType = typeof(Resource))]
-		public int CustomerTypeId {get; set;}
+		public string Description {get; set;}
 		[Required(ErrorMessageResourceName = "RequiredErrorMessage",ErrorMessageResourceType = typeof(Resource))]
 		public long TenantId {get; set;}
 		[Required(ErrorMessageResourceName = "RequiredErrorMessage",ErrorMessageResourceType = typeof(Resource))]

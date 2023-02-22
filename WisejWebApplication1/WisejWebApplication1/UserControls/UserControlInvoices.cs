@@ -272,10 +272,12 @@ namespace CommonUserControls
 		{
 			get; set;
 		}
-		
-		
-       
-       #endregion
+        
+        public long TenantId { get; set; }
+
+
+
+        #endregion
 
         private void toolBar1_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
         {

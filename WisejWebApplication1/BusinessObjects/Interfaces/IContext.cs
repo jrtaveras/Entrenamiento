@@ -29,6 +29,7 @@ namespace BusinessObjects.Interfaces
 		DbSet<CustomerTypes> CustomerTypes { get; set; }
 		DbSet<Invoices> Invoices { get; set; }
 		DbSet<InvoiceDetails> InvoiceDetails { get; set; }
+		DbSet<Products> Products { get; set; }
 		//property no remueva esto usado por CodeSmith
     }
 }

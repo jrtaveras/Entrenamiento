@@ -1,6 +1,6 @@
 ﻿//Autor:Jose Roberto Taveras
 //Email:roberto.taveras@hotmail.com
-//Fecha:2/21/2023 2:49:38 PM
+//Fecha:2/22/2023 8:15:27 AM
 //Licencia:Frederic Schad (Todos los derechos Reservados)
 
 using System;

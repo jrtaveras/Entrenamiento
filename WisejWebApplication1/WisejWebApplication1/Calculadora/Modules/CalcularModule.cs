@@ -10,10 +10,10 @@ namespace WisejWebApplication1.Modules
     {
         public override void Load()
         {
-            Bind<ICalculo>().To<Suma>();
-            Bind<ICalculo>().To<Resta>();
-            Bind<ICalculo>().To<Multiplicacion>();
-            Bind<ICalculo>().To<Division>();
+            Bind<ICalculo>().To<Suma>().InSingletonScope();
+            Bind<ICalculo>().To<Resta>().InSingletonScope();
+            Bind<ICalculo>().To<Multiplicacion>().InSingletonScope();
+            Bind<ICalculo>().To<Division>().InSingletonScope();
         }
 
     }

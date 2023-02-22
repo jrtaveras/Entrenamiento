@@ -1,7 +1,7 @@
 ﻿//Author: Jose Roberto Taveras
 //Email:roberto.taveras@hotmail.com
 //Description: Interface que debe implementar la clase Presenter
-//Fecha:2/21/2023 2:50:38 PM
+//Fecha:2/22/2023 8:17:55 AM
 //Licencia:Frederic Schad (Todos los derechos Reservados)
 
 using System.Collections.Generic;

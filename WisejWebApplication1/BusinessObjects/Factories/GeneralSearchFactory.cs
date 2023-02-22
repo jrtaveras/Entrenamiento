@@ -35,6 +35,12 @@ namespace BusinessObjects.Factories
 			return instance;
 		}
 		
+		public static ISearchPresenter<Products> MakeProductsSearch(IContext context)
+		{
+			ISearchPresenter<Products> instance = new SearchProductsPresenter(context);
+			return instance;
+		}
+		
 		//Requerido por el generador de CodeSmith no modifique esto
 
     }
