@@ -1,0 +1,358 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{524FE09B-183C-4071-8533-48879DDF459A}</ProjectGuid>
+    <ProjectTypeGuids>{563295b5-8906-4a76-be2d-ff8e711c1204};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VisualWebGuiInvoice</RootNamespace>
+    <AssemblyName>VisualWebGuiInvoice</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <StartPageUrl>Form1.wgx</StartPageUrl>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <StartPageUrl>Form1.wgx</StartPageUrl>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntitySpaces.Core, Version=2009.2.1214.0, Culture=neutral, PublicKeyToken=79073dc052c106ac, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\dlls\EntitySpaces.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EntitySpaces.DynamicQuery, Version=2009.2.1214.0, Culture=neutral, PublicKeyToken=79073dc052c106ac, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\dlls\EntitySpaces.DynamicQuery.dll</HintPath>
+    </Reference>
+    <Reference Include="EntitySpaces.Interfaces, Version=2009.2.1214.0, Culture=neutral, PublicKeyToken=79073dc052c106ac, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\dlls\EntitySpaces.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="EntitySpaces.Loader, Version=2009.2.1214.0, Culture=neutral, PublicKeyToken=79073dc052c106ac, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\dlls\EntitySpaces.Loader.dll</HintPath>
+    </Reference>
+    <Reference Include="EntitySpaces.SqlClientProvider, Version=2009.2.1214.0, Culture=neutral, PublicKeyToken=79073dc052c106ac, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\dlls\EntitySpaces.SqlClientProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="FSchad.Tools, Version=2.2017.7.191, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\dlls\FSchad.Tools.dll</HintPath>
+    </Reference>
+    <Reference Include="FSController, Version=1.2016.2.91, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\dlls\FSController.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Gizmox.WebGUI.Forms, Version=3.0.5701.0, Culture=neutral, PublicKeyToken=c508b41386c60f1d">
+      <SpecificVersion>True</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Gizmox.WebGUI.Forms.Themes, Version=3.0.5701.0, Culture=neutral, PublicKeyToken=263fa4ef694acff6">
+      <SpecificVersion>True</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Gizmox.WebGUI.Common, Version=3.0.5701.0, Culture=neutral, PublicKeyToken=263fa4ef694acff6">
+      <SpecificVersion>True</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Gizmox.WebGUI.Server, Version=3.0.5701.0, Culture=neutral, PublicKeyToken=3de6eb684226c24d">
+      <SpecificVersion>True</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Readme.txt" />
+    <Content Include="Resources\Images\+.png" />
+    <Content Include="Resources\Images\1df0851a-a56e-4a8f-81cd-e65bf1624755.jpg" />
+    <Content Include="Resources\Images\23c5482e-bbdf-4682-af34-9419f0c992eb.jpg" />
+    <Content Include="Resources\Images\529ef1f4-7a54-4a5e-a0c9-da40ec17e671.jpg" />
+    <Content Include="Resources\Images\6ea333f6-98e2-4ba7-93da-00bdf408e652.jpg" />
+    <Content Include="Resources\Images\7e8d7df0-65c9-4475-aa33-f65dd0157168.jpg" />
+    <Content Include="Resources\Images\8242cb4f-4987-43bd-8bfc-0e2d79dc5e93.jpg" />
+    <Content Include="Resources\Images\836af9b7-1c55-4a72-9718-45c74cf744d8.jpg" />
+    <Content Include="Resources\Images\985f772d-92b1-4567-a4ca-3a5b367c03b6.jpg" />
+    <Content Include="Resources\Images\a6379b05-4320-46a2-8830-e1254d935156.jpg" />
+    <Content Include="Resources\Images\accept.png" />
+    <Content Include="Resources\Images\add-folder.png" />
+    <Content Include="Resources\Images\add.png" />
+    <Content Include="Resources\Images\alert.png" />
+    <Content Include="Resources\Images\back%28last%29.png" />
+    <Content Include="Resources\Images\back-alt.png" />
+    <Content Include="Resources\Images\back.png" />
+    <Content Include="Resources\Images\background-menu-horz.gif" />
+    <Content Include="Resources\Images\background_blue.png" />
+    <Content Include="Resources\Images\background_green.jpg" />
+    <Content Include="Resources\Images\bguzman-7ba87edf-3657-4860-8712-9070d4f5d985.jpg" />
+    <Content Include="Resources\Images\binoculars.png" />
+    <Content Include="Resources\Images\broom.png" />
+    <Content Include="Resources\Images\button-yellow.png" />
+    <Content Include="Resources\Images\button_bgDownload.png" />
+    <Content Include="Resources\Images\button_bgReport.png" />
+    <Content Include="Resources\Images\button_bgUpload.png" />
+    <Content Include="Resources\Images\cancel.png" />
+    <Content Include="Resources\Images\casa.jpg" />
+    <Content Include="Resources\Images\close2.gif" />
+    <Content Include="Resources\Images\config.png" />
+    <Content Include="Resources\Images\copy.png" />
+    <Content Include="Resources\Images\correct.png" />
+    <Content Include="Resources\Images\database2.png" />
+    <Content Include="Resources\Images\dateBTN.gif" />
+    <Content Include="Resources\Images\DateTimePicker.bmp" />
+    <Content Include="Resources\Images\delete.png" />
+    <Content Include="Resources\Images\dhl.gif" />
+    <Content Include="Resources\Images\Diskete.png" />
+    <Content Include="Resources\Images\dislike.png" />
+    <Content Include="Resources\Images\down3.png" />
+    <Content Include="Resources\Images\Download.PNG" />
+    <Content Include="Resources\Images\download_manager.png" />
+    <Content Include="Resources\Images\Download_sm.png" />
+    <Content Include="Resources\Images\edit.png" />
+    <Content Include="Resources\Images\edit2.png" />
+    <Content Include="Resources\Images\email.png" />
+    <Content Include="Resources\Images\engine.png" />
+    <Content Include="Resources\Images\envelope.png" />
+    <Content Include="Resources\Images\Excel-16.gif" />
+    <Content Include="Resources\Images\export1%2816%29.png" />
+    <Content Include="Resources\Images\export1.png" />
+    <Content Include="Resources\Images\exp_mgrad.jpg" />
+    <Content Include="Resources\Images\f73ab52c-79d1-4f2a-a5cc-8610b81a6dd4.jpg" />
+    <Content Include="Resources\Images\factory.png" />
+    <Content Include="Resources\Images\file-doc.png" />
+    <Content Include="Resources\Images\file-locked.png" />
+    <Content Include="Resources\Images\find.png" />
+    <Content Include="Resources\Images\find16.png" />
+    <Content Include="Resources\Images\folder%2816%29.png" />
+    <Content Include="Resources\Images\folder.png" />
+    <Content Include="Resources\Images\fondo.jpg" />
+    <Content Include="Resources\Images\fondo.PNG" />
+    <Content Include="Resources\Images\forward%28last%29.png" />
+    <Content Include="Resources\Images\forward-alt.png" />
+    <Content Include="Resources\Images\front1.png" />
+    <Content Include="Resources\Images\ftp.png" />
+    <Content Include="Resources\Images\gear.png" />
+    <Content Include="Resources\Images\help.png" />
+    <Content Include="Resources\Images\help2.png" />
+    <Content Include="Resources\Images\House.png" />
+    <Content Include="Resources\Images\import2%2816%29.png" />
+    <Content Include="Resources\Images\import2.png" />
+    <Content Include="Resources\Images\invoice.png" />
+    <Content Include="Resources\Images\jrtaveras-bb2fa076-1dd6-4b01-a9df-ef3745d60b56.jpg" />
+    <Content Include="Resources\Images\Key.png" />
+    <Content Include="Resources\Images\laserfiche.png" />
+    <Content Include="Resources\Images\like.png" />
+    <Content Include="Resources\Images\link_change.png" />
+    <Content Include="Resources\Images\lock.png" />
+    <Content Include="Resources\Images\locked.png" />
+    <Content Include="Resources\Images\Logoff.png" />
+    <Content Include="Resources\Images\Lpuma.GIF" />
+    <Content Include="Resources\Images\MaderaAzul.jpg" />
+    <Content Include="Resources\Images\mark.png" />
+    <Content Include="Resources\Images\mClientes.png" />
+    <Content Include="Resources\Images\nav-left.png" />
+    <Content Include="Resources\Images\nav-prefs.png" />
+    <Content Include="Resources\Images\nav-right.png" />
+    <Content Include="Resources\Images\nestlelogo.png" />
+    <Content Include="Resources\Images\newscr.PNG" />
+    <Content Include="Resources\Images\ok.png" />
+    <Content Include="Resources\Images\ok16.png" />
+    <Content Include="Resources\Images\oks.png" />
+    <Content Include="Resources\Images\opened.png" />
+    <Content Include="Resources\Images\package.png" />
+    <Content Include="Resources\Images\packages.png" />
+    <Content Include="Resources\Images\pane-splitter-header-bg.png" />
+    <Content Include="Resources\Images\PanelBackGround.JPG" />
+    <Content Include="Resources\Images\panelBackGround.png" />
+    <Content Include="Resources\Images\PanelBackGround1.JPG" />
+    <Content Include="Resources\Images\paste.png" />
+    <Content Include="Resources\Images\printer.png" />
+    <Content Include="Resources\Images\printer2.png" />
+    <Content Include="Resources\Images\reload.png" />
+    <Content Include="Resources\Images\ring.png" />
+    <Content Include="Resources\Images\ruler.png" />
+    <Content Include="Resources\Images\save.png" />
+    <Content Include="Resources\Images\save2.png" />
+    <Content Include="Resources\Images\SCHAD.PNG" />
+    <Content Include="Resources\Images\search-web.png" />
+    <Content Include="Resources\Images\search-web16.png" />
+    <Content Include="Resources\Images\search.png" />
+    <Content Include="Resources\Images\shop.png" />
+    <Content Include="Resources\Images\shopping.png" />
+    <Content Include="Resources\Images\sign-stop.png" />
+    <Content Include="Resources\Images\star_tile.gif" />
+    <Content Include="Resources\Images\stop16.png" />
+    <Content Include="Resources\Images\toobaradd.png" />
+    <Content Include="Resources\Images\toobardelete.png" />
+    <Content Include="Resources\Images\toobarsaveas-alt.png" />
+    <Content Include="Resources\Images\toobarundo.png" />
+    <Content Include="Resources\Images\toolbarheader.PNG" />
+    <Content Include="Resources\Images\trash.png" />
+    <Content Include="Resources\Images\up-alt.png" />
+    <Content Include="Resources\Images\upload.png" />
+    <Content Include="Resources\Images\user.png" />
+    <Content Include="Resources\Images\user2.png" />
+    <Content Include="Resources\Images\user_group.png" />
+    <Content Include="Resources\Images\usuarioanonimo.png" />
+    <Content Include="Resources\Images\window.png" />
+    <Content Include="Resources\Images\window_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessObjects\CustomerController.cs" />
+    <Compile Include="BusinessObjects\CustomerTypeController.cs" />
+    <Compile Include="BusinessObjects\Custom\Customers.cs" />
+    <Compile Include="BusinessObjects\Custom\CustomersCollection.cs" />
+    <Compile Include="BusinessObjects\Custom\CustomersQuery.cs" />
+    <Compile Include="BusinessObjects\Custom\CustomerTypes.cs" />
+    <Compile Include="BusinessObjects\Custom\CustomerTypesCollection.cs" />
+    <Compile Include="BusinessObjects\Custom\CustomerTypesQuery.cs" />
+    <Compile Include="BusinessObjects\Custom\InvoiceDetails.cs" />
+    <Compile Include="BusinessObjects\Custom\InvoiceDetailsCollection.cs" />
+    <Compile Include="BusinessObjects\Custom\InvoiceDetailsQuery.cs" />
+    <Compile Include="BusinessObjects\Custom\Invoices.cs" />
+    <Compile Include="BusinessObjects\Custom\InvoicesCollection.cs" />
+    <Compile Include="BusinessObjects\Custom\InvoicesQuery.cs" />
+    <Compile Include="BusinessObjects\Custom\Products.cs" />
+    <Compile Include="BusinessObjects\Custom\ProductsCollection.cs" />
+    <Compile Include="BusinessObjects\Custom\ProductsQuery.cs" />
+    <Compile Include="BusinessObjects\Generated\Customers.cs" />
+    <Compile Include="BusinessObjects\Generated\CustomerTypes.cs" />
+    <Compile Include="BusinessObjects\Generated\InvoiceDetails.cs" />
+    <Compile Include="BusinessObjects\Generated\Invoices.cs" />
+    <Compile Include="BusinessObjects\Generated\Products.cs" />
+    <Compile Include="BusinessObjects\Helpers\RaiseErrorDelegate.cs" />
+    <Compile Include="BusinessObjects\InvoiceController.cs" />
+    <Compile Include="BusinessObjects\InvoiceDetailController.cs" />
+    <Compile Include="BusinessObjects\ProductController.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UserControlCustomers.resx">
+      <DependentUpon>UserControlCustomers.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UserControlCustomerTypes.resx">
+      <DependentUpon>UserControlCustomerTypes.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UserControlInvoiceDetails.resx">
+      <DependentUpon>UserControlInvoiceDetails.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UserControlnvoices.resx">
+      <DependentUpon>UserControlnvoices.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UserControlProducts.resx">
+      <DependentUpon>UserControlProducts.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserControls\UserControlCustomers.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UserControlCustomers.Designer.cs">
+      <DependentUpon>UserControlCustomers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UserControlCustomerTypes.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UserControlCustomerTypes.Designer.cs">
+      <DependentUpon>UserControlCustomerTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UserControlInvoiceDetails.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UserControlInvoiceDetails.Designer.cs">
+      <DependentUpon>UserControlInvoiceDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UserControlnvoices.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UserControlnvoices.Designer.cs">
+      <DependentUpon>UserControlnvoices.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UserControlProducts.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UserControlProducts.Designer.cs">
+      <DependentUpon>UserControlProducts.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomReference Include="Gizmox.WebGUI.Forms.Themes">
+      <HintPath>C:\sistemas_github\Entrenamiento\VisualWebGuiInvoice\bin\Gizmox.WebGUI.Forms.Themes.dll</HintPath>
+      <Visible>false</Visible>
+    </CustomReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Generated\" />
+    <Folder Include="Resources\Icons\" />
+    <Folder Include="Resources\UserData\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+
+	
+  -->
+  <Import Condition="" Project="$(MSBuildExtensionsPath)\Gizmox\v9.0\Gizmox.VWGApplication.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>62501</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
