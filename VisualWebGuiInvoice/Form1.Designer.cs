@@ -107,6 +107,7 @@ namespace VisualWebGuiInvoice
             this.toolStripMenuItemFacturas.Padding = new Gizmox.WebGUI.Forms.Padding(0, 0, 0, 0);
             this.toolStripMenuItemFacturas.Size = new System.Drawing.Size(116, 20);
             this.toolStripMenuItemFacturas.Text = "Facturas";
+            this.toolStripMenuItemFacturas.Click += new System.EventHandler(this.toolStripMenuItemFacturas_Click);
             // 
             // splitContainer1
             // 

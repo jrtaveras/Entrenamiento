@@ -67,5 +67,18 @@ namespace VisualWebGuiInvoice
             products.Dock = DockStyle.Fill;
         }
 
+        private void toolStripMenuItemFacturas_Click(object sender, EventArgs e)
+        {
+            UserControlnvoices invoices = new UserControlnvoices();
+
+            TabPage dw = new TabPage();
+            dw.Name = "invoices";
+            dw.Text = "invoices";
+            dw.Controls.Add(invoices);
+
+            tabControl1.Controls.Add(dw);
+            invoices.Dock = DockStyle.Fill;
+        }
+
     }
 }
