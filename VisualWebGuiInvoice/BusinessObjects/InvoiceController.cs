@@ -31,7 +31,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceEntity.Id.Value;
+                return _InvoiceEntity.Id ?? 0;
             }
             set
             {
@@ -44,7 +44,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceEntity.CustomerId.Value;
+                return _InvoiceEntity.CustomerId ?? 0;
             }
             set
             {
@@ -57,7 +57,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceEntity.SubTotal.Value;
+                return _InvoiceEntity.SubTotal ?? 0;
             }
             set
             {
@@ -70,7 +70,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceEntity.TotalItbis.Value;
+                return _InvoiceEntity.TotalItbis ?? 0;
             }
             set
             {
@@ -83,7 +83,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceEntity.Total.Value;
+                return _InvoiceEntity.Total ?? 0;
             }
             set
             {
@@ -97,7 +97,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceEntity.TenantId.Value;
+                return _InvoiceEntity.TenantId ?? 0;
             }
             set
             {
@@ -110,7 +110,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceEntity.IsActivo.Value;
+                return _InvoiceEntity.IsActivo ?? false;
             }
             set
             {
@@ -136,7 +136,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceEntity.FechaCreado.Value;
+                return _InvoiceEntity.FechaCreado ?? DateTime.Now;
             }
             set
             {
@@ -162,7 +162,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceEntity.FechaModificado.Value;
+                return _InvoiceEntity.FechaModificado ?? DateTime.Now;
             }
             set
             {

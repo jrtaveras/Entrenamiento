@@ -57,24 +57,24 @@ namespace VisualWebGuiInvoice.UserControls
             this.textBoxTenantId = new Gizmox.WebGUI.Forms.TextBox();
             this.checkBoxIsActivo = new Gizmox.WebGUI.Forms.CheckBox();
             this.panel2 = new Gizmox.WebGUI.Forms.Panel();
-            this.label12 = new Gizmox.WebGUI.Forms.Label();
-            this.numericUpDownQty = new Gizmox.WebGUI.Forms.NumericUpDown();
-            this.label13 = new Gizmox.WebGUI.Forms.Label();
-            this.textBoxInvoiceId = new Gizmox.WebGUI.Forms.TextBox();
-            this.listViewData = new Gizmox.WebGUI.Forms.ListView();
-            this.numericUpDownPrice = new Gizmox.WebGUI.Forms.NumericUpDown();
-            this.label14 = new Gizmox.WebGUI.Forms.Label();
-            this.label15 = new Gizmox.WebGUI.Forms.Label();
             this.label16 = new Gizmox.WebGUI.Forms.Label();
+            this.label15 = new Gizmox.WebGUI.Forms.Label();
+            this.label12 = new Gizmox.WebGUI.Forms.Label();
+            this.label14 = new Gizmox.WebGUI.Forms.Label();
+            this.numericUpDownPrice = new Gizmox.WebGUI.Forms.NumericUpDown();
+            this.numericUpDownQty = new Gizmox.WebGUI.Forms.NumericUpDown();
+            this.textBoxInvoiceId = new Gizmox.WebGUI.Forms.TextBox();
+            this.label13 = new Gizmox.WebGUI.Forms.Label();
+            this.listViewData = new Gizmox.WebGUI.Forms.ListView();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotalItbis)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSubTotal)).BeginInit();
             this.textBoxId.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.label12.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQty)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPrice)).BeginInit();
             this.label16.SuspendLayout();
+            this.label12.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPrice)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQty)).BeginInit();
             this.SuspendLayout();
             // 
             // userControlToolbar1
@@ -90,6 +90,13 @@ namespace VisualWebGuiInvoice.UserControls
             this.userControlToolbar1.Size = new System.Drawing.Size(758, 114);
             this.userControlToolbar1.TabIndex = 0;
             this.userControlToolbar1.ToolBarState = FSchad.Tools.UserControls.OnToolBarState.None;
+            this.userControlToolbar1.OnAddNewEntity += new FSchad.Tools.UserControls.UserControlToolbar.ToolbarEvent(this.userControlToolbar1_OnAddNewEntity);
+            this.userControlToolbar1.OnUndoEntity += new FSchad.Tools.UserControls.UserControlToolbar.ToolbarEvent(this.userControlToolbar1_OnUndoEntity);
+            this.userControlToolbar1.OnDeleteEntity += new FSchad.Tools.UserControls.UserControlToolbar.ToolbarEvent(this.userControlToolbar1_OnDeleteEntity);
+            this.userControlToolbar1.OnSaveEntity += new FSchad.Tools.UserControls.UserControlToolbar.ToolbarEvent(this.userControlToolbar1_OnSaveEntity);
+            this.userControlToolbar1.OnSearchEntity += new FSchad.Tools.UserControls.UserControlToolbar.ToolbarEvent(this.userControlToolbar1_OnSearchEntity);
+            this.userControlToolbar1.OnEnabledDisabledControls += new FSchad.Tools.UserControls.UserControlToolbar.ToolBarStateEvent(this.userControlToolbar1_OnEnabledDisabledControls);
+            this.userControlToolbar1.OnModifyEntity += new FSchad.Tools.UserControls.UserControlToolbar.ToolbarEvent(this.userControlToolbar1_OnModifyEntity);
             // 
             // label11
             // 
@@ -110,11 +117,18 @@ namespace VisualWebGuiInvoice.UserControls
             0,
             0,
             0});
+            this.numericUpDownTotal.DecimalPlaces = 2;
             this.numericUpDownTotal.Enabled = false;
             this.numericUpDownTotal.Location = new System.Drawing.Point(308, 276);
+            this.numericUpDownTotal.Maximum = new decimal(new int[] {
+            1874919423,
+            2328306,
+            0,
+            0});
             this.numericUpDownTotal.Name = "numericUpDownTotal";
             this.numericUpDownTotal.Size = new System.Drawing.Size(120, 21);
             this.numericUpDownTotal.TabIndex = 6;
+            this.numericUpDownTotal.ThousandsSeparator = true;
             this.numericUpDownTotal.UpDownAlign = Gizmox.WebGUI.Forms.LeftRightAlignment.Right;
             // 
             // numericUpDownTotalItbis
@@ -126,11 +140,18 @@ namespace VisualWebGuiInvoice.UserControls
             0,
             0,
             0});
+            this.numericUpDownTotalItbis.DecimalPlaces = 2;
             this.numericUpDownTotalItbis.Enabled = false;
             this.numericUpDownTotalItbis.Location = new System.Drawing.Point(165, 276);
+            this.numericUpDownTotalItbis.Maximum = new decimal(new int[] {
+            1874919423,
+            2328306,
+            0,
+            0});
             this.numericUpDownTotalItbis.Name = "numericUpDownTotalItbis";
             this.numericUpDownTotalItbis.Size = new System.Drawing.Size(120, 21);
             this.numericUpDownTotalItbis.TabIndex = 6;
+            this.numericUpDownTotalItbis.ThousandsSeparator = true;
             this.numericUpDownTotalItbis.UpDownAlign = Gizmox.WebGUI.Forms.LeftRightAlignment.Right;
             // 
             // label10
@@ -162,11 +183,18 @@ namespace VisualWebGuiInvoice.UserControls
             0,
             0,
             0});
+            this.numericUpDownSubTotal.DecimalPlaces = 2;
             this.numericUpDownSubTotal.Enabled = false;
             this.numericUpDownSubTotal.Location = new System.Drawing.Point(26, 276);
+            this.numericUpDownSubTotal.Maximum = new decimal(new int[] {
+            1874919423,
+            2328306,
+            0,
+            0});
             this.numericUpDownSubTotal.Name = "numericUpDownSubTotal";
             this.numericUpDownSubTotal.Size = new System.Drawing.Size(120, 21);
             this.numericUpDownSubTotal.TabIndex = 6;
+            this.numericUpDownSubTotal.ThousandsSeparator = true;
             this.numericUpDownSubTotal.UpDownAlign = Gizmox.WebGUI.Forms.LeftRightAlignment.Right;
             // 
             // userControlSearchProducts
@@ -388,11 +416,31 @@ namespace VisualWebGuiInvoice.UserControls
             this.panel2.Controls.Add(this.textBoxTenantId);
             this.panel2.Controls.Add(this.checkBoxIsActivo);
             this.panel2.Dock = Gizmox.WebGUI.Forms.DockStyle.Top;
-            this.panel2.Enabled = false;
             this.panel2.Location = new System.Drawing.Point(0, 114);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(758, 311);
             this.panel2.TabIndex = 5;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Controls.Add(this.label15);
+            this.label16.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Location = new System.Drawing.Point(309, 181);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(35, 13);
+            this.label16.TabIndex = 2;
+            this.label16.Text = "Precio";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(101, -12);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(35, 13);
+            this.label15.TabIndex = 2;
+            this.label15.Text = "Cantidad";
             // 
             // label12
             // 
@@ -405,6 +453,38 @@ namespace VisualWebGuiInvoice.UserControls
             this.label12.TabIndex = 2;
             this.label12.Text = "Cantidad";
             // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(101, -12);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(35, 13);
+            this.label14.TabIndex = 2;
+            this.label14.Text = "Cantidad";
+            // 
+            // numericUpDownPrice
+            // 
+            this.numericUpDownPrice.AutoValidate = Gizmox.WebGUI.Forms.AutoValidate.EnablePreventFocusChange;
+            this.numericUpDownPrice.BorderStyle = Gizmox.WebGUI.Forms.BorderStyle.Fixed3D;
+            this.numericUpDownPrice.CurrentValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.numericUpDownPrice.DecimalPlaces = 2;
+            this.numericUpDownPrice.Location = new System.Drawing.Point(274, 214);
+            this.numericUpDownPrice.Maximum = new decimal(new int[] {
+            1874919423,
+            2328306,
+            0,
+            0});
+            this.numericUpDownPrice.Name = "numericUpDownPrice";
+            this.numericUpDownPrice.Size = new System.Drawing.Size(154, 21);
+            this.numericUpDownPrice.TabIndex = 6;
+            this.numericUpDownPrice.ThousandsSeparator = true;
+            this.numericUpDownPrice.UpDownAlign = Gizmox.WebGUI.Forms.LeftRightAlignment.Right;
+            // 
             // numericUpDownQty
             // 
             this.numericUpDownQty.AutoValidate = Gizmox.WebGUI.Forms.AutoValidate.EnablePreventFocusChange;
@@ -415,10 +495,24 @@ namespace VisualWebGuiInvoice.UserControls
             0,
             0});
             this.numericUpDownQty.Location = new System.Drawing.Point(147, 214);
+            this.numericUpDownQty.Maximum = new decimal(new int[] {
+            1874919423,
+            2328306,
+            0,
+            0});
             this.numericUpDownQty.Name = "numericUpDownQty";
             this.numericUpDownQty.Size = new System.Drawing.Size(89, 21);
             this.numericUpDownQty.TabIndex = 6;
             this.numericUpDownQty.UpDownAlign = Gizmox.WebGUI.Forms.LeftRightAlignment.Right;
+            // 
+            // textBoxInvoiceId
+            // 
+            this.textBoxInvoiceId.Enabled = false;
+            this.textBoxInvoiceId.Location = new System.Drawing.Point(252, 46);
+            this.textBoxInvoiceId.Name = "textBoxInvoiceId";
+            this.textBoxInvoiceId.ReadOnly = true;
+            this.textBoxInvoiceId.Size = new System.Drawing.Size(101, 31);
+            this.textBoxInvoiceId.TabIndex = 1;
             // 
             // label13
             // 
@@ -430,15 +524,6 @@ namespace VisualWebGuiInvoice.UserControls
             this.label13.TabIndex = 2;
             this.label13.Text = "Id Factura";
             // 
-            // textBoxInvoiceId
-            // 
-            this.textBoxInvoiceId.Enabled = false;
-            this.textBoxInvoiceId.Location = new System.Drawing.Point(252, 46);
-            this.textBoxInvoiceId.Name = "textBoxInvoiceId";
-            this.textBoxInvoiceId.ReadOnly = true;
-            this.textBoxInvoiceId.Size = new System.Drawing.Size(101, 31);
-            this.textBoxInvoiceId.TabIndex = 1;
-            // 
             // listViewData
             // 
             this.listViewData.DataMember = null;
@@ -447,52 +532,7 @@ namespace VisualWebGuiInvoice.UserControls
             this.listViewData.Name = "listViewData";
             this.listViewData.Size = new System.Drawing.Size(758, 333);
             this.listViewData.TabIndex = 6;
-            // 
-            // numericUpDownPrice
-            // 
-            this.numericUpDownPrice.AutoValidate = Gizmox.WebGUI.Forms.AutoValidate.EnablePreventFocusChange;
-            this.numericUpDownPrice.BorderStyle = Gizmox.WebGUI.Forms.BorderStyle.Fixed3D;
-            this.numericUpDownPrice.CurrentValue = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.numericUpDownPrice.Location = new System.Drawing.Point(274, 214);
-            this.numericUpDownPrice.Name = "numericUpDownPrice";
-            this.numericUpDownPrice.Size = new System.Drawing.Size(130, 21);
-            this.numericUpDownPrice.TabIndex = 6;
-            this.numericUpDownPrice.UpDownAlign = Gizmox.WebGUI.Forms.LeftRightAlignment.Right;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(101, -12);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(35, 13);
-            this.label14.TabIndex = 2;
-            this.label14.Text = "Cantidad";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(101, -12);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(35, 13);
-            this.label15.TabIndex = 2;
-            this.label15.Text = "Cantidad";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Controls.Add(this.label15);
-            this.label16.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(309, 181);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(35, 13);
-            this.label16.TabIndex = 2;
-            this.label16.Text = "Precio";
+            this.listViewData.DoubleClick += new System.EventHandler(this.listViewData_DoubleClick);
             // 
             // UserControlInvoiceDetails
             // 
@@ -506,10 +546,10 @@ namespace VisualWebGuiInvoice.UserControls
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSubTotal)).EndInit();
             this.textBoxId.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            this.label12.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQty)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPrice)).EndInit();
             this.label16.ResumeLayout(false);
+            this.label12.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPrice)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQty)).EndInit();
             this.ResumeLayout(false);
 
         }

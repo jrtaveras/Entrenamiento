@@ -25,21 +25,6 @@ namespace VisualWebGuiInvoice.UserControls
         private readonly CustomerController _customerController;
         private readonly ClassError _objClassError = new ClassError();
 
-        public int CustomerTypeId 
-        { 
-            get 
-            {
-                if (userControlSearchCustomerType.Value != null && userControlSearchCustomerType.Value.Length > 0)
-                {
-                    return (int) userControlSearchCustomerType.Value[0];
-                }
-                return 0;
-            }
-            set 
-            {
-                userControlSearchCustomerType.Value = new object[] { value };
-            }
-        }
 
         public UserControlCustomers()
         {
@@ -65,6 +50,12 @@ namespace VisualWebGuiInvoice.UserControls
             userControlSearchCustomerType.ShowCleanButton = true;
             userControlSearchCustomerType.HideButtonAdd = true;
             userControlSearchCustomerType.NotifyOnValueChanged = true;
+
+            userControlSearchCustomerType.Filter = new object[1,3];
+            userControlSearchCustomerType.Filter[0, 0] = CustomerTypesMetadata.ColumnNames.IsActivo;
+            userControlSearchCustomerType.Filter[0, 1] = FSchad.CustomClasses.FSchadDynamicQuery.Igual;
+            userControlSearchCustomerType.Filter[0, 2] = true;
+
             userControlSearchCustomerType.SetValues("Consulta tipos de cliente", fields, new CustomerTypes(), CustomerTypesMetadata.ColumnNames.Description, CustomerTypesMetadata.ColumnNames.Description, true);
 
         }
@@ -80,8 +71,6 @@ namespace VisualWebGuiInvoice.UserControls
             textBoxId.DataBindings.Add(new Binding("Text", _customerController, CustomersMetadata.ColumnNames.Id, false, DataSourceUpdateMode.OnPropertyChanged));
             textBoxCustName.DataBindings.Add(new Binding("Text", _customerController, CustomersMetadata.ColumnNames.CustName, false, DataSourceUpdateMode.OnPropertyChanged));
             textBoxAddress.DataBindings.Add(new Binding("Text", _customerController, CustomersMetadata.ColumnNames.Adress, false, DataSourceUpdateMode.OnPropertyChanged));
-
-            this.DataBindings.Add(new Binding("CustomerTypeId", _customerController, CustomersMetadata.ColumnNames.CustomerTypeId, false, DataSourceUpdateMode.OnPropertyChanged));
 
             textBoxCreado.DataBindings.Add(new Binding("Text", _customerController, CustomersMetadata.ColumnNames.Creado, false, DataSourceUpdateMode.OnPropertyChanged));
             dateTimePickerFechaCreado.DataBindings.Add(new Binding("Value", _customerController, CustomersMetadata.ColumnNames.FechaCreado, false, DataSourceUpdateMode.OnPropertyChanged));
@@ -120,6 +109,7 @@ namespace VisualWebGuiInvoice.UserControls
                 result = _customerController.SaveEntity();
                 
                 _customerController.AddNewEntity();
+                userControlSearchCustomerType.Value = new object[0];
             }
 
             listViewData.DataSource = _customerController.LoadDataTable();
@@ -156,6 +146,12 @@ namespace VisualWebGuiInvoice.UserControls
 
             FormGenericSearch search = new FormGenericSearch("Buscar clientes", CustomersMetadata.Meta(), fields, CustomersMetadata.ColumnNames.CustName, true, _conString);
             search.TopFilter = 20;
+
+            search.Filter = new object [1,3];
+            search.Filter[0, 0] = CustomerTypesMetadata.ColumnNames.IsActivo;
+            search.Filter[0, 1] = FSchad.CustomClasses.FSchadDynamicQuery.Igual;
+            search.Filter[0, 2] = true;
+
             search.FormClosed += (senderx, ex) =>
             {
                 ListViewItem result = search.GetSelectedListViewItem;
@@ -163,6 +159,7 @@ namespace VisualWebGuiInvoice.UserControls
                 if (result != null)
                 {
                     _customerController.SearchEntity(Convert.ToInt32(result.Text));
+                    userControlSearchCustomerType.Value = new object[] { _customerController.CustomerTypeId };
                     this.userControlToolbar1.SetToolBarState(OnToolBarState.Edit);
                 }
             };
@@ -193,6 +190,7 @@ namespace VisualWebGuiInvoice.UserControls
                 int id = Convert.ToInt32(listViewData.SelectedItem.Text);
                 _customerController.SearchEntity(id);
 
+                userControlSearchCustomerType.Value = new object[] { _customerController.CustomerTypeId };
             }
         }
 

@@ -28,24 +28,6 @@ namespace VisualWebGuiInvoice.UserControls
 
         private UserControlInvoiceDetails _invoiceDetailControl;
 
-        public int CustomerId
-        {
-            get
-            {
-                if (userControlSearchCustomers.Value != null && userControlSearchCustomers.Value.Length > 0)
-                {
-                    return (int)userControlSearchCustomers.Value[0];
-                }
-                return 0;
-            }
-            set
-            {
-                if (value != userControlSearchCustomers.ExtractComboData()) 
-                {
-                  userControlSearchCustomers.Value = new object[] { value };
-                }
-            }
-        }
 
         public UserControlnvoices()
         {
@@ -71,7 +53,6 @@ namespace VisualWebGuiInvoice.UserControls
         private void _Bindings()
         {
             textBoxId.DataBindings.Add(new Binding("Text", _invoiceController, InvoicesMetadata.ColumnNames.Id, false, DataSourceUpdateMode.OnPropertyChanged));
-            this.DataBindings.Add(new Binding("CustomerId", _invoiceController, InvoicesMetadata.ColumnNames.CustomerId, false, DataSourceUpdateMode.OnPropertyChanged));
 
             numericUpDownSubTotal.DataBindings.Add(new Binding("Value", _invoiceController, InvoicesMetadata.ColumnNames.SubTotal, false, DataSourceUpdateMode.OnPropertyChanged));
             numericUpDownTotalItbis.DataBindings.Add(new Binding("Value", _invoiceController, InvoicesMetadata.ColumnNames.TotalItbis, false, DataSourceUpdateMode.OnPropertyChanged));
@@ -104,6 +85,11 @@ namespace VisualWebGuiInvoice.UserControls
             userControlSearchCustomers.HideButtonAdd = true;
             userControlSearchCustomers.NotifyOnValueChanged = true;
 
+            userControlSearchCustomers.Filter = new object[1, 3];
+            userControlSearchCustomers.Filter[0, 0] = CustomersMetadata.ColumnNames.IsActivo;
+            userControlSearchCustomers.Filter[0, 1] = FSchad.CustomClasses.FSchadDynamicQuery.Igual;
+            userControlSearchCustomers.Filter[0, 2] = true;
+
             userControlSearchCustomers.SetValues("Consulta de clientes", fields, new Customers(), CustomersMetadata.ColumnNames.CustName, CustomersMetadata.ColumnNames.CustName, true);
         }
 
@@ -123,7 +109,7 @@ namespace VisualWebGuiInvoice.UserControls
 
         private void textBoxId_TextChanged(object sender, EventArgs e)
         {
-            _invoiceDetailControl.SetInvoiceId(_invoiceController.Id);
+            _invoiceDetailControl.SetInvoiceHeader(_invoiceController);
         }
 
         
@@ -144,7 +130,16 @@ namespace VisualWebGuiInvoice.UserControls
 
         private bool userControlToolbar1_OnDeleteEntity(ToolBar sender, ToolBarButtonClickEventArgs e)
         {
-            return default(bool);
+            bool result =_invoiceController.SearchEntity(_invoiceController.Id);
+            if (result) 
+            {
+                _invoiceController.IsActivo = false;
+                _invoiceController.SaveEntity();
+            }
+
+            _invoiceController.AddNewEntity();
+            userControlSearchCustomers.Value = new object[0];
+            return result;
         }
 
         private bool userControlToolbar1_OnModifyEntity(ToolBar sender, ToolBarButtonClickEventArgs e)
@@ -173,6 +168,12 @@ namespace VisualWebGuiInvoice.UserControls
 
             FormGenericSearch search = new FormGenericSearch("Buscar facturas", InvoicesMetadata.Meta(), fields, InvoicesMetadata.ColumnNames.Id, true, _conString);
             search.TopFilter = 20;
+
+            search.Filter = new object[1,3];
+            search.Filter[0, 0] = InvoicesMetadata.ColumnNames.IsActivo;
+            search.Filter[0, 1] = FSchad.CustomClasses.FSchadDynamicQuery.Igual;
+            search.Filter[0, 2] = true;
+
             search.FormClosed += (senderx, ex) =>
             {
                 ListViewItem result = search.GetSelectedListViewItem;
@@ -180,6 +181,8 @@ namespace VisualWebGuiInvoice.UserControls
                 if (result != null)
                 {
                     _invoiceController.SearchEntity(Convert.ToInt32(result.Text));
+                    userControlSearchCustomers.Value = new object[] { _invoiceController.CustomerId };
+
                     this.userControlToolbar1.SetToolBarState(OnToolBarState.Edit);
                 }
             };

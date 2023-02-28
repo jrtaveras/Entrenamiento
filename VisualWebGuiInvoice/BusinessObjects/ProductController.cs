@@ -28,7 +28,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         public int Id 
         { 
             get { 
-              return _productsEntity.Id.Value;
+              return _productsEntity.Id ?? 0;
             }
             set {
                 _productsEntity.Id = value;
@@ -53,7 +53,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _productsEntity.TenantId.Value;
+                return _productsEntity.TenantId ?? 0;
             }
             set
             {
@@ -66,7 +66,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _productsEntity.IsActivo.Value;
+                return _productsEntity.IsActivo ?? false;
             }
             set
             {
@@ -92,7 +92,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _productsEntity.FechaCreado.Value;
+                return _productsEntity.FechaCreado ?? DateTime.Now;
             }
             set
             {
@@ -118,7 +118,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _productsEntity.FechaModificado.Value;
+                return _productsEntity.FechaModificado ?? DateTime.Now;
             }
             set
             {

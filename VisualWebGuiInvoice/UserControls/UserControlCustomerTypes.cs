@@ -103,6 +103,12 @@ namespace VisualWebGuiInvoice.UserControls
             var keys = CustomerTypesMetadata.Meta().Columns.PrimaryKeys;
             FormGenericSearch search = new FormGenericSearch("Buscar tipo de cliente", CustomerTypesMetadata.Meta(), fields, CustomerTypesMetadata.ColumnNames.Description, true, _conString);
             search.TopFilter = 20;
+
+            search.Filter = new object[1, 3];
+            search.Filter[0, 0] = CustomerTypesMetadata.ColumnNames.IsActivo;
+            search.Filter[0, 1] = FSchad.CustomClasses.FSchadDynamicQuery.Igual;
+            search.Filter[0, 2] = true;
+
             search.FormClosed += (senderx, ex) =>
             {
                 ListViewItem result = search.GetSelectedListViewItem;

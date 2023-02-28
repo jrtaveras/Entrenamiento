@@ -28,7 +28,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         public int Id 
         { 
             get { 
-              return _customerTypes.Id.Value;
+              return _customerTypes.Id ?? 0;
             }
             set {
                 _customerTypes.Id = value;
@@ -53,7 +53,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _customerTypes.TenantId.Value;
+                return _customerTypes.TenantId ?? 0;
             }
             set
             {
@@ -66,7 +66,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _customerTypes.IsActivo.Value;
+                return _customerTypes.IsActivo ?? false;
             }
             set
             {
@@ -92,7 +92,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _customerTypes.FechaCreado.Value;
+                return _customerTypes.FechaCreado ?? DateTime.Now;
             }
             set
             {
@@ -118,7 +118,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _customerTypes.FechaModificado.Value;
+                return _customerTypes.FechaModificado ?? DateTime.Now;
             }
             set
             {

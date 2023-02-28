@@ -31,7 +31,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceDetailsEntity.Id.Value;
+                return _InvoiceDetailsEntity.Id ?? 0;
             }
             set
             {
@@ -44,12 +44,40 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceDetailsEntity.InvoiceId.Value;
+                return _InvoiceDetailsEntity.InvoiceId ?? 0;
             }
             set
             {
-                _InvoiceDetailsEntity.ProductId = value;
+                _InvoiceDetailsEntity.InvoiceId = value;
                 InvokePropertyChanged(new PropertyChangedEventArgs(InvoiceDetailsMetadata.ColumnNames.InvoiceId));
+            }
+        }
+
+        public decimal Price
+        {
+            get
+            {
+                return _InvoiceDetailsEntity.Price ?? 0;
+            }
+            set
+            {
+                _InvoiceDetailsEntity.Price = value;
+                InvokePropertyChanged(new PropertyChangedEventArgs(InvoiceDetailsMetadata.ColumnNames.Price));
+                CalculateTotals();
+            }
+        }
+
+        public int Qty
+        {
+            get
+            {
+                return _InvoiceDetailsEntity.Qty ?? 0;
+            }
+            set
+            {
+                _InvoiceDetailsEntity.Qty = value;
+                InvokePropertyChanged(new PropertyChangedEventArgs(InvoiceDetailsMetadata.ColumnNames.Qty));
+                CalculateTotals();
             }
         }
 
@@ -57,12 +85,12 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceDetailsEntity.ProductId.Value;
+                return _InvoiceDetailsEntity.ProductId ?? 0;
             }
             set
             {
                 _InvoiceDetailsEntity.ProductId = value;
-                InvokePropertyChanged(new PropertyChangedEventArgs(InvoiceDetailsMetadata.ColumnNames.ProductId));
+                //InvokePropertyChanged(new PropertyChangedEventArgs(InvoiceDetailsMetadata.ColumnNames.ProductId));
             }
         }
 
@@ -70,7 +98,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceDetailsEntity.SubTotal.Value;
+                return _InvoiceDetailsEntity.SubTotal ?? 0;
             }
             set
             {
@@ -83,7 +111,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceDetailsEntity.TotalItbis.Value;
+                return _InvoiceDetailsEntity.TotalItbis ?? 0;
             }
             set
             {
@@ -96,7 +124,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceDetailsEntity.Total.Value;
+                return _InvoiceDetailsEntity.Total ?? 0;
             }
             set
             {
@@ -110,7 +138,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceDetailsEntity.TenantId.Value;
+                return _InvoiceDetailsEntity.TenantId ?? 0;
             }
             set
             {
@@ -123,7 +151,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceDetailsEntity.IsActivo.Value;
+                return _InvoiceDetailsEntity.IsActivo ?? false;
             }
             set
             {
@@ -149,7 +177,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceDetailsEntity.FechaCreado.Value;
+                return _InvoiceDetailsEntity.FechaCreado ?? DateTime.Now;
             }
             set
             {
@@ -175,7 +203,7 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             get
             {
-                return _InvoiceDetailsEntity.FechaModificado.Value;
+                return _InvoiceDetailsEntity.FechaModificado ?? DateTime.Now;
             }
             set
             {
@@ -206,6 +234,9 @@ namespace VisualWebGuiInvoice.BusinessObjects
             Id = 0;
             ProductId = 0;
 
+            Price = 0;
+            Qty = 0;
+
             SubTotal = 0;
             TotalItbis = 0;
             Total = 0;
@@ -234,6 +265,10 @@ namespace VisualWebGuiInvoice.BusinessObjects
             {
                 Id = _InvoiceDetailsEntity.Id.Value;
                 ProductId = _InvoiceDetailsEntity.ProductId.Value;
+
+                SubTotal = _InvoiceDetailsEntity.SubTotal.Value;
+                TotalItbis = _InvoiceDetailsEntity.TotalItbis.Value;
+                Total = _InvoiceDetailsEntity.Total.Value;
 
                 IsActivo = _InvoiceDetailsEntity.IsActivo.Value;
                 TenantId = _InvoiceDetailsEntity.TenantId.Value;
@@ -285,8 +320,14 @@ namespace VisualWebGuiInvoice.BusinessObjects
         {
             this.ht = ht;
         }
-        
-        
+
+
+        private void CalculateTotals() 
+        {
+            SubTotal = (_InvoiceDetailsEntity.Qty ?? 0) * (_InvoiceDetailsEntity.Price ?? 0);
+            TotalItbis = SubTotal * 0.18m;
+            Total = SubTotal + TotalItbis;
+        }
         
         public event PropertyChangedEventHandler PropertyChanged;
 
