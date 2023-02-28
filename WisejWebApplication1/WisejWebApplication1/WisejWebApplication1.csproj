@@ -197,10 +197,6 @@
       <Project>{8ed57010-9b1f-4534-b9ba-af619115676d}</Project>
       <Name>BusinessObjects</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Common\Common\Common.csproj">
-      <Project>{bcfb45b2-c54f-4a2d-baab-11f309ddb8d8}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
