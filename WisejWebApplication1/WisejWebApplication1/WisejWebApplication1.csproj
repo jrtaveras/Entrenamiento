@@ -62,9 +62,15 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bootstraper.cs" />
-    <Compile Include="Calculos.cs" />
-    <Compile Include="Division.cs" />
+    <Compile Include="Calculadora\Bootstraper.cs" />
+    <Compile Include="Calculadora\Calculos.cs" />
+    <Compile Include="Calculadora\Division.cs" />
+    <Compile Include="Calculadora\HelperCalculo.cs" />
+    <Compile Include="Calculadora\ICalculo.cs" />
+    <Compile Include="Calculadora\Modules\CalcularModule.cs" />
+    <Compile Include="Calculadora\Multiplicacion.cs" />
+    <Compile Include="Calculadora\Resta.cs" />
+    <Compile Include="Calculadora\Suma.cs" />
     <Compile Include="Forms\WindowPdfViewer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,11 +89,6 @@
     <Compile Include="Helpers\HelperControlsToValidate.cs" />
     <Compile Include="Helpers\HelperDataTableToExcel.cs" />
     <Compile Include="Helpers\RegionalizationHelper.cs" />
-    <Compile Include="ICalculo.cs" />
-    <Compile Include="Modules\CalcularModule.cs" />
-    <Compile Include="Multiplicacion.cs" />
-    <Compile Include="Resta.cs" />
-    <Compile Include="Suma.cs" />
     <Compile Include="UserControls\UserControlCustomers.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -193,6 +194,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\common\Common\Common.csproj">
+      <Project>{bcfb45b2-c54f-4a2d-baab-11f309ddb8d8}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BusinessObjects\BusinessObjects.csproj">
       <Project>{8ed57010-9b1f-4534-b9ba-af619115676d}</Project>
       <Name>BusinessObjects</Name>
