@@ -39,6 +39,6 @@
 //                             Custom settings are available using Application.Configuration.Settings.
 {
 	"url": "Default.html",
-	"showLoader": false,
+	"showLoader": true,
 	"startup": "WisejWebApplication1.Program.Main, WisejWebApplication1"
 }

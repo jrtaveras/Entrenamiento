@@ -34,13 +34,13 @@ namespace CommonUserControls
             this.panelPricipal = new Wisej.Web.Panel();
             this.panelContenido = new Wisej.Web.Panel();
             this.panelRight = new Wisej.Web.Panel();
+            this.numericUpDownSubTotal = new Wisej.Web.NumericUpDown();
+            this.checkBoxIsActivo = new Wisej.Web.CheckBox();
+            this.numericUpDownTotal = new Wisej.Web.NumericUpDown();
             this.panelLeft = new Wisej.Web.Panel();
             this.textBoxId = new Wisej.Web.TextBox();
             this.comboBoxCustomerId = new Wisej.Web.ComboBox();
             this.numericUpDownTotalItbis = new Wisej.Web.NumericUpDown();
-            this.numericUpDownSubTotal = new Wisej.Web.NumericUpDown();
-            this.numericUpDownTotal = new Wisej.Web.NumericUpDown();
-            this.checkBoxIsActivo = new Wisej.Web.CheckBox();
             this.toolBar1 = new Wisej.Web.ToolBar();
             this.toolBarButtonNuevo = new Wisej.Web.ToolBarButton();
             this.toolBarButtonSalvar = new Wisej.Web.ToolBarButton();
@@ -56,10 +56,10 @@ namespace CommonUserControls
             this.panelPricipal.SuspendLayout();
             this.panelContenido.SuspendLayout();
             this.panelRight.SuspendLayout();
-            this.panelLeft.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotalItbis)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSubTotal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotal)).BeginInit();
+            this.panelLeft.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotalItbis)).BeginInit();
             this.SuspendLayout();
             // 
             // panelPricipal
@@ -78,8 +78,8 @@ namespace CommonUserControls
             this.panelPricipal.TabStop = true;
             this.panelPricipal.Tag = "";
             this.panelPricipal.Text = "Invoices";
-            this.panelPricipal.PanelCollapsed += new System.EventHandler(this.panelPricipal_PanelCollapsed);
-            this.panelPricipal.PanelExpanded += new System.EventHandler(this.panelPricipal_PanelExpanded);
+            this.panelPricipal.PanelCollapsed += new System.EventHandler(this.PanelPricipal_PanelCollapsed);
+            this.panelPricipal.PanelExpanded += new System.EventHandler(this.PanelPricipal_PanelExpanded);
             // 
             // panelContenido
             // 
@@ -88,9 +88,9 @@ namespace CommonUserControls
             this.panelContenido.Dock = Wisej.Web.DockStyle.Fill;
             this.panelContenido.HeaderAlignment = Wisej.Web.HorizontalAlignment.Center;
             this.panelContenido.HeaderSize = 34;
-            this.panelContenido.Location = new System.Drawing.Point(0, 33);
+            this.panelContenido.Location = new System.Drawing.Point(0, 31);
             this.panelContenido.Name = "panelContenido";
-            this.panelContenido.Size = new System.Drawing.Size(622, 148);
+            this.panelContenido.Size = new System.Drawing.Size(622, 150);
             this.panelContenido.TabIndex = 1;
             this.panelContenido.TabStop = true;
             // 
@@ -102,9 +102,52 @@ namespace CommonUserControls
             this.panelRight.Dock = Wisej.Web.DockStyle.Left;
             this.panelRight.Location = new System.Drawing.Point(306, 0);
             this.panelRight.Name = "panelRight";
-            this.panelRight.Size = new System.Drawing.Size(306, 148);
+            this.panelRight.Size = new System.Drawing.Size(306, 150);
             this.panelRight.TabIndex = 28;
             this.panelRight.TabStop = true;
+            // 
+            // numericUpDownSubTotal
+            // 
+            this.numericUpDownSubTotal.DecimalPlaces = 2;
+            this.numericUpDownSubTotal.Enabled = false;
+            this.numericUpDownSubTotal.Label.Position = Wisej.Web.LabelPosition.Inside;
+            this.numericUpDownSubTotal.LabelText = "SubTotal";
+            this.numericUpDownSubTotal.Location = new System.Drawing.Point(22, 6);
+            this.numericUpDownSubTotal.Maximum = new decimal(new int[] {
+            276447231,
+            23283,
+            0,
+            0});
+            this.numericUpDownSubTotal.Name = "numericUpDownSubTotal";
+            this.numericUpDownSubTotal.Size = new System.Drawing.Size(175, 37);
+            this.numericUpDownSubTotal.TabIndex = 5;
+            this.numericUpDownSubTotal.ThousandsSeparator = true;
+            // 
+            // checkBoxIsActivo
+            // 
+            this.checkBoxIsActivo.Appearance = Wisej.Web.Appearance.Switch;
+            this.checkBoxIsActivo.Location = new System.Drawing.Point(22, 90);
+            this.checkBoxIsActivo.Name = "checkBoxIsActivo";
+            this.checkBoxIsActivo.Size = new System.Drawing.Size(98, 24);
+            this.checkBoxIsActivo.TabIndex = 7;
+            this.checkBoxIsActivo.Text = "IsActivo";
+            // 
+            // numericUpDownTotal
+            // 
+            this.numericUpDownTotal.DecimalPlaces = 2;
+            this.numericUpDownTotal.Enabled = false;
+            this.numericUpDownTotal.Label.Position = Wisej.Web.LabelPosition.Inside;
+            this.numericUpDownTotal.LabelText = "Total";
+            this.numericUpDownTotal.Location = new System.Drawing.Point(22, 48);
+            this.numericUpDownTotal.Maximum = new decimal(new int[] {
+            276447231,
+            23283,
+            0,
+            0});
+            this.numericUpDownTotal.Name = "numericUpDownTotal";
+            this.numericUpDownTotal.Size = new System.Drawing.Size(175, 37);
+            this.numericUpDownTotal.TabIndex = 6;
+            this.numericUpDownTotal.ThousandsSeparator = true;
             // 
             // panelLeft
             // 
@@ -115,7 +158,7 @@ namespace CommonUserControls
             this.panelLeft.HeaderAlignment = Wisej.Web.HorizontalAlignment.Center;
             this.panelLeft.Location = new System.Drawing.Point(0, 0);
             this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(306, 148);
+            this.panelLeft.Size = new System.Drawing.Size(306, 150);
             this.panelLeft.TabIndex = 8;
             this.panelLeft.TabStop = true;
             // 
@@ -155,49 +198,6 @@ namespace CommonUserControls
             this.numericUpDownTotalItbis.TabIndex = 4;
             this.numericUpDownTotalItbis.ThousandsSeparator = true;
             // 
-            // numericUpDownSubTotal
-            // 
-            this.numericUpDownSubTotal.DecimalPlaces = 2;
-            this.numericUpDownSubTotal.Enabled = false;
-            this.numericUpDownSubTotal.Label.Position = Wisej.Web.LabelPosition.Inside;
-            this.numericUpDownSubTotal.LabelText = "SubTotal";
-            this.numericUpDownSubTotal.Location = new System.Drawing.Point(22, 6);
-            this.numericUpDownSubTotal.Maximum = new decimal(new int[] {
-            276447231,
-            23283,
-            0,
-            0});
-            this.numericUpDownSubTotal.Name = "numericUpDownSubTotal";
-            this.numericUpDownSubTotal.Size = new System.Drawing.Size(175, 37);
-            this.numericUpDownSubTotal.TabIndex = 5;
-            this.numericUpDownSubTotal.ThousandsSeparator = true;
-            // 
-            // numericUpDownTotal
-            // 
-            this.numericUpDownTotal.DecimalPlaces = 2;
-            this.numericUpDownTotal.Enabled = false;
-            this.numericUpDownTotal.Label.Position = Wisej.Web.LabelPosition.Inside;
-            this.numericUpDownTotal.LabelText = "Total";
-            this.numericUpDownTotal.Location = new System.Drawing.Point(22, 48);
-            this.numericUpDownTotal.Maximum = new decimal(new int[] {
-            276447231,
-            23283,
-            0,
-            0});
-            this.numericUpDownTotal.Name = "numericUpDownTotal";
-            this.numericUpDownTotal.Size = new System.Drawing.Size(175, 37);
-            this.numericUpDownTotal.TabIndex = 6;
-            this.numericUpDownTotal.ThousandsSeparator = true;
-            // 
-            // checkBoxIsActivo
-            // 
-            this.checkBoxIsActivo.Appearance = Wisej.Web.Appearance.Switch;
-            this.checkBoxIsActivo.Location = new System.Drawing.Point(22, 90);
-            this.checkBoxIsActivo.Name = "checkBoxIsActivo";
-            this.checkBoxIsActivo.Size = new System.Drawing.Size(98, 24);
-            this.checkBoxIsActivo.TabIndex = 7;
-            this.checkBoxIsActivo.Text = "IsActivo";
-            // 
             // toolBar1
             // 
             this.toolBar1.BorderStyle = Wisej.Web.BorderStyle.Dotted;
@@ -214,7 +214,7 @@ namespace CommonUserControls
             this.toolBarButtonRecargaCombo});
             this.toolBar1.Location = new System.Drawing.Point(0, 0);
             this.toolBar1.Name = "toolBar1";
-            this.toolBar1.Size = new System.Drawing.Size(622, 33);
+            this.toolBar1.Size = new System.Drawing.Size(622, 31);
             this.toolBar1.TabIndex = 1;
             this.toolBar1.TabStop = false;
             // 
@@ -282,7 +282,7 @@ namespace CommonUserControls
             this.toolBarButtonRecargaCombo.ImageSource = "resource.wx/Wisej.Ext.MaterialDesign/synchronization-button-with-two-arrows.svg?c" +
     "olor=toolbarText";
             this.toolBarButtonRecargaCombo.Name = "toolBarButtonRecargaCombo";
-            this.toolBarButtonRecargaCombo.Click += new System.EventHandler(this.toolBarButtonRecargaCombo_Click);
+            this.toolBarButtonRecargaCombo.Click += new System.EventHandler(this.ToolBarButtonRecargaCombo_Click);
             // 
             // panelDetalles
             // 
@@ -307,11 +307,11 @@ namespace CommonUserControls
             this.panelContenido.ResumeLayout(false);
             this.panelRight.ResumeLayout(false);
             this.panelRight.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSubTotal)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotal)).EndInit();
             this.panelLeft.ResumeLayout(false);
             this.panelLeft.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotalItbis)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSubTotal)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotal)).EndInit();
             this.ResumeLayout(false);
 
         }

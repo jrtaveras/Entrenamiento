@@ -23,31 +23,166 @@ namespace CommonUserControls
     public partial class UserControlCustomers : UserControlBase, ICustomers, IValidate, IDataSource
     {
 
-        private readonly IPresenter customersPresenter;
-        private readonly HelperControlsToValidate helperControls;
-        private bool _canEdit;
+        private readonly IPresenter _customersPresenter;
+        private readonly HelperControlsToValidate _helperControls;
         private ISearchPresenter<CustomerTypes> _searchPresenterCustomerTypeId;
 		
-      
+        private bool _canEdit;
+        public bool CanEdit
+        {
+            get
+            {
+                return _canEdit;
+            }
+            set
+            {
+
+                _canEdit = value;
+
+                EnableDisableControls();
+            }
+        }
+
+        #region Properties Customers
+
+        private int _id;
+        public int Id
+        {
+            get
+            {
+                bool result = int.TryParse(textBoxId.Text, out _id);
+                if (result == false)
+                    textBoxId.Text = "0";
+                return _id;
+            }
+            set
+            {
+                textBoxId.Text = value.ToString();
+                toolBarButtonInfo.ToolTipText = $"{GetCreated()} : {Creado} {FechaCreado}  {GetModified()}: {Modificado} {FechaModificado}";
+                panelPricipal.Text = GetTitle() + " (" + value.ToString() + ")";
+            }
+        }
+
+        public string CustName
+        {
+            get
+            {
+                return textBoxCustName.Text;
+            }
+            set
+            {
+                textBoxCustName.Text = value;
+            }
+        }
+
+        public string Adress
+        {
+            get
+            {
+                return textBoxAdress.Text;
+            }
+            set
+            {
+                textBoxAdress.Text = value;
+            }
+        }
+
+        public bool Status
+        {
+            get
+            {
+                return checkBoxStatus.Checked;
+            }
+            set
+            {
+                checkBoxStatus.Checked = value;
+            }
+        }
+
+        private int _CustomerTypeId;
+        public int CustomerTypeId
+        {
+            get
+            {
+                if (comboBoxCustomerTypeId.SelectedValue != null)
+                    _CustomerTypeId = Convert.ToInt32(comboBoxCustomerTypeId.SelectedValue);
+
+                return _CustomerTypeId;
+            }
+            set
+            {
+                _CustomerTypeId = value;
+                comboBoxCustomerTypeId.SelectedValue = value;
+            }
+        }
+
+        public long TenantId
+        {
+            get; set;
+        }
+
+        public bool IsActivo
+        {
+            get
+            {
+                return checkBoxIsActivo.Checked;
+            }
+            set
+            {
+                checkBoxIsActivo.Checked = value;
+            }
+        }
+
+        public string Creado
+        {
+            get; set;
+        }
+
+        public DateTime FechaCreado
+        {
+            get; set;
+        }
+
+        public string Modificado
+        {
+            get; set;
+        }
+
+        public DateTime FechaModificado
+        {
+            get; set;
+        }
+
+        public object DataGridSource
+        {
+            get => dataGridView1.DataSource;
+            set => dataGridView1.DataSource = value;
+        }
+
+        #endregion
+
         private UserControlCustomers(){
              InitializeComponent();
         }
         
         public UserControlCustomers(IContext context):base(context)
         {
-            Title = "Customers";
             InitializeComponent();
-            setControls();
-            customersPresenter = new CustomersPresenter(context, this);
-            helperControls = new HelperControlsToValidate(this.panelPricipal);
-            this.toolBar1.ButtonClick += toolBar1_ButtonClick;
-            CanEdit  = true;
-
             
+            Title = "Customers";
+            CanEdit  = true;
+            
+            SetControls();
+            
+            _customersPresenter = new CustomersPresenter(context, this);
+            _helperControls = new HelperControlsToValidate(panelPricipal);
+            
+            toolBar1.ButtonClick += ToolBar1_ButtonClick;
+
             try
             {
                
-                fillComboBox();
+                FillComboBox();
                 
             }
             catch(Exception ex )
@@ -56,223 +191,44 @@ namespace CommonUserControls
             }
         }
         
-        private void fillComboBox()
-        {
-            _searchPresenterCustomerTypeId = GeneralSearchFactory.MakeCustomerTypesSearch(_context);
-			comboBoxCustomerTypeId.DisplayMember = nameof(CustomerTypes.Description);
-			comboBoxCustomerTypeId.ValueMember = nameof(CustomerTypes.Id);
-			comboBoxCustomerTypeId.DataSource = _searchPresenterCustomerTypeId.GetAll();
-			        
-        }
         
-     
-        private void toolBarButtonRecargaCombo_Click(object sender, EventArgs e)
+        private void ToolBarButtonRecargaCombo_Click(object sender, EventArgs e)
 		{
 			try
 			{
                 var objCustomerTypeId = comboBoxCustomerTypeId.SelectedValue;
 				
-				fillComboBox();
+				FillComboBox();
                 
                 if(objCustomerTypeId != null )
 					comboBoxCustomerTypeId.SelectedValue = objCustomerTypeId;
-				
-				
-				
+
 			}
 			catch (Exception ex)
 			{
 				MessageBox.Show(GetMessageException() + ex.Message, GetMessageNotice(), MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
-        
-        private void setControls()
-        {
-            textBoxId.Tag = nameof(Customers.Id);
-			textBoxCustName.Tag = nameof(Customers.CustName);
-			textBoxAdress.Tag = nameof(Customers.Adress);
-			checkBoxStatus.Tag = nameof(Customers.Status);
-			comboBoxCustomerTypeId.Tag = nameof(Customers.CustomerTypeId);
-			checkBoxIsActivo.Tag = nameof(Customers.IsActivo);
-			
-        }
-
-
-        public  bool CanEdit
-        {
-            get
-            {
-                return _canEdit;
-            }
-            set {
-            
-                _canEdit = value;
-                
-                enableDisableControls();
-            }
-        } 
-        
-        private void enableDisableControls() {
-        
-			toolBarButtonNuevo.Enabled = !CanEdit;
-			toolBarButtonSalvar.Enabled = CanEdit;
-			toolBarButtonEditar.Enabled = !CanEdit;
-			toolBarButtonCancelar.Enabled = CanEdit;
-			toolBarButtonEliminar.Enabled = !CanEdit;
-
-            textBoxId.ReadOnly = true;
-			textBoxCustName.ReadOnly = !CanEdit;
-			textBoxAdress.ReadOnly = !CanEdit;
-			checkBoxStatus.ReadOnly = !CanEdit;
-			comboBoxCustomerTypeId.ReadOnly = !CanEdit;
-			checkBoxIsActivo.ReadOnly = !CanEdit;
-			
-        
-		}
-        
-      
-        
-        private void panelPricipal_PanelCollapsed(object sender, EventArgs e)
+        private void PanelPricipal_PanelCollapsed(object sender, EventArgs e)
 		{
 			if (this.panelPricipal.Collapsed)
 			{
 				this.panelPricipal.HeaderPosition = HeaderPosition.Top;
 			}
 		}
-
-		private void panelPricipal_PanelExpanded(object sender, EventArgs e)
+		private void PanelPricipal_PanelExpanded(object sender, EventArgs e)
 		{
 			if (!this.panelPricipal.Collapsed)
 			{
 				this.panelPricipal.HeaderPosition = HeaderPosition.Left;
 			}
 		}
-        
-        
-       #region Properties Customers
-       
-       private int _Id;
-		public  int Id
-		{
-			get
-			{
-				bool result = int.TryParse(textBoxId.Text, out _Id);
-			    if (!result)
-			         textBoxId.Text = "0";
-				return _Id;
-			}
-			set
-			{
-				textBoxId.Text = value.ToString();
-				this.toolBarButtonInfo.ToolTipText =   $"{GetCreated()} : {Creado} {FechaCreado}  {GetModified()}: {Modificado} {FechaModificado}";
-				this.panelPricipal.Text = GetTitle() + " (" + value.ToString() + ")";
-			}
-		}
-		
-		public string CustName
-		{
-			get
-			{
-				 return textBoxCustName.Text;
-			}
-			set
-			{
-				textBoxCustName.Text = value;
-			}
-		}
-		
-		public string Adress
-		{
-			get
-			{
-				 return textBoxAdress.Text;
-			}
-			set
-			{
-				textBoxAdress.Text = value;
-			}
-		}
-		
-		public bool Status
-		{
-			get
-			{
-				 return checkBoxStatus.Checked;
-			}
-			set
-			{
-				checkBoxStatus.Checked  = value;
-			}
-		}
-		
-		private int _CustomerTypeId;
-		public  int CustomerTypeId
-		{
-			get
-			{
-				if(comboBoxCustomerTypeId.SelectedValue != null)
-					_CustomerTypeId = Convert.ToInt32(comboBoxCustomerTypeId.SelectedValue);
-
-				return _CustomerTypeId;
-			}
-			set
-			{
-				_CustomerTypeId = value;
-				comboBoxCustomerTypeId.SelectedValue = value;
-			}
-		}
-		
-		public  long TenantId
-		{
-			get; set;
-		}
-		
-		public bool IsActivo
-		{
-			get
-			{
-				 return checkBoxIsActivo.Checked;
-			}
-			set
-			{
-				checkBoxIsActivo.Checked  = value;
-			}
-		}
-		
-		public  string Creado
-		{
-			get; set;
-		}
-		
-		public  DateTime FechaCreado
-		{
-			get; set;
-		}
-		
-		public  string Modificado
-		{
-			get; set;
-		}
-		
-		public  DateTime FechaModificado
-		{
-			get; set;
-		}
-
-        public object DataGridSource
-        {
-            get => dataGridView1.DataSource;
-            set => dataGridView1.DataSource = value; 
-        }
-
-        #endregion
-
-        private void toolBar1_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
+        private void ToolBar1_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
         {
             switch (e.Button.Name)
             {
                 case ToolBarButtonConstants.Nuevo:
-                    customersPresenter.Add();
+                    _customersPresenter.Add();
                     CanEdit = true;
                     break;
 
@@ -280,7 +236,7 @@ namespace CommonUserControls
 
                     try
                     {
-                        if (customersPresenter.Save())
+                        if (_customersPresenter.Save())
                         {
                             AlertBox.Show(GetMessageSavedFields());
                             CanEdit = false;
@@ -300,14 +256,14 @@ namespace CommonUserControls
 
                 case ToolBarButtonConstants.Cancelar:
                     ClearErrorsValidations();
-                    customersPresenter.Undo();
+                    _customersPresenter.Undo();
                     CanEdit = false;
                     break;
 
                 case ToolBarButtonConstants.Eliminar:
                     try
                     {
-                        if( customersPresenter.Delete())
+                        if( _customersPresenter.Delete())
                         {
                             AlertBox.Show(GetMessageDeletedFields());
                             CanEdit = true;
@@ -315,28 +271,28 @@ namespace CommonUserControls
                     }
                     catch (Exception ex)
                     {
-                        customersPresenter.Add();
+                        _customersPresenter.Add();
                         MessageBox.Show(GetMessageException() + ex.Message, GetMessageNotice(), MessageBoxButtons.OK,MessageBoxIcon.Error);
                     }
                     break;
 
                 case ToolBarButtonConstants.Buscar:
                 
-                    WindowSearch<Customers> search = new WindowSearch<Customers>(GeneralSearchFactory.MakeCustomersSearch(_context), GetMessageFinding() + " " + GetTitle());
+                    CommonWindowSearch<Customers> search = new CommonWindowSearch<Customers>(GeneralSearchFactory.MakeCustomersSearch(_context), GetMessageFinding() + " " + GetTitle());
                     search.FormClosed += (senderX, eX) => {
                         try
                         {
                             if (search.Id != null)
                             {
-                                if(this.customersPresenter.Find(search.Id))
+                                if(this._customersPresenter.Find(search.Id))
                                 {
                                     CanEdit = true;
                                     ClearErrorsValidations();
-                                    toolBarButtonRecargaCombo_Click(null,null);
+                                    ToolBarButtonRecargaCombo_Click(null,null);
                                 }
                             }
 							
-							enableDisableControls();
+							EnableDisableControls();
                         }
                         catch (Exception ex)
                         {
@@ -353,7 +309,7 @@ namespace CommonUserControls
                 
                     try
                     {
-                        using (WorkBook wb = HelperDataTableToExcel.MakeDataTableToExcel(this.customersPresenter.GetDataTable()))
+                        using (WorkBook wb = HelperDataTableToExcel.MakeDataTableToExcel(this._customersPresenter.GetDataTable()))
                         {
                         	using (Stream stream = new MemoryStream())
                         	{
@@ -375,27 +331,60 @@ namespace CommonUserControls
             
             this.toolBarButtonInfo.ToolTipText =   $"{GetCreated()} : {Creado} {FechaCreado}  {GetModified()}: {Modificado} {FechaModificado}";
         }
-
-      
-
-        public void ShowErrors()
-        {
-            helperControls.ValidateMembers(customersPresenter.ValidationResult);
-
-        }
-
-        public void ClearErrorsValidations()
-        {
-            helperControls.ClearErrors(customersPresenter.ValidationResult);
-        }
-
-        private void dataGridView1_DoubleClick(object sender, EventArgs e)
+        private void DataGridView1_DoubleClick(object sender, EventArgs e)
         {
             if(dataGridView1.SelectedRows.Count > 0)
             {
                 int id = (int) dataGridView1.SelectedRows[0][nameof(Customers.Id)].Value;
-                customersPresenter.Find(id);
+                _customersPresenter.Find(id);
             }
         }
+        
+
+        private void FillComboBox()
+        {
+            _searchPresenterCustomerTypeId = GeneralSearchFactory.MakeCustomerTypesSearch(_context);
+			comboBoxCustomerTypeId.DisplayMember = nameof(CustomerTypes.Description);
+			comboBoxCustomerTypeId.ValueMember = nameof(CustomerTypes.Id);
+			comboBoxCustomerTypeId.DataSource = _searchPresenterCustomerTypeId.GetAll();
+			        
+        }
+        private void SetControls()
+        {
+            textBoxId.Tag = nameof(Customers.Id);
+			textBoxCustName.Tag = nameof(Customers.CustName);
+			textBoxAdress.Tag = nameof(Customers.Adress);
+			checkBoxStatus.Tag = nameof(Customers.Status);
+			comboBoxCustomerTypeId.Tag = nameof(Customers.CustomerTypeId);
+			checkBoxIsActivo.Tag = nameof(Customers.IsActivo);
+			
+        }
+        private void EnableDisableControls() {
+        
+			toolBarButtonNuevo.Enabled = !CanEdit;
+			toolBarButtonSalvar.Enabled = CanEdit;
+			toolBarButtonEditar.Enabled = !CanEdit;
+			toolBarButtonCancelar.Enabled = CanEdit;
+			toolBarButtonEliminar.Enabled = !CanEdit;
+
+            textBoxId.ReadOnly = true;
+			textBoxCustName.ReadOnly = !CanEdit;
+			textBoxAdress.ReadOnly = !CanEdit;
+			checkBoxStatus.ReadOnly = !CanEdit;
+			comboBoxCustomerTypeId.ReadOnly = !CanEdit;
+			checkBoxIsActivo.ReadOnly = !CanEdit;
+			
+        
+		}
+        public void ClearErrorsValidations()
+        {
+            _helperControls.ClearErrors(_customersPresenter.ValidationResult);
+        }
+        public void ShowErrors()
+        {
+            _helperControls.ValidateMembers(_customersPresenter.ValidationResult);
+
+        }
     }
+
 }

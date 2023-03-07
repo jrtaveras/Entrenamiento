@@ -21,74 +21,201 @@ using System.Collections.Generic;
 
 namespace CommonUserControls
 {
-	public delegate void RaiseHeader();
     public partial class UserControlInvoiceDetails : UserControlBase, IInvoiceDetails, IValidate, IDataSource
     {
 
-        private readonly IPresenter invoiceDetailsPresenter;
-        private readonly HelperControlsToValidate helperControls;
-        private bool _canEdit;
-        private ISearchPresenter<Invoices> _searchPresenterInvoiceId;
-
-		public event RaiseHeader OnRaiseHeader;
-      
-        private UserControlInvoiceDetails(){
-             InitializeComponent();
-        }
+        private readonly IPresenter _invoiceDetailsPresenter;
+        private readonly HelperControlsToValidate _helperControls;
         
-        public UserControlInvoiceDetails(IContext context):base(context)
-        {
-            Title = "InvoiceDetails";
-            InitializeComponent();
-            setControls();
-            invoiceDetailsPresenter = new InvoiceDetailsPresenter(context, this);
-			invoiceDetailsPresenter.BeforeSave += calcularTotales;
-			invoiceDetailsPresenter.AfterSave += calcularTotalesHeader;
-			fillUsercontrolSearch();
-			helperControls = new HelperControlsToValidate(this.panelPricipal);
-            this.toolBar1.ButtonClick += toolBar1_ButtonClick;
-            CanEdit  = true;
-        }
-
-        private void fillUsercontrolSearch()
-        {
-			userControlSearchNumericProducts.DisplayMember = nameof(Products.Description);
-			userControlSearchNumericProducts.ValueMember = nameof(Products.Id);
-			userControlSearchNumericProducts.SearchNumericDataType = SearchNumericDataType.Integer;
-			userControlSearchNumericProducts.SetDataSource(new SearchProductsPresenter(_context));
-		}
-
-        private void calcularTotalesHeader()
-        {
-			Invoices invoice = _context.Invoices.FirstOrDefault(i => i.Id == InvoiceId);
-			if (invoice != null)
+		private bool _canEdit;
+		public bool CanEdit
+		{
+			get
 			{
-				invoice.SubTotal = 0;
-				invoice.TotalItbis = 0;
-				invoice.Total = 0;
+				return _canEdit;
+			}
+			set
+			{
 
-				List<InvoiceDetails> detalles = _context.InvoiceDetails.Where(i => i.InvoiceId == invoice.Id).ToList();
-				foreach (InvoiceDetails detalle in detalles)
-                {
-					invoice.SubTotal += detalle.SubTotal;
-					invoice.TotalItbis += detalle.TotalItbis;
-					invoice.Total += detalle.Total;
-				}
+				_canEdit = value;
 
-				_context.Entry(invoice).State = System.Data.Entity.EntityState.Modified;
-				_context.SaveChanges();
-				OnRaiseHeader?.Invoke();
+				EnableDisableControls();
 			}
 		}
 
-        private void calcularTotales()
+		public Action SaveHeaderChangesAfterAction { get; set; }
+
+		#region Properties InvoiceDetails
+
+		private int _id;
+		public int Id
+		{
+			get
+			{
+				bool result = int.TryParse(textBoxId.Text, out _id);
+				if (result == false) 
+				{
+				  textBoxId.Text = "0";
+				}
+				return _id;
+			}
+			set
+			{
+				textBoxId.Text = value.ToString();
+				
+				toolBarButtonInfo.ToolTipText = $"{GetCreated()} : {Creado} {FechaCreado}  {GetModified()}: {Modificado} {FechaModificado}";
+				panelPricipal.Text = GetTitle() + " (" + value.ToString() + ")";
+			}
+		}
+
+		private int _InvoiceId;
+		public int InvoiceId
+		{
+			get
+			{
+				if (textBoxInvoiceId.Text != null)
+					_InvoiceId = Convert.ToInt32(textBoxInvoiceId.Text);
+
+				return _InvoiceId;
+			}
+			set
+			{
+				_InvoiceId = value;
+				textBoxInvoiceId.Text = value.ToString();
+				if (_invoiceDetailsPresenter != null)
+					_invoiceDetailsPresenter.FillDataSource();
+			}
+		}
+
+		public int Qty
+		{
+			get
+			{
+				return (int)numericUpDownQty.Value;
+			}
+			set
+			{
+				numericUpDownQty.Value = value;
+			}
+		}
+
+		public decimal Price
+		{
+			get
+			{
+				return numericUpDownPrice.Value;
+			}
+			set
+			{
+				numericUpDownPrice.Value = value;
+			}
+		}
+
+		public decimal TotalItbis
+		{
+			get
+			{
+				return numericUpDownTotalItbis.Value;
+			}
+			set
+			{
+				numericUpDownTotalItbis.Value = value;
+			}
+		}
+
+		public decimal SubTotal
+		{
+			get
+			{
+				return numericUpDownSubTotal.Value;
+			}
+			set
+			{
+				numericUpDownSubTotal.Value = value;
+			}
+		}
+
+		public decimal Total
+		{
+			get
+			{
+				return numericUpDownTotal.Value;
+			}
+			set
+			{
+				numericUpDownTotal.Value = value;
+			}
+		}
+
+		public bool IsActivo
+		{
+			get
+			{
+				return checkBoxIsActivo.Checked;
+			}
+			set
+			{
+				checkBoxIsActivo.Checked = value;
+			}
+		}
+
+		public string Creado
+		{
+			get; set;
+		}
+
+		public DateTime FechaCreado
+		{
+			get; set;
+		}
+
+		public string Modificado
+		{
+			get; set;
+		}
+
+		public DateTime FechaModificado
+		{
+			get; set;
+		}
+		public object DataGridSource
+		{
+			get => dataGridViewInvoiceDetails.DataSource;
+			set => dataGridViewInvoiceDetails.DataSource = value;
+		}
+
+		public int productId
+		{
+			get => (int)userControlSearchNumericProducts.Value;
+			set => userControlSearchNumericProducts.Value = value;
+		}
+
+		public long TenantId { get; set; }
+
+
+		#endregion
+
+
+		public UserControlInvoiceDetails(IContext context):base(context)
         {
-			/*SubTotal = Qty * Price;
-			TotalItbis = SubTotal * 0.18m;
-			Total = SubTotal + TotalItbis;*/
+            InitializeComponent();
+            
+			Title = "InvoiceDetails";
+            
+			SetControls();
+            
+			_invoiceDetailsPresenter = new InvoiceDetailsPresenter(context, this);
+			_invoiceDetailsPresenter.BeforeSave += CalcularTotales;
+			_invoiceDetailsPresenter.AfterSave += CalculateInvoiceHeaderTotals;
+			
+			FillUsercontrolSearch();
+			_helperControls = new HelperControlsToValidate(panelPricipal);
+            
+			toolBar1.ButtonClick += ToolBar1_ButtonClick;
+            CanEdit  = true;
         }
 
-        private void toolBarButtonRecargaCombo_Click(object sender, EventArgs e)
+        private void ToolBarButtonRecargaCombo_Click(object sender, EventArgs e)
 		{
 			try
 			{
@@ -99,225 +226,26 @@ namespace CommonUserControls
 				MessageBox.Show(GetMessageException() + ex.Message, GetMessageNotice(), MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
-        
-        private void setControls()
-        {
-            textBoxId.Tag = nameof(InvoiceDetails.Id);
-			textBoxInvoiceId.Tag = nameof(InvoiceDetails.InvoiceId);
-			numericUpDownQty.Tag = nameof(InvoiceDetails.Qty);
-			numericUpDownPrice.Tag = nameof(InvoiceDetails.Price);
-			numericUpDownTotalItbis.Tag = nameof(InvoiceDetails.TotalItbis);
-			numericUpDownSubTotal.Tag = nameof(InvoiceDetails.SubTotal);
-			numericUpDownTotal.Tag = nameof(InvoiceDetails.Total);
-			userControlSearchNumericProducts.Tag = nameof(InvoiceDetails.productId);
-			checkBoxIsActivo.Tag = nameof(InvoiceDetails.IsActivo);			
-		}
-
-
-        public  bool CanEdit
-        {
-            get
-            {
-                return _canEdit;
-            }
-            set {
-            
-                _canEdit = value;
-                
-                enableDisableControls();
-            }
-        } 
-        
-        private void enableDisableControls() {
-        
-			toolBarButtonNuevo.Enabled = !CanEdit;
-			toolBarButtonSalvar.Enabled = CanEdit;
-			toolBarButtonEditar.Enabled = !CanEdit;
-			toolBarButtonCancelar.Enabled = CanEdit;
-			toolBarButtonEliminar.Enabled = !CanEdit;
-
-            textBoxId.ReadOnly = true;
-			textBoxInvoiceId.ReadOnly = true;
-			numericUpDownQty.ReadOnly = !CanEdit;
-			numericUpDownPrice.ReadOnly = !CanEdit;
-			numericUpDownTotalItbis.ReadOnly = !CanEdit;
-			numericUpDownSubTotal.ReadOnly = !CanEdit;
-			numericUpDownTotal.ReadOnly = !CanEdit;
-			checkBoxIsActivo.ReadOnly = !CanEdit;
-
-		}
-        
-      
-        
-        private void panelPricipal_PanelCollapsed(object sender, EventArgs e)
+		private void PanelPricipal_PanelCollapsed(object sender, EventArgs e)
 		{
-			if (this.panelPricipal.Collapsed)
+			if (panelPricipal.Collapsed)
 			{
-				this.panelPricipal.HeaderPosition = HeaderPosition.Top;
+				panelPricipal.HeaderPosition = HeaderPosition.Top;
 			}
 		}
-
-		private void panelPricipal_PanelExpanded(object sender, EventArgs e)
+		private void PanelPricipal_PanelExpanded(object sender, EventArgs e)
 		{
-			if (!this.panelPricipal.Collapsed)
+			if (!panelPricipal.Collapsed)
 			{
-				this.panelPricipal.HeaderPosition = HeaderPosition.Left;
+				panelPricipal.HeaderPosition = HeaderPosition.Left;
 			}
 		}
-        
-        
-       #region Properties InvoiceDetails
-       
-       private int _Id;
-		public  int Id
-		{
-			get
-			{
-				bool result = int.TryParse(textBoxId.Text, out _Id);
-			    if (!result)
-			         textBoxId.Text = "0";
-				return _Id;
-			}
-			set
-			{
-				textBoxId.Text = value.ToString();
-				this.toolBarButtonInfo.ToolTipText =   $"{GetCreated()} : {Creado} {FechaCreado}  {GetModified()}: {Modificado} {FechaModificado}";
-				this.panelPricipal.Text = GetTitle() + " (" + value.ToString() + ")";
-			}
-		}
-		
-		private int _InvoiceId;
-		public  int InvoiceId
-		{
-			get
-			{
-				if(textBoxInvoiceId.Text != null)
-					_InvoiceId = Convert.ToInt32(textBoxInvoiceId.Text);
-
-				return _InvoiceId;
-			}
-			set
-			{
-				_InvoiceId = value;
-				textBoxInvoiceId.Text = value.ToString();
-				if(invoiceDetailsPresenter != null)
-					invoiceDetailsPresenter.FillDataSource();
-			}
-		}
-		
-		public int Qty
-		{
-			get
-			{
-				 return (int) numericUpDownQty.Value;
-			}
-			set
-			{
-				numericUpDownQty.Value  = value;
-			}
-		}
-		
-		public decimal Price
-		{
-			get
-			{
-				 return (decimal) numericUpDownPrice.Value;
-			}
-			set
-			{
-				numericUpDownPrice.Value  = value;
-			}
-		}
-		
-		public decimal TotalItbis
-		{
-			get
-			{
-				 return (decimal) numericUpDownTotalItbis.Value;
-			}
-			set
-			{
-				numericUpDownTotalItbis.Value  = value;
-			}
-		}
-		
-		public decimal SubTotal
-		{
-			get
-			{
-				 return (decimal) numericUpDownSubTotal.Value;
-			}
-			set
-			{
-				numericUpDownSubTotal.Value  = value;
-			}
-		}
-		
-		public decimal Total
-		{
-			get
-			{
-				 return (decimal) numericUpDownTotal.Value;
-			}
-			set
-			{
-				numericUpDownTotal.Value  = value;
-			}
-		}
-		
-		public bool IsActivo
-		{
-			get
-			{
-				 return checkBoxIsActivo.Checked;
-			}
-			set
-			{
-				checkBoxIsActivo.Checked  = value;
-			}
-		}
-		
-		public  string Creado
-		{
-			get; set;
-		}
-		
-		public  DateTime FechaCreado
-		{
-			get; set;
-		}
-		
-		public  string Modificado
-		{
-			get; set;
-		}
-		
-		public  DateTime FechaModificado
-		{
-			get; set;
-		}
-        public object DataGridSource { 
-			get => dataGridViewInvoiceDetails.DataSource; 
-			set => dataGridViewInvoiceDetails.DataSource = value; 
-		}
-        
-		public int productId {
-            get => (int)userControlSearchNumericProducts.Value;
-			set => userControlSearchNumericProducts.Value = value; 
-		}
-        
-		public long TenantId { get; set; }
-
-
-
-        #endregion
-
-        private void toolBar1_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
+        private void ToolBar1_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
         {
             switch (e.Button.Name)
             {
                 case ToolBarButtonConstants.Nuevo:
-                    invoiceDetailsPresenter.Add();
+                    _invoiceDetailsPresenter.Add();
                     CanEdit = true;
                     break;
 
@@ -325,7 +253,7 @@ namespace CommonUserControls
 
                     try
                     {
-                        if (invoiceDetailsPresenter.Save())
+                        if (_invoiceDetailsPresenter.Save())
                         {
                             AlertBox.Show(GetMessageSavedFields());
                             CanEdit = false;
@@ -345,14 +273,14 @@ namespace CommonUserControls
 
                 case ToolBarButtonConstants.Cancelar:
                     ClearErrorsValidations();
-                    invoiceDetailsPresenter.Undo();
+                    _invoiceDetailsPresenter.Undo();
                     CanEdit = false;
                     break;
 
                 case ToolBarButtonConstants.Eliminar:
                     try
                     {
-                        if( invoiceDetailsPresenter.Delete())
+                        if( _invoiceDetailsPresenter.Delete())
                         {
                             AlertBox.Show(GetMessageDeletedFields());
                             CanEdit = true;
@@ -360,28 +288,28 @@ namespace CommonUserControls
                     }
                     catch (Exception ex)
                     {
-                        invoiceDetailsPresenter.Add();
+                        _invoiceDetailsPresenter.Add();
                         MessageBox.Show(GetMessageException() + ex.Message, GetMessageNotice(), MessageBoxButtons.OK,MessageBoxIcon.Error);
                     }
                     break;
 
                 case ToolBarButtonConstants.Buscar:
                 
-                    WindowSearch<InvoiceDetails> search = new WindowSearch<InvoiceDetails>(GeneralSearchFactory.MakeInvoiceDetailsSearch(_context), GetMessageFinding() + " " + GetTitle());
+                    CommonWindowSearch<InvoiceDetails> search = new CommonWindowSearch<InvoiceDetails>(GeneralSearchFactory.MakeInvoiceDetailsSearch(_context), GetMessageFinding() + " " + GetTitle());
                     search.FormClosed += (senderX, eX) => {
                         try
                         {
                             if (search.Id != null)
                             {
-                                if(this.invoiceDetailsPresenter.Find(search.Id))
+                                if(this._invoiceDetailsPresenter.Find(search.Id))
                                 {
                                     CanEdit = true;
                                     ClearErrorsValidations();
-                                    toolBarButtonRecargaCombo_Click(null,null);
+                                    ToolBarButtonRecargaCombo_Click(null,null);
                                 }
                             }
 							
-							enableDisableControls();
+							EnableDisableControls();
                         }
                         catch (Exception ex)
                         {
@@ -398,7 +326,7 @@ namespace CommonUserControls
                 
                     try
                     {
-                        using (WorkBook wb = HelperDataTableToExcel.MakeDataTableToExcel(this.invoiceDetailsPresenter.GetDataTable()))
+                        using (WorkBook wb = HelperDataTableToExcel.MakeDataTableToExcel(this._invoiceDetailsPresenter.GetDataTable()))
                         {
                         	using (Stream stream = new MemoryStream())
                         	{
@@ -420,27 +348,97 @@ namespace CommonUserControls
             
             this.toolBarButtonInfo.ToolTipText =   $"{GetCreated()} : {Creado} {FechaCreado}  {GetModified()}: {Modificado} {FechaModificado}";
         }
-
-      
-
-        public void ShowErrors()
-        {
-            helperControls.ValidateMembers(invoiceDetailsPresenter.ValidationResult);
-
-        }
-
-        public void ClearErrorsValidations()
-        {
-            helperControls.ClearErrors(invoiceDetailsPresenter.ValidationResult);
-        }
-
-        private void dataGridViewInvoiceDetails_DoubleClick(object sender, EventArgs e)
+        private void DataGridViewInvoiceDetails_DoubleClick(object sender, EventArgs e)
         {
 			if(dataGridViewInvoiceDetails.SelectedRows.Count > 0)
             {
 				int id = (int)dataGridViewInvoiceDetails.SelectedRows[0][nameof(InvoiceDetails.Id)].Value;
-				invoiceDetailsPresenter.Find(id);
+				_invoiceDetailsPresenter.Find(id);
             }
         }
-    }
+
+
+		private void FillUsercontrolSearch()
+		{
+			userControlSearchNumericProducts.DisplayMember = nameof(Products.Description);
+			userControlSearchNumericProducts.ValueMember = nameof(Products.Id);
+			userControlSearchNumericProducts.SearchNumericDataType = SearchNumericDataType.Integer;
+			userControlSearchNumericProducts.SetDataSource(new SearchProductsPresenter(_context));
+		}
+		private void CalculateInvoiceHeaderTotals()
+		{
+			Invoices invoice = _context.Invoices.FirstOrDefault(i => i.Id == InvoiceId);
+			if (invoice != null)
+			{
+				invoice.SubTotal = 0;
+				invoice.TotalItbis = 0;
+				invoice.Total = 0;
+
+				List<InvoiceDetails> detalles = _context.InvoiceDetails.Where(i => i.InvoiceId == invoice.Id).ToList();
+				foreach (InvoiceDetails detalle in detalles)
+				{
+					invoice.SubTotal += detalle.SubTotal;
+					invoice.TotalItbis += detalle.TotalItbis;
+					invoice.Total += detalle.Total;
+				}
+
+				_context.Entry(invoice).State = System.Data.Entity.EntityState.Modified;
+				_context.SaveChanges();
+				
+				SaveHeaderChangesAfterAction?.Invoke();
+			}
+		}
+		private void CalcularTotales()
+		{
+			/*SubTotal = Qty * Price;
+			TotalItbis = SubTotal * 0.18m;
+			Total = SubTotal + TotalItbis;*/
+		}
+		private void SetControls()
+		{
+			textBoxId.Tag = nameof(InvoiceDetails.Id);
+			textBoxInvoiceId.Tag = nameof(InvoiceDetails.InvoiceId);
+			numericUpDownQty.Tag = nameof(InvoiceDetails.Qty);
+			numericUpDownPrice.Tag = nameof(InvoiceDetails.Price);
+			numericUpDownTotalItbis.Tag = nameof(InvoiceDetails.TotalItbis);
+			numericUpDownSubTotal.Tag = nameof(InvoiceDetails.SubTotal);
+			numericUpDownTotal.Tag = nameof(InvoiceDetails.Total);
+			userControlSearchNumericProducts.Tag = nameof(InvoiceDetails.productId);
+			checkBoxIsActivo.Tag = nameof(InvoiceDetails.IsActivo);
+		}
+		private void EnableDisableControls()
+		{
+
+			toolBarButtonNuevo.Enabled = !CanEdit;
+			toolBarButtonSalvar.Enabled = CanEdit;
+			toolBarButtonEditar.Enabled = !CanEdit;
+			toolBarButtonCancelar.Enabled = CanEdit;
+			toolBarButtonEliminar.Enabled = !CanEdit;
+
+			textBoxId.ReadOnly = true;
+			textBoxInvoiceId.ReadOnly = true;
+			numericUpDownQty.ReadOnly = !CanEdit;
+			numericUpDownPrice.ReadOnly = !CanEdit;
+			numericUpDownTotalItbis.ReadOnly = !CanEdit;
+			numericUpDownSubTotal.ReadOnly = !CanEdit;
+			numericUpDownTotal.ReadOnly = !CanEdit;
+			checkBoxIsActivo.ReadOnly = !CanEdit;
+
+		}
+		public void ShowErrors()
+		{
+			_helperControls.ValidateMembers(_invoiceDetailsPresenter.ValidationResult);
+
+		}
+		public void ClearErrorsValidations()
+		{
+			_helperControls.ClearErrors(_invoiceDetailsPresenter.ValidationResult);
+		}
+		
+		public DataGridView GetGrid()
+        {
+			return dataGridViewInvoiceDetails;
+		}
+	}
+
 }

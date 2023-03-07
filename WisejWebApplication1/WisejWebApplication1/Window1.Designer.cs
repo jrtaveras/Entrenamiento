@@ -45,9 +45,11 @@ namespace WisejWebApplication1
             this.tabControl = new Wisej.Web.TabControl();
             this.tabPageClientes = new Wisej.Web.TabPage();
             this.tabPageTiposClientes = new Wisej.Web.TabPage();
-            this.tabOrderManager1 = new Wisej.Web.TabOrderManager(this.components);
             this.tabPageFacturas = new Wisej.Web.TabPage();
             this.tabPageProductos = new Wisej.Web.TabPage();
+            this.tabOrderManager1 = new Wisej.Web.TabOrderManager(this.components);
+            this.buttonGoogleMap = new Wisej.Web.Button();
+            this.tabPageGoogleMaps = new Wisej.Web.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumero1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumeric2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResultado)).BeginInit();
@@ -185,6 +187,7 @@ namespace WisejWebApplication1
             this.tabControl.Controls.Add(this.tabPageTiposClientes);
             this.tabControl.Controls.Add(this.tabPageFacturas);
             this.tabControl.Controls.Add(this.tabPageProductos);
+            this.tabControl.Controls.Add(this.tabPageGoogleMaps);
             this.tabControl.Location = new System.Drawing.Point(277, 3);
             this.tabControl.Name = "tabControl";
             this.tabControl.PageInsets = new Wisej.Web.Padding(1, 35, 1, 1);
@@ -219,10 +222,27 @@ namespace WisejWebApplication1
             this.tabPageProductos.Size = new System.Drawing.Size(864, 527);
             this.tabPageProductos.Text = "Productos";
             // 
+            // buttonGoogleMap
+            // 
+            this.buttonGoogleMap.Location = new System.Drawing.Point(119, 418);
+            this.buttonGoogleMap.Name = "buttonGoogleMap";
+            this.buttonGoogleMap.Size = new System.Drawing.Size(120, 27);
+            this.buttonGoogleMap.TabIndex = 13;
+            this.buttonGoogleMap.Text = "Google Maps";
+            this.buttonGoogleMap.Click += new System.EventHandler(this.buttonGoogleMap_Click);
+            // 
+            // tabPageGoogleMaps
+            // 
+            this.tabPageGoogleMaps.Location = new System.Drawing.Point(1, 35);
+            this.tabPageGoogleMaps.Name = "tabPageGoogleMaps";
+            this.tabPageGoogleMaps.Size = new System.Drawing.Size(864, 527);
+            this.tabPageGoogleMaps.Text = "Mapas";
+            // 
             // Window1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = Wisej.Web.AutoScaleMode.Font;
+            this.Controls.Add(this.buttonGoogleMap);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
@@ -237,7 +257,7 @@ namespace WisejWebApplication1
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "Window1";
-            this.Size = new System.Drawing.Size(1129, 510);
+            this.Size = new System.Drawing.Size(1027, 402);
             this.Text = "Window1";
             this.Load += new System.EventHandler(this.Window1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumero1)).EndInit();
@@ -269,6 +289,8 @@ namespace WisejWebApplication1
         private Wisej.Web.TabPage tabPageFacturas;
         private Wisej.Web.TabPage tabPageProductos;
         private Wisej.Web.TabOrderManager tabOrderManager1;
+        private Wisej.Web.Button buttonGoogleMap;
+        private Wisej.Web.TabPage tabPageGoogleMaps;
     }
 }
 

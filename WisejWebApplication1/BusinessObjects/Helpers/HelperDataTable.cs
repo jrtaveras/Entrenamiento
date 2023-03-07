@@ -13,7 +13,7 @@ namespace BusinessObjects.Helpers
 {
     public static class HelperDataTable {
 
-        public static DataTable ToDataTable<T>(this IList<T> data, string tableName)
+        public static DataTable ToDataTable<T>(this IEnumerable<T> data, string tableName)
         {
             PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(typeof(T));
             DataTable table = new DataTable(tableName);

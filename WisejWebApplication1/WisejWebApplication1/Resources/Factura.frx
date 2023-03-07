@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/01/2023 11:10:59" ReportInfo.Modified="03/02/2023 16:37:24" ReportInfo.CreatorVersion="2023.1.13.0">
+  <Dictionary>
+	  <MsSqlDataConnection Name="ViewInvoiceConection" ConnectionString="rijcmlqSjayUpXJRGTJsFc1+4W+0171q9IHBUygp0ZwCxhfLJyGWo/l/4Fmq2HUeAG2nD//BvPHw4cKWL/xz8DJCj4jmu6y/IU8qsv6P/SYQZ4fP5Ga7+AGPRcggjGxelU0mEOR0rv6ua3m434uDVhXGWWWEf9WZ26qXn3XDVPSFrr/j0M1Xx2FhROEl1a8ZUeUUmy2">
+      <TableDataSource Name="ViewInvoices" DataType="System.Int32" Enabled="true" TableName="ViewInvoices">
+        <Column Name="Description" DataType="System.String"/>
+        <Column Name="ProductId" DataType="System.Int32"/>
+        <Column Name="CustName" DataType="System.String"/>
+        <Column Name="Adress" DataType="System.String"/>
+        <Column Name="Qty" DataType="System.Int32"/>
+        <Column Name="Price" DataType="System.Decimal"/>
+        <Column Name="SubTotal" DataType="System.Decimal"/>
+        <Column Name="TotalItbis" DataType="System.Decimal"/>
+        <Column Name="Total" DataType="System.Decimal"/>
+        <Column Name="Id" DataType="System.Int32"/>
+        <Column Name="FechaCreado" DataType="System.DateTime"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Total Name="SubTotalGeneral" Expression="[ViewInvoices.SubTotal]" Evaluator="Data1" PrintOn="GroupFooter2"/>
+    <Total Name="TotalItbis" Expression="[ViewInvoices.TotalItbis]" Evaluator="Data1" PrintOn="GroupFooter2"/>
+    <Total Name="TotalFinal" Expression="[ViewInvoices.Total]" Evaluator="Data1" PrintOn="GroupFooter2"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="47.25">
+      <TextObject Name="TextInvoiceTitle" Left="292.95" Top="9.45" Width="122.85" Height="37.8" Text="Factura" HorzAlign="Center" Font="Arial, 16pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="49.92" Width="718.2" Height="37.8">
+      <TextObject Name="TextPageNumber" Left="396.9" Top="9.45" Width="311.85" Height="28.35" Text="Página: [Page#]/[TotalPages#]" HorzAlign="Right" Font="Arial, 14pt, style=Bold"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader2" Top="90.38" Width="718.2" Height="179.55" StartNewPage="true" Condition="[ViewInvoices.Id]">
+      <ContainerObject Name="Container1" Left="9.45" Top="132.3" Width="699.3" Height="37.8" Fill.Color="Gray">
+        <TextObject Name="TextProductName" Left="85.05" Top="9.45" Width="113.4" Height="18.9" Text="Producto" Font="Arial, 14pt, style=Bold"/>
+        <TextObject Name="TextQty" Left="245.7" Top="9.45" Width="56.7" Height="18.9" Text="Qty" Font="Arial, 14pt, style=Bold"/>
+        <TextObject Name="TextPrice" Left="321.3" Top="9.45" Width="66.15" Height="18.9" Text="Price" Font="Arial, 14pt, style=Bold"/>
+        <TextObject Name="TextSubTotal" Left="415.8" Top="9.45" Width="94.5" Height="18.9" Text="SubTotal" Font="Arial, 14pt, style=Bold"/>
+        <TextObject Name="TextItbis" Left="538.65" Top="9.45" Width="94.5" Height="18.9" Text="ITBIS" Font="Arial, 14pt, style=Bold"/>
+        <TextObject Name="TextTotal" Left="633.15" Top="9.45" Width="94.5" Height="18.9" Text="Total" Font="Arial, 14pt, style=Bold"/>
+        <TextObject Name="Text8" Top="9.45" Width="113.4" Height="18.9" Text="Código" Font="Arial, 14pt, style=Bold"/>
+      </ContainerObject>
+      <TextObject Name="Text1" Left="9.45" Top="37.8" Width="359.1" Height="18.9" Text="Factura #: [ViewInvoices.Id]" Font="Arial, 14pt, style=Bold"/>
+      <TextObject Name="Text5" Left="9.45" Top="66.15" Width="359.1" Height="18.9" Text="Cliente #: [ViewInvoices.CustName]" Font="Arial, 14pt, style=Bold"/>
+      <TextObject Name="Text6" Left="9.45" Top="94.5" Width="349.65" Height="18.9" Text="Direccióm #: [ViewInvoices.Adress]" Font="Arial, 14pt, style=Bold"/>
+      <TextObject Name="Text7" Left="396.9" Top="9.45" Width="311.85" Height="28.35" Text="Fecha: [FormatDateTime([ViewInvoices.FechaCreado],&quot;dd/MM/yyyy&quot;)]" HorzAlign="Right" Font="Arial, 14pt, style=Bold"/>
+      <DataBand Name="Data1" Top="272.6" Width="718.2" Height="37.8" DataSource="ViewInvoices">
+        <TextObject Name="TextProductNameValue" Left="94.5" Top="9.45" Width="160.65" Height="18.9" Text="[ViewInvoices.Description]" Format="Currency" Format.UseLocale="true" Format.DecimalDigits="2" WordWrap="false" Font="Arial, 12pt, style=Bold" Trimming="EllipsisCharacter"/>
+        <TextObject Name="TextQtyValue" Left="189" Top="9.45" Width="113.4" Height="18.9" Text="[ViewInvoices.Qty]" Format="Currency" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" WordWrap="false" Font="Arial, 12pt, style=Bold" Trimming="EllipsisCharacter"/>
+        <TextObject Name="TextPriceValue" Left="274.05" Top="9.45" Width="113.4" Height="18.9" Text="[ViewInvoices.Price]" Format="Currency" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" WordWrap="false" Font="Arial, 12pt, style=Bold" Trimming="EllipsisCharacter"/>
+        <TextObject Name="TextSubTotalValue" Left="387.45" Top="9.45" Width="113.4" Height="18.9" Text="[ViewInvoices.SubTotal]" Format="Currency" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" WordWrap="false" Font="Arial, 12pt, style=Bold" Trimming="EllipsisCharacter"/>
+        <TextObject Name="TextItbisValue" Left="491.4" Top="9.45" Width="113.4" Height="18.9" Text="[ViewInvoices.TotalItbis]" Format="Currency" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" WordWrap="false" Font="Arial, 12pt, style=Bold" Trimming="EllipsisCharacter"/>
+        <TextObject Name="TextTotalValue" Left="595.35" Top="9.45" Width="113.4" Height="18.9" Text="[ViewInvoices.Total]" Format="Currency" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" WordWrap="false" Font="Arial, 12pt, style=Bold" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text9" Left="-9.45" Top="9.45" Width="75.6" Height="18.9" Text="[ViewInvoices.ProductId]" HorzAlign="Right" WordWrap="false" Font="Arial, 12pt, style=Bold" Trimming="EllipsisCharacter"/>
+        <Sort>
+          <Sort Expression="[ViewInvoices.Id]"/>
+          <Sort Expression="[ViewInvoices.ProductId]"/>
+        </Sort>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter2" Top="313.07" Width="718.2" Height="122.85">
+        <TextObject Name="Text2" Left="245.7" Top="37.8" Width="463.05" Height="28.35" Text="SubTotal: [FormatCurrency([SubTotalGeneral],2)]" HorzAlign="Right" Font="Arial, 13pt, style=Bold"/>
+        <TextObject Name="Text3" Left="245.7" Top="66.15" Width="463.05" Height="28.35" Text="ITBIS: [FormatCurrency([TotalItbis],2)]" HorzAlign="Right" Font="Arial, 13pt, style=Bold"/>
+        <TextObject Name="Text4" Left="245.7" Top="94.5" Width="463.05" Height="28.35" Text="Total: [FormatCurrency([TotalFinal], 2)]" HorzAlign="Right" Font="Arial, 13pt, style=Bold"/>
+      </GroupFooterBand>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="438.58" Width="718.2" Height="37.8"/>
+  </ReportPage>
+</Report>
