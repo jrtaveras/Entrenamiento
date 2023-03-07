@@ -8,6 +8,7 @@ using CommonUserControls;
 using Ninject;
 using Wisej.Web;
 using WisejWebApplication1.Modules;
+using WisejWebApplication1.UserControls;
 
 namespace WisejWebApplication1
 {
@@ -24,6 +25,7 @@ namespace WisejWebApplication1
 
             Bootstraper.InitBootstrapper(new CalcularModule());
             kernel = Bootstraper.Kernel();
+
         }
 
         private void initControls()
@@ -133,6 +135,17 @@ namespace WisejWebApplication1
                 userControlProducts.Dock = DockStyle.Fill;
             }
 
+        }
+
+        private void buttonGoogleMap_Click(object sender, EventArgs e)
+        {
+            if (tabPageGoogleMaps.Controls.Count == 0)
+            {
+                UserControlGoogleMap userControlGoogleMap = new UserControlGoogleMap();
+
+                tabPageGoogleMaps.Controls.Add(userControlGoogleMap);
+                userControlGoogleMap.Dock = DockStyle.Fill;
+            }
         }
 
     }

@@ -72,8 +72,8 @@ namespace CommonUserControls
             this.panelPricipal.TabStop = true;
             this.panelPricipal.Tag = "";
             this.panelPricipal.Text = "CustomerTypes";
-            this.panelPricipal.PanelCollapsed += new System.EventHandler(this.panelPricipal_PanelCollapsed);
-            this.panelPricipal.PanelExpanded += new System.EventHandler(this.panelPricipal_PanelExpanded);
+            this.panelPricipal.PanelCollapsed += new System.EventHandler(this.PanelPricipal_PanelCollapsed);
+            this.panelPricipal.PanelExpanded += new System.EventHandler(this.PanelPricipal_PanelExpanded);
             // 
             // panelContenido
             // 
@@ -221,7 +221,7 @@ namespace CommonUserControls
             this.toolBarButtonRecargaCombo.ImageSource = "resource.wx/Wisej.Ext.MaterialDesign/synchronization-button-with-two-arrows.svg?c" +
     "olor=toolbarText";
             this.toolBarButtonRecargaCombo.Name = "toolBarButtonRecargaCombo";
-            this.toolBarButtonRecargaCombo.Click += new System.EventHandler(this.toolBarButtonRecargaCombo_Click);
+            this.toolBarButtonRecargaCombo.Click += new System.EventHandler(this.ToolBarButtonRecargaCombo_Click);
             // 
             // dataGridView1
             // 
@@ -231,7 +231,7 @@ namespace CommonUserControls
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(650, 825);
             this.dataGridView1.TabIndex = 1;
-            this.dataGridView1.DoubleClick += new System.EventHandler(this.dataGridView1_DoubleClick);
+            this.dataGridView1.DoubleClick += new System.EventHandler(this.DataGridView1_DoubleClick);
             // 
             // UserControlCustomerTypes
             // 

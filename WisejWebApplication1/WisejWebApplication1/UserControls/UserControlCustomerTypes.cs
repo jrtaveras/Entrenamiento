@@ -23,200 +23,146 @@ namespace CommonUserControls
     public partial class UserControlCustomerTypes : UserControlBase, ICustomerTypes, IValidate, IDataSource
     {
 
-        private readonly IPresenter customerTypesPresenter;
-        private readonly HelperControlsToValidate helperControls;
+        private readonly IPresenter _customerTypesPresenter;
+        private readonly HelperControlsToValidate _helperControls;
+        
         private bool _canEdit;
-        
-      
-        private UserControlCustomerTypes(){
-             InitializeComponent();
-        }
-        
-        public UserControlCustomerTypes(IContext context):base(context)
-        {
-            Title = "CustomerTypes";
-            InitializeComponent();
-            setControls();
-            customerTypesPresenter = new CustomerTypesPresenter(context, this);
-            helperControls = new HelperControlsToValidate(this.panelPricipal);
-            this.toolBar1.ButtonClick += toolBar1_ButtonClick;
-            CanEdit  = true;
-
-            
-            try
-            {
-               
-                fillComboBox();
-                
-            }
-            catch(Exception ex )
-            {
-				MessageBox.Show(GetMessageException() + ex.Message, GetMessageNotice(), MessageBoxButtons.OK,MessageBoxIcon.Error);
-            }
-        }
-        
-        private void fillComboBox()
-        {
-                    
-        }
-        
-     
-        private void toolBarButtonRecargaCombo_Click(object sender, EventArgs e)
-		{
-			try
-			{
-                
-				fillComboBox();
-                
-                
-				
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(GetMessageException() + ex.Message, GetMessageNotice(), MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-		}
-        
-        private void setControls()
-        {
-            textBoxId.Tag = nameof(CustomerTypes.Id);
-			textBoxDescription.Tag = nameof(CustomerTypes.Description);
-			checkBoxIsActivo.Tag = nameof(CustomerTypes.IsActivo);
-			
-        }
-
-
-        public  bool CanEdit
+        public bool CanEdit
         {
             get
             {
                 return _canEdit;
             }
-            set {
-            
+            set
+            {
+
                 _canEdit = value;
-                
-                enableDisableControls();
+                EnableDisableControls();
             }
-        } 
-        
-        private void enableDisableControls() {
-        
-			toolBarButtonNuevo.Enabled = !CanEdit;
-			toolBarButtonSalvar.Enabled = CanEdit;
-			toolBarButtonEditar.Enabled = !CanEdit;
-			toolBarButtonCancelar.Enabled = CanEdit;
-			toolBarButtonEliminar.Enabled = !CanEdit;
+        }
 
-            textBoxId.ReadOnly = true;
-			textBoxDescription.ReadOnly = !CanEdit;
-			checkBoxIsActivo.ReadOnly = !CanEdit;
-			
-        
-		}
-        
-      
-        
-        private void panelPricipal_PanelCollapsed(object sender, EventArgs e)
-		{
-			if (this.panelPricipal.Collapsed)
-			{
-				this.panelPricipal.HeaderPosition = HeaderPosition.Top;
-			}
-		}
+        #region Properties CustomerTypes
 
-		private void panelPricipal_PanelExpanded(object sender, EventArgs e)
-		{
-			if (!this.panelPricipal.Collapsed)
-			{
-				this.panelPricipal.HeaderPosition = HeaderPosition.Left;
-			}
-		}
-        
-        
-       #region Properties CustomerTypes
-       
-       private int _Id;
-		public  int Id
-		{
-			get
-			{
-				bool result = int.TryParse(textBoxId.Text, out _Id);
-			    if (!result)
-			         textBoxId.Text = "0";
-				return _Id;
-			}
-			set
-			{
-				textBoxId.Text = value.ToString();
-				this.toolBarButtonInfo.ToolTipText =   $"{GetCreated()} : {Creado} {FechaCreado}  {GetModified()}: {Modificado} {FechaModificado}";
-				this.panelPricipal.Text = GetTitle() + " (" + value.ToString() + ")";
-			}
-		}
-		
-		public string Description
-		{
-			get
-			{
-				 return textBoxDescription.Text;
-			}
-			set
-			{
-				textBoxDescription.Text = value;
-			}
-		}
-		
-		public  long TenantId
-		{
-			get; set;
-		}
-		
-		public bool IsActivo
-		{
-			get
-			{
-				 return checkBoxIsActivo.Checked;
-			}
-			set
-			{
-				checkBoxIsActivo.Checked  = value;
-			}
-		}
-		
-		public  string Creado
-		{
-			get; set;
-		}
-		
-		public  DateTime FechaCreado
-		{
-			get; set;
-		}
-		
-		public  string Modificado
-		{
-			get; set;
-		}
-		
-		public  DateTime FechaModificado
-		{
-			get; set;
-		}
-        public object DataGridSource { 
-            get => dataGridView1.DataSource; 
-            set => dataGridView1.DataSource = value; 
+        private int _id;
+        public int Id
+        {
+            get
+            {
+                bool result = int.TryParse(textBoxId.Text, out _id);
+                if (result == false)
+                {
+                    textBoxId.Text = "0";
+                }
+                return _id;
+            }
+            set
+            {
+                textBoxId.Text = value.ToString();
+                toolBarButtonInfo.ToolTipText = $"{GetCreated()} : {Creado} {FechaCreado}  {GetModified()}: {Modificado} {FechaModificado}";
+                panelPricipal.Text = GetTitle() + " (" + value.ToString() + ")";
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                return textBoxDescription.Text;
+            }
+            set
+            {
+                textBoxDescription.Text = value;
+            }
+        }
+
+        public long TenantId
+        {
+            get; set;
+        }
+
+        public bool IsActivo
+        {
+            get
+            {
+                return checkBoxIsActivo.Checked;
+            }
+            set
+            {
+                checkBoxIsActivo.Checked = value;
+            }
+        }
+
+        public string Creado
+        {
+            get; set;
+        }
+
+        public DateTime FechaCreado
+        {
+            get; set;
+        }
+
+        public string Modificado
+        {
+            get; set;
+        }
+
+        public DateTime FechaModificado
+        {
+            get; set;
+        }
+        public object DataGridSource
+        {
+            get => dataGridView1.DataSource;
+            set => dataGridView1.DataSource = value;
         }
 
 
 
         #endregion
 
-        private void toolBar1_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
+        private UserControlCustomerTypes(){
+             InitializeComponent();
+        }
+        public UserControlCustomerTypes(IContext context):base(context)
+        {
+            InitializeComponent();
+            
+            Title = "CustomerTypes";
+            CanEdit  = true;
+            
+            SetControls();
+            
+            _customerTypesPresenter = new CustomerTypesPresenter(context, this);
+            _helperControls = new HelperControlsToValidate(panelPricipal);
+            toolBar1.ButtonClick += ToolBar1_ButtonClick;
+        }
+        
+
+        private void ToolBarButtonRecargaCombo_Click(object sender, EventArgs e)
+		{
+
+		}
+        private void PanelPricipal_PanelCollapsed(object sender, EventArgs e)
+		{
+			if (panelPricipal.Collapsed)
+			{
+				panelPricipal.HeaderPosition = HeaderPosition.Top;
+			}
+		}
+		private void PanelPricipal_PanelExpanded(object sender, EventArgs e)
+		{
+			if (!panelPricipal.Collapsed)
+			{
+				panelPricipal.HeaderPosition = HeaderPosition.Left;
+			}
+		}
+        private void ToolBar1_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
         {
             switch (e.Button.Name)
             {
                 case ToolBarButtonConstants.Nuevo:
-                    customerTypesPresenter.Add();
+                    _customerTypesPresenter.Add();
                     CanEdit = true;
                     break;
 
@@ -224,7 +170,7 @@ namespace CommonUserControls
 
                     try
                     {
-                        if (customerTypesPresenter.Save())
+                        if (_customerTypesPresenter.Save())
                         {
                             AlertBox.Show(GetMessageSavedFields());
                             CanEdit = false;
@@ -244,14 +190,14 @@ namespace CommonUserControls
 
                 case ToolBarButtonConstants.Cancelar:
                     ClearErrorsValidations();
-                    customerTypesPresenter.Undo();
+                    _customerTypesPresenter.Undo();
                     CanEdit = false;
                     break;
 
                 case ToolBarButtonConstants.Eliminar:
                     try
                     {
-                        if( customerTypesPresenter.Delete())
+                        if( _customerTypesPresenter.Delete())
                         {
                             AlertBox.Show(GetMessageDeletedFields());
                             CanEdit = true;
@@ -259,28 +205,28 @@ namespace CommonUserControls
                     }
                     catch (Exception ex)
                     {
-                        customerTypesPresenter.Add();
+                        _customerTypesPresenter.Add();
                         MessageBox.Show(GetMessageException() + ex.Message, GetMessageNotice(), MessageBoxButtons.OK,MessageBoxIcon.Error);
                     }
                     break;
 
                 case ToolBarButtonConstants.Buscar:
                 
-                    WindowSearch<CustomerTypes> search = new WindowSearch<CustomerTypes>(GeneralSearchFactory.MakeCustomerTypesSearch(_context), GetMessageFinding() + " " + GetTitle());
+                    CommonWindowSearch<CustomerTypes> search = new CommonWindowSearch<CustomerTypes>(GeneralSearchFactory.MakeCustomerTypesSearch(_context), GetMessageFinding() + " " + GetTitle());
                     search.FormClosed += (senderX, eX) => {
                         try
                         {
                             if (search.Id != null)
                             {
-                                if(this.customerTypesPresenter.Find(search.Id))
+                                if(this._customerTypesPresenter.Find(search.Id))
                                 {
                                     CanEdit = true;
                                     ClearErrorsValidations();
-                                    toolBarButtonRecargaCombo_Click(null,null);
+                                    ToolBarButtonRecargaCombo_Click(null,null);
                                 }
                             }
 							
-							enableDisableControls();
+							EnableDisableControls();
                         }
                         catch (Exception ex)
                         {
@@ -297,7 +243,7 @@ namespace CommonUserControls
                 
                     try
                     {
-                        using (WorkBook wb = HelperDataTableToExcel.MakeDataTableToExcel(this.customerTypesPresenter.GetDataTable()))
+                        using (WorkBook wb = HelperDataTableToExcel.MakeDataTableToExcel(this._customerTypesPresenter.GetDataTable()))
                         {
                         	using (Stream stream = new MemoryStream())
                         	{
@@ -319,28 +265,44 @@ namespace CommonUserControls
             
             this.toolBarButtonInfo.ToolTipText =   $"{GetCreated()} : {Creado} {FechaCreado}  {GetModified()}: {Modificado} {FechaModificado}";
         }
-
-      
-
-        public void ShowErrors()
-        {
-            helperControls.ValidateMembers(customerTypesPresenter.ValidationResult);
-
-        }
-
-        public void ClearErrorsValidations()
-        {
-            helperControls.ClearErrors(customerTypesPresenter.ValidationResult);
-        }
-
-        private void dataGridView1_DoubleClick(object sender, EventArgs e)
+        private void DataGridView1_DoubleClick(object sender, EventArgs e)
         {
             if(dataGridView1.SelectedRows.Count > 0)
             {
                 int id = (int) dataGridView1.SelectedRows[0][nameof(CustomerTypes.Id)].Value;
-                customerTypesPresenter.Find(id);
+                _customerTypesPresenter.Find(id);
             }
         }
 
+
+        private void SetControls()
+        {
+            textBoxId.Tag = nameof(CustomerTypes.Id);
+			textBoxDescription.Tag = nameof(CustomerTypes.Description);
+			checkBoxIsActivo.Tag = nameof(CustomerTypes.IsActivo);
+        }
+        private void EnableDisableControls() {
+        
+			toolBarButtonNuevo.Enabled = !CanEdit;
+			toolBarButtonSalvar.Enabled = CanEdit;
+			toolBarButtonEditar.Enabled = !CanEdit;
+			toolBarButtonCancelar.Enabled = CanEdit;
+			toolBarButtonEliminar.Enabled = !CanEdit;
+
+            textBoxId.ReadOnly = true;
+			textBoxDescription.ReadOnly = !CanEdit;
+			checkBoxIsActivo.ReadOnly = !CanEdit;
+
+		}
+        public void ClearErrorsValidations()
+        {
+            _helperControls.ClearErrors(_customerTypesPresenter.ValidationResult);
+        }
+        public void ShowErrors()
+        {
+            _helperControls.ValidateMembers(_customerTypesPresenter.ValidationResult);
+
+        }
+    
     }
 }

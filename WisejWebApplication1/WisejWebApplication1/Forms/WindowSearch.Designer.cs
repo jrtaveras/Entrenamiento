@@ -1,6 +1,6 @@
 ﻿namespace Common.Forms
 {
-    partial class WindowSearch<T>
+    partial class CommonWindowSearch<T>
     {
         /// <summary>
         /// Required designer variable.

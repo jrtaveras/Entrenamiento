@@ -14,7 +14,7 @@ using Common.Helpers;
 
 namespace Common.Forms
 {
-    public partial class WindowSearch<T> : Form, ISearch
+    public partial class CommonWindowSearch<T> : Form, ISearch
     {
 
         public object Id { get; set; }
@@ -22,7 +22,7 @@ namespace Common.Forms
         IContext _context;
         RegionalizationHelper _regionalizationHelper;
         CultureInfo _cultureInfo;
-        public WindowSearch(ISearchPresenter<T> search, string title)
+        public CommonWindowSearch(ISearchPresenter<T> search, string title)
         {
             InitializeComponent();
             _context = search.Context;
