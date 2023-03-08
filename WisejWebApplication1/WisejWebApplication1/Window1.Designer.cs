@@ -47,9 +47,9 @@ namespace WisejWebApplication1
             this.tabPageTiposClientes = new Wisej.Web.TabPage();
             this.tabPageFacturas = new Wisej.Web.TabPage();
             this.tabPageProductos = new Wisej.Web.TabPage();
+            this.tabPageGoogleMaps = new Wisej.Web.TabPage();
             this.tabOrderManager1 = new Wisej.Web.TabOrderManager(this.components);
             this.buttonGoogleMap = new Wisej.Web.Button();
-            this.tabPageGoogleMaps = new Wisej.Web.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumero1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumeric2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResultado)).BeginInit();
@@ -191,36 +191,43 @@ namespace WisejWebApplication1
             this.tabControl.Location = new System.Drawing.Point(277, 3);
             this.tabControl.Name = "tabControl";
             this.tabControl.PageInsets = new Wisej.Web.Padding(1, 35, 1, 1);
-            this.tabControl.Size = new System.Drawing.Size(866, 563);
+            this.tabControl.Size = new System.Drawing.Size(900, 760);
             this.tabControl.TabIndex = 12;
             // 
             // tabPageClientes
             // 
             this.tabPageClientes.Location = new System.Drawing.Point(1, 35);
             this.tabPageClientes.Name = "tabPageClientes";
-            this.tabPageClientes.Size = new System.Drawing.Size(864, 527);
+            this.tabPageClientes.Size = new System.Drawing.Size(898, 724);
             this.tabPageClientes.Text = "Clientes";
             // 
             // tabPageTiposClientes
             // 
             this.tabPageTiposClientes.Location = new System.Drawing.Point(1, 35);
             this.tabPageTiposClientes.Name = "tabPageTiposClientes";
-            this.tabPageTiposClientes.Size = new System.Drawing.Size(864, 527);
+            this.tabPageTiposClientes.Size = new System.Drawing.Size(898, 724);
             this.tabPageTiposClientes.Text = "Tipos de clientes";
             // 
             // tabPageFacturas
             // 
             this.tabPageFacturas.Location = new System.Drawing.Point(1, 35);
             this.tabPageFacturas.Name = "tabPageFacturas";
-            this.tabPageFacturas.Size = new System.Drawing.Size(864, 527);
+            this.tabPageFacturas.Size = new System.Drawing.Size(898, 724);
             this.tabPageFacturas.Text = "Facturas";
             // 
             // tabPageProductos
             // 
             this.tabPageProductos.Location = new System.Drawing.Point(1, 35);
             this.tabPageProductos.Name = "tabPageProductos";
-            this.tabPageProductos.Size = new System.Drawing.Size(864, 527);
+            this.tabPageProductos.Size = new System.Drawing.Size(898, 724);
             this.tabPageProductos.Text = "Productos";
+            // 
+            // tabPageGoogleMaps
+            // 
+            this.tabPageGoogleMaps.Location = new System.Drawing.Point(1, 35);
+            this.tabPageGoogleMaps.Name = "tabPageGoogleMaps";
+            this.tabPageGoogleMaps.Size = new System.Drawing.Size(898, 724);
+            this.tabPageGoogleMaps.Text = "Mapas";
             // 
             // buttonGoogleMap
             // 
@@ -231,17 +238,11 @@ namespace WisejWebApplication1
             this.buttonGoogleMap.Text = "Google Maps";
             this.buttonGoogleMap.Click += new System.EventHandler(this.buttonGoogleMap_Click);
             // 
-            // tabPageGoogleMaps
-            // 
-            this.tabPageGoogleMaps.Location = new System.Drawing.Point(1, 35);
-            this.tabPageGoogleMaps.Name = "tabPageGoogleMaps";
-            this.tabPageGoogleMaps.Size = new System.Drawing.Size(864, 527);
-            this.tabPageGoogleMaps.Text = "Mapas";
-            // 
             // Window1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = Wisej.Web.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.Controls.Add(this.buttonGoogleMap);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.button4);
@@ -257,7 +258,7 @@ namespace WisejWebApplication1
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "Window1";
-            this.Size = new System.Drawing.Size(1027, 402);
+            this.Size = new System.Drawing.Size(1068, 399);
             this.Text = "Window1";
             this.Load += new System.EventHandler(this.Window1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumero1)).EndInit();

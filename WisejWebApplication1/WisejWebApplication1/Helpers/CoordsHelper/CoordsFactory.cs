@@ -11,7 +11,7 @@ namespace WisejWebApplication1.Helpers.CoordsHelper
 {
     public static class CoordsFactory
     {
-        public static readonly LatLng Origin = new Wisej.Web.Ext.GoogleMaps.LatLng(){Lat = 18.4286193,Lng = -69.9901347};
+        public static readonly LatLng Origin = new LatLng(){Lat = 18.4286193,Lng = -69.9901347};
 
         public readonly static LatLng[] Coords = {
 
@@ -43,13 +43,13 @@ namespace WisejWebApplication1.Helpers.CoordsHelper
             new LatLng() { Lat = 18.4785774, Lng = -69.8681807 }, //26 - Faro a Colón, Santo Domingo Este
             new LatLng() { Lat = 18.4685891, Lng = -69.8409253 }, //27 - Mixer Bar and Lounge
             new LatLng() { Lat = 18.4807191, Lng = -69.8113151 }, //28 - San Miguel industries SDO this (KOLA REAL)
-            new LatLng() { Lat = 18.4748286, Lng = -69.7822823}, //29 - La Cueva del Edén
+            new LatLng() { Lat = 18.4747771, Lng = -69.7821577}, //29 - La Cueva del Edén
             new LatLng() { Lat = 18.4762166, Lng = -69.7539933 }, //30 - Club of the Directorate General of Customs (DGA)
         };
         
-        public static List<GoogleMapRouteLocation> GetMapLocations()
+        public static IEnumerable<GoogleMapRouteLocation> GetMapLocations()
         {
-            return Coords.Select(c => c.ToMapLocation()).ToList();
+            return Coords.Select(c => c.ToMapLocation());
         }
 
         public static GraphhopperService[] GetGrassHopperServices()
