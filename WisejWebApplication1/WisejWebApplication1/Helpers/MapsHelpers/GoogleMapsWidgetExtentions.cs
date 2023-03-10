@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Wisej.Web.Ext.GoogleMaps;
 using WisejWebApplication1.DTOS;
+using WisejWebApplication1.DTOS.GoogleMaps.Direction;
 
 namespace WisejWebApplication1.Helpers.MapsHelpers
 {
@@ -17,17 +18,17 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
         /// <param name="map">The current <see cref="GoogleMap"/> instance</param>
         /// <param name="baseUrl">The base url to use to make the petition</param>
         /// <param name="restClient">The <see cref="RestClient"/> client to use to look for</param>
-        /// <param name="directionRequest">The <see cref="DirectionRequest"/> object to use to create the url params to look for dhe optimize route</param>
+        /// <param name="directionRequest">The <see cref="GoogleMapsDirectionRequest"/> object to use to create the url params to look for dhe optimize route</param>
         /// <param name="limit">A limit to segment the routes</param>
         /// <remarks>
         /// Each petition will be segment using the <paramref name="limit"/> and taking the last stop as the new origin stop for the new route petition
         /// </remarks>
         public static void CalculateOptimizeRoute(this GoogleMap map, string baseUrl,
-            RestClient restClient, DirectionRequest directionRequest, int limit = 10)
+            RestClient restClient, GoogleMapsDirectionRequest directionRequest, int limit = 10)
         {
 
             //Create another direction to represent a part of the route
-            DirectionRequest directionChunk = new DirectionRequest()
+            GoogleMapsDirectionRequest directionChunk = new GoogleMapsDirectionRequest()
             {
                 Origin = directionRequest.Origin,
                 Destination = directionRequest.Origin,
@@ -52,7 +53,7 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
                     }
 
                     //Creating a new direction with the last waypoint as origin
-                    directionChunk = new DirectionRequest()
+                    directionChunk = new GoogleMapsDirectionRequest()
                     {
                         Origin = lastWayPoint,
                         Destination = lastWayPoint,
@@ -86,7 +87,7 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
         /// This method is the one who draw the lines between each point
         public static string DrawRoutes(this GoogleMap map,
             RestClient restClient, string baseUrl, 
-            DirectionRequest directionRequest,
+            GoogleMapsDirectionRequest directionRequest,
             int displayStartIndex, bool omitStartMarkerForFirstIteration = false)
         {
             string url = map.CreateDirectionUrl(baseUrl, directionRequest);
@@ -145,13 +146,13 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
         }
 
         /// <summary>
-        /// Generates the string representation of the current <see cref="DirectionRequest"/> 
+        /// Generates the string representation of the current <see cref="GoogleMapsDirectionRequest"/> 
         /// </summary>
         /// <param name="map"></param>
         /// <param name="baseUrl"></param>
         /// <param name="direction"></param>
-        /// <returns>An <see cref="string"/> representation of the current <see cref="DirectionRequest"/></returns>
-        public static string CreateDirectionUrl(this GoogleMap map, string baseUrl, DirectionRequest direction)
+        /// <returns>An <see cref="string"/> representation of the current <see cref="GoogleMapsDirectionRequest"/></returns>
+        public static string CreateDirectionUrl(this GoogleMap map, string baseUrl, GoogleMapsDirectionRequest direction)
         {
             string origin = direction.Origin;
             string destination = direction.Destination;

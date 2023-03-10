@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Wisej.Web;
 using Wisej.Web.Ext.GoogleMaps;
-using WisejWebApplication1.DTOS;
+using WisejWebApplication1.DTOS.GoogleMaps.Direction;
+using WisejWebApplication1.DTOS.GoogleMaps.GeoCode;
 using WisejWebApplication1.DTOS.GoogleRoutes;
 using WisejWebApplication1.DTOS.GoogleRoutes.JsonObjects;
 using WisejWebApplication1.DTOS.GrassHopperApi;
 using WisejWebApplication1.DTOS.GrassHopperApi.JsonObjects;
-using WisejWebApplication1.Helpers.CoordsHelper;
 using WisejWebApplication1.Helpers.MapsHelpers;
 
 namespace WisejWebApplication1.UserControls
@@ -19,12 +19,20 @@ namespace WisejWebApplication1.UserControls
     {
         private GoogleMap _googleMap;
         private readonly RestClient _restClient;
+        private List<LatLng> _points;
 
         private enum MapServices
         {
             GoogleMapsDirection,
             GoogleMapsRoutes,
             GraphHooper,
+        }
+
+        private enum LocationTypes
+        {
+            Direccion,
+            Coordenadas,
+            PlaceID,
         }
 
         public UserControlGoogleMap()
@@ -34,10 +42,14 @@ namespace WisejWebApplication1.UserControls
             _restClient = new RestClient();
 
             ComboBoxMapServices.DataSource = Enum.GetNames(typeof(MapServices));
+            ComboBoxLocationTypes.DataSource = Enum.GetNames(typeof(LocationTypes));
+
             PanelMapServices.Enabled = false;
+            
+            _points = new List<LatLng>();
         }
 
-        private void CalculateRouteUsingGoogleDirectionAPI(string apiKeyGoogleMapsDirection)
+        private void CalculateRouteUsingGoogleDirectionAPI(string apiKeyGoogleMapsDirection, LatLng origin, LatLng destination, LatLng [] wayPoints)
         {
             try
             {
@@ -45,11 +57,11 @@ namespace WisejWebApplication1.UserControls
                 _googleMap.ApiKey = _googleMap.ApiKey ?? apiKeyGoogleMapsDirection;
 
                 string _baseUrl = "https://maps.googleapis.com/maps/api/directions/json";
-                DirectionRequest directionRequest = new DirectionRequest
+                GoogleMapsDirectionRequest directionRequest = new GoogleMapsDirectionRequest
                 (
-                    origin: CoordsFactory.Origin.ToGoogleMapString(),
-                    destination: CoordsFactory.Origin.ToGoogleMapString(),
-                    wayPoints: CoordsFactory.Coords.Take(20).ToList(),
+                    origin: origin,
+                    destination: destination,
+                    wayPoints: wayPoints,
                     optimizeRoutes: true
                 );
 
@@ -98,7 +110,7 @@ namespace WisejWebApplication1.UserControls
             }
             
         }
-        private void CalculateRouteUsingGraphHopperAPI(string apiKeyGraphHopper)
+        private void CalculateRouteUsingGraphHopperAPI(string apiKeyGraphHopper, LatLng origin, LatLng[] wayPoints)
         {
             string baseUrl = $"https://graphhopper.com/api/1/vrp?key={apiKeyGraphHopper}";
 
@@ -109,12 +121,12 @@ namespace WisejWebApplication1.UserControls
                     new GraphhopperVehicle()
                     {
                         VehicleId = "Schad vehicle",
-                        StartAddress = CoordsFactory.Origin.ToGrassHooperAddress(),
-                        MaxJobs = CoordsFactory.Coords.Length,
-                        ReturnToDepot = false
+                        StartAddress = origin.ToGrassHooperAddress(),
+                        MaxJobs = wayPoints.Length,
+                        ReturnToDepot = false,
                     },
                 },
-                Services = CoordsFactory.GetGrassHopperServices()
+                Services = wayPoints.Select(g => g.ToGraphhopperService()).ToArray()
             };
 
             RestRequest request = new RestRequest(baseUrl);
@@ -160,14 +172,14 @@ namespace WisejWebApplication1.UserControls
             }
 
         }
-        private void CalculateRouteUsingGoogleRouteAPI(string apiKeyGoogleMapsRoute)
+        private void CalculateRouteUsingGoogleRouteAPI(string apiKeyGoogleMapsRoute, LatLng origin, LatLng destination, LatLng[] wayPoints)
         {
             string baseUrl = $"https://routes.googleapis.com/directions/v2:computeRoutes?key={apiKeyGoogleMapsRoute}";
             var jsonParams = new GoogleMapRouteRequest()
             {
-                Origin = CoordsFactory.Origin.ToMapLocation(),
-                Destination = CoordsFactory.Origin.ToMapLocation(),
-                Intermediates = CoordsFactory.GetMapLocations().Take(22).ToList(),
+                Origin = origin.ToMapLocation(),
+                Destination = destination.ToMapLocation(),
+                Intermediates = wayPoints.Select(w => w.ToMapLocation()).ToList(),
                 TravelMode = "DRIVE",
                 OptimizeWaypointOrder = true
             };
@@ -218,6 +230,41 @@ namespace WisejWebApplication1.UserControls
             }
         }
 
+        private LatLng GetCoordsWithStringDirectionUsingGoogleGeoCodeAPI(string apiKeyGoogleMaps, string direction, bool isPlaceId = false)
+        {
+            try
+            {
+                //if google map already has a key then use the key
+                _googleMap.ApiKey = _googleMap.ApiKey ?? apiKeyGoogleMaps;
+
+                string _baseUrl = $"https://maps.googleapis.com/maps/api/geocode/json?address={direction}&key={apiKeyGoogleMaps}";
+
+                GoogleMapGeocodeRequest requestObj = isPlaceId 
+                    ? GoogleMapGeocodeRequest.CreateWithPlaceId(direction) 
+                    : GoogleMapGeocodeRequest.CreateWithAddress(direction);
+
+                RestRequest request = new RestRequest(_baseUrl);
+                request.AddBody(requestObj.ToJSON());
+
+                RestResponse result = _restClient.Post(request);
+
+                if (result.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    string content = result.Content;
+                    GoogleMapsGeoCodeResponse dTOGoogleMaps = JsonConvert.DeserializeObject<GoogleMapsGeoCodeResponse>(content);
+
+                    GoogleMapsGeoCodeResult geoCodeResult = dTOGoogleMaps.Results.FirstOrDefault();
+
+                    return geoCodeResult?.Geometry?.Location?.ToLatLng();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return null;
+        }
 
         private void GoogleMap_Appear(object sender, EventArgs e)
         {
@@ -262,6 +309,12 @@ namespace WisejWebApplication1.UserControls
                     return;
                 }
 
+                if(_points.Count < 3)
+                {
+                    AlertBox.Show("Debe introducir al menos 3 puntos", MessageBoxIcon.Warning);
+                    return;
+                }
+
                 _googleMap.ClearMarkers();
                 _googleMap.ClearPolyLines();
 
@@ -270,13 +323,27 @@ namespace WisejWebApplication1.UserControls
                 switch (result)
                 {
                     case MapServices.GoogleMapsDirection:
-                        CalculateRouteUsingGoogleDirectionAPI(apiKeyService);
+                        CalculateRouteUsingGoogleDirectionAPI(
+                            apiKeyService, 
+                            origin: _points[0], 
+                            destination: _points[0],
+                            wayPoints: _points.Skip(1).ToArray()
+                        );
                         break;
                     case MapServices.GoogleMapsRoutes:
-                        CalculateRouteUsingGoogleRouteAPI(apiKeyService);
+                        CalculateRouteUsingGoogleRouteAPI(
+                            apiKeyService,
+                            origin: _points[0],
+                            destination: _points[0],
+                            wayPoints: _points.Skip(1).ToArray()
+                        );
                         break;
                     case MapServices.GraphHooper:
-                        CalculateRouteUsingGraphHopperAPI(apiKeyService);
+                        CalculateRouteUsingGraphHopperAPI(
+                            apiKeyService,
+                            origin: _points[0],
+                            wayPoints: _points.Skip(1).ToArray()
+                        );
                         break;
                     default:
                         break;
@@ -288,6 +355,72 @@ namespace WisejWebApplication1.UserControls
                 AlertBox.Show("Ha ocurrido un error al calcular las rutas, verifique que el api key del servicio esté correcto", MessageBoxIcon.Warning);
             }
             
+        }
+
+        private void ButtonAddLocation_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(TextBoxLocation.Text))
+                {
+                    AlertBox.Show("Debe introducir una localización", MessageBoxIcon.Warning);
+                    return;
+                }
+
+                string location = TextBoxLocation.Text;
+                Enum.TryParse(ComboBoxLocationTypes.SelectedValue.ToString(), out LocationTypes result);
+                switch (result)
+                {
+                    case LocationTypes.Direccion:
+                        LatLng directionCoords = GetCoordsWithStringDirectionUsingGoogleGeoCodeAPI(_googleMap.ApiKey, location);
+                        if(directionCoords != null)
+                        {
+                            _googleMap.AddMarker(new MapMarker(Guid.NewGuid(), location));
+                            _googleMap.CenterMap(location);
+                            _points.Add(directionCoords);
+                        }
+                        else
+                        {
+                            AlertBox.Show("No se ha podido encontrar la dirección", MessageBoxIcon.Warning);
+                        }
+
+                        break;
+                    case LocationTypes.Coordenadas:
+                        
+                        if(LatLngHelpers.TryParse(location, out LatLng latLng))
+                        {
+                            _googleMap.AddMarker(new MapMarker(Guid.NewGuid(), latLng));
+                            _googleMap.CenterMap(location);
+                            _points.Add(latLng);
+                        }
+                        else
+                        {
+                            AlertBox.Show("Las coordenadas no son válidas", MessageBoxIcon.Warning);
+                        }
+                        break;
+                    case LocationTypes.PlaceID:
+                        LatLng placeIdCoords = GetCoordsWithStringDirectionUsingGoogleGeoCodeAPI(_googleMap.ApiKey, location, isPlaceId: true);
+                        if (placeIdCoords != null)
+                        {
+                            _googleMap.AddMarker(new MapMarker(Guid.NewGuid(), location));
+                            _googleMap.CenterMap(location);
+                            _points.Add(placeIdCoords);
+                        }
+                        else
+                        {
+                            AlertBox.Show("No se ha podido encontrar la dirección con el placeId", MessageBoxIcon.Warning);
+                        }
+
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception)
+            {
+                AlertBox.Show("Ha ocurrido un error al calcular las rutas, verifique que el api key del servicio esté correcto", MessageBoxIcon.Warning);
+            }
         }
 
     }

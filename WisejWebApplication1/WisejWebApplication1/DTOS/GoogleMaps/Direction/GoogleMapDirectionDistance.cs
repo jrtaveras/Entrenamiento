@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace WisejWebApplication1.DTOS
+namespace WisejWebApplication1.DTOS.GoogleMaps.Direction
 {
     public partial class GoogleMapDirectionDistance
     {

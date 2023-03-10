@@ -1,23 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Wisej.Web.Ext.GoogleMaps;
+using WisejWebApplication1.Helpers.MapsHelpers;
 
-namespace WisejWebApplication1.Helpers.MapsHelpers
+namespace WisejWebApplication1.DTOS.GoogleMaps.Direction
 {
 
-    public class DirectionRequest
+    public class GoogleMapsDirectionRequest
     {
         public string Origin { get; set; }
         public string Destination { get; set; }
         public IEnumerable<string> WayPoints { get; set; } = new string[] { };
         public bool OptimizeRoutes { get; set; }
 
-        public DirectionRequest()
+        public GoogleMapsDirectionRequest()
         {
 
         }
 
-        public DirectionRequest(string origin, string destination, IEnumerable<string> wayPoints, bool optimizeRoutes = false)
+        public GoogleMapsDirectionRequest(string origin, string destination, IEnumerable<string> wayPoints, bool optimizeRoutes = false)
         {
             Origin = origin;
             Destination = destination;
@@ -26,7 +27,7 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
             OptimizeRoutes = optimizeRoutes;
         }
 
-        public DirectionRequest(LatLng origin, LatLng destination, IEnumerable<LatLng> wayPoints, bool optimizeRoutes = false)
+        public GoogleMapsDirectionRequest(LatLng origin, LatLng destination, IEnumerable<LatLng> wayPoints, bool optimizeRoutes = false)
         {
             Origin = origin.ToGoogleMapString();
             Destination = destination.ToGoogleMapString();
@@ -36,7 +37,7 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
         }
 
 
-        public DirectionRequest(string origin, string destination, IEnumerable<LatLng> wayPoints, bool optimizeRoutes = false)
+        public GoogleMapsDirectionRequest(string origin, string destination, IEnumerable<LatLng> wayPoints, bool optimizeRoutes = false)
         {
             Origin = origin;
             Destination = destination;
@@ -45,7 +46,7 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
             OptimizeRoutes = optimizeRoutes;
         }
 
-        public DirectionRequest(LatLng origin, string destination, IEnumerable<LatLng> wayPoints, bool optimizeRoutes = false)
+        public GoogleMapsDirectionRequest(LatLng origin, string destination, IEnumerable<LatLng> wayPoints, bool optimizeRoutes = false)
         {
             Origin = origin.ToGoogleMapString();
             Destination = destination;
@@ -54,7 +55,7 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
             OptimizeRoutes = optimizeRoutes;
         }
 
-        public DirectionRequest(string origin, LatLng destination, IEnumerable<LatLng> wayPoints, bool optimizeRoutes = false)
+        public GoogleMapsDirectionRequest(string origin, LatLng destination, IEnumerable<LatLng> wayPoints, bool optimizeRoutes = false)
         {
             Origin = origin;
             Destination = destination.ToGoogleMapString();
@@ -63,7 +64,7 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
             OptimizeRoutes = optimizeRoutes;
         }
 
-        public DirectionRequest(LatLng origin, LatLng destination, IEnumerable<string> wayPoints, bool optimizeRoutes = false)
+        public GoogleMapsDirectionRequest(LatLng origin, LatLng destination, IEnumerable<string> wayPoints, bool optimizeRoutes = false)
         {
             Origin = origin.ToGoogleMapString();
             Destination = destination.ToGoogleMapString();
