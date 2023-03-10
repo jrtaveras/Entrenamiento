@@ -5,47 +5,40 @@ using System.Collections.Generic;
 using System.Linq;
 using Wisej.Web.Ext.GoogleMaps;
 using WisejWebApplication1.DTOS;
+using WisejWebApplication1.DTOS.GoogleMaps.Direction;
 
 namespace WisejWebApplication1.Helpers.MapsHelpers
 {
     public static class GoogleMapsWidgetExtentions
     {
+        private const string _polyArr = "polyArr";
         /// <summary>
         /// Calculate the optimize route for google direction api
         /// </summary>
-        /// <typeparam name="torigin">The origin location, *usually the a LatLng or an string direction name*</typeparam>
-        /// <typeparam name="tdestination">The destination location, *usually the a LatLng or an string direction name*</typeparam>
-        /// <typeparam name="twaypoints">The intermediate points or stops before reaching the final destination *usually the a LatLng or an string direction name*</typeparam>
         /// <param name="map">The current <see cref="GoogleMap"/> instance</param>
         /// <param name="baseUrl">The base url to use to make the petition</param>
         /// <param name="restClient">The <see cref="RestClient"/> client to use to look for</param>
-        /// <param name="directionRequest">The <see cref="DirectionRequest"/> object to use to create the url params to look for dhe optimize route</param>
+        /// <param name="directionRequest">The <see cref="GoogleMapsDirectionRequest"/> object to use to create the url params to look for dhe optimize route</param>
         /// <param name="limit">A limit to segment the routes</param>
         /// <remarks>
         /// Each petition will be segment using the <paramref name="limit"/> and taking the last stop as the new origin stop for the new route petition
         /// </remarks>
-        public static void CalculateOptimizeRoute<torigin, tdestination, twaypoints>(this GoogleMap map,
-            string baseUrl,
-            RestClient restClient,
-            DirectionRequest<torigin, tdestination, twaypoints> directionRequest,
-            int limit = 10
-         )
+        public static void CalculateOptimizeRoute(this GoogleMap map, string baseUrl,
+            RestClient restClient, GoogleMapsDirectionRequest directionRequest, int limit = 10)
         {
-            //Create a new direction with only strings
-            DirectionRequest<string, string, string> newDirection = directionRequest.GetDirectionRequestWithStrings();
 
             //Create another direction to represent a part of the route
-            DirectionRequest<string, string, string> directionChunk = new DirectionRequest<string, string, string>()
+            GoogleMapsDirectionRequest directionChunk = new GoogleMapsDirectionRequest()
             {
-                Origin = newDirection.Origin,
-                Destination = newDirection.Origin,
-                OptimizeRoutes = newDirection.OptimizeRoutes
+                Origin = directionRequest.Origin,
+                Destination = directionRequest.Origin,
+                OptimizeRoutes = directionRequest.OptimizeRoutes
             };
 
             int displayStartIndex = 0;
 
             List<string> wayPointChunk = new List<string>();
-            foreach (string wayPoint in newDirection.WayPoints)
+            foreach (string wayPoint in directionRequest.WayPoints)
             {
                 if (wayPointChunk.Count == limit)
                 {
@@ -60,11 +53,11 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
                     }
 
                     //Creating a new direction with the last waypoint as origin
-                    directionChunk = new DirectionRequest<string, string, string>()
+                    directionChunk = new GoogleMapsDirectionRequest()
                     {
                         Origin = lastWayPoint,
                         Destination = lastWayPoint,
-                        OptimizeRoutes = newDirection.OptimizeRoutes
+                        OptimizeRoutes = directionRequest.OptimizeRoutes
                     };
 
                     displayStartIndex += limit;
@@ -72,7 +65,6 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
                     //Clear the list and adding the next element
                     wayPointChunk.Clear();
                     wayPointChunk.Add(wayPoint);
-                    continue;
                 }
                 else
                 {
@@ -93,9 +85,9 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
 
 
         /// This method is the one who draw the lines between each point
-        private static string DrawRoutes<torigin, tdestination, twaypoints>(this GoogleMap map,
+        public static string DrawRoutes(this GoogleMap map,
             RestClient restClient, string baseUrl, 
-            DirectionRequest<torigin, tdestination, twaypoints> directionRequest, 
+            GoogleMapsDirectionRequest directionRequest,
             int displayStartIndex, bool omitStartMarkerForFirstIteration = false)
         {
             string url = map.CreateDirectionUrl(baseUrl, directionRequest);
@@ -116,7 +108,7 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
 
 
                     string startMarkerId = Guid.NewGuid().ToString();
-                    map.AddMarker(MapMarker.Create(startMarkerId, start, $"{displayStartIndex}"));
+                    map.AddMarker(new MapMarker(startMarkerId, start, $"{displayStartIndex}"));
                     if (index == 0 && omitStartMarkerForFirstIteration)
                     {
                         map.RemoveMarker(startMarkerId);
@@ -125,7 +117,7 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
                     //Do not draw last point because we dont care about destination, only waypoints
                     if (index < route.Legs.Length - 1)
                     {
-                        map.AddMarker(MapMarker.Create(Guid.NewGuid().ToString(), end, ""));
+                        map.AddMarker(new MapMarker(Guid.NewGuid().ToString(), end, ""));
 
                         // The JSON configuration of the polygon
                         map.DrawPolyLine(new MapPolyline()
@@ -154,19 +146,16 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
         }
 
         /// <summary>
-        /// Generates the string representation of the current <see cref="DirectionRequest"/> 
+        /// Generates the string representation of the current <see cref="GoogleMapsDirectionRequest"/> 
         /// </summary>
-        /// <typeparam name="torigin">The origin location, *usually the a LatLng or an string direction name*</typeparam>
-        /// <typeparam name="tdestination">The destination location, *usually the a LatLng or an string direction name*</typeparam>
-        /// <typeparam name="twaypoints">The intermediate points or stops before reaching the final destination *usually the a LatLng or an string direction name*</typeparam>
         /// <param name="map"></param>
         /// <param name="baseUrl"></param>
         /// <param name="direction"></param>
-        /// <returns>An <see cref="string"/> representation of the current <see cref="DirectionRequest"/></returns>
-        public static string CreateDirectionUrl<Torigin, Tdestination, TWayPoints>(this GoogleMap map, string baseUrl, DirectionRequest<Torigin, Tdestination, TWayPoints> direction)
+        /// <returns>An <see cref="string"/> representation of the current <see cref="GoogleMapsDirectionRequest"/></returns>
+        public static string CreateDirectionUrl(this GoogleMap map, string baseUrl, GoogleMapsDirectionRequest direction)
         {
-            string origin = direction.GetOriginAsString();
-            string destination = direction.GetDestinationAsString();
+            string origin = direction.Origin;
+            string destination = direction.Destination;
             string wayPoints = direction.GetwayPointsAsString();
 
             return $"{baseUrl}?origin={origin}&waypoints=optimize:{(direction.OptimizeRoutes ? "true" : "false")}|{wayPoints}&destination={destination}&key={map.ApiKey}";
@@ -177,20 +166,7 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
         /// </summary>
         /// <param name="map">The current <see cref="GoogleMap"/> instance</param>
         /// <param name="marker">The marker to add to the map</param>
-        public static void AddMarker(this GoogleMap map, MapMarker<LatLng> marker)
-        {
-            map.AddMarker(marker.Id, marker.Position, options: new
-            {
-                label = marker.Label,
-            });
-        }
-
-        /// <summary>
-        /// Adds a new marker to the current <paramref name="map"/> instance
-        /// </summary>
-        /// <param name="map">The current <see cref="GoogleMap"/> instance</param>
-        /// <param name="marker">The marker to add to the map</param>
-        public static void AddMarker(this GoogleMap map,  MapMarker<string> marker)
+        public static void AddMarker(this GoogleMap map, MapMarker marker)
         {
             map.AddMarker(marker.Id, marker.Position, options: new
             {
@@ -203,7 +179,7 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
         /// </summary>
         /// <param name="map">The current <see cref="GoogleMap"/> instance</param>
         /// <param name="polyline">A polyline representation object to draw the line into the map</param>
-        public static void DrawPolyLine(this GoogleMap map, MapPolyline polyline)
+        public static string DrawPolyLine(this GoogleMap map, MapPolyline polyline)
         {
             var coorsPath = new
             {
@@ -214,10 +190,56 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
                 strokeWeight = polyline.StrokeWeight,
             };
 
+            string polyId = Guid.NewGuid().ToString();
             map.Eval($@"
-                new google.maps.Polyline({coorsPath.ToJSON()}).setMap(this.map);
+
+                let exists = this.map.hasOwnProperty('{_polyArr}');                
+                if(exists == false){{
+                    this.map.{_polyArr} = [];
+                }}
+
+                let newPoly = new google.maps.Polyline({coorsPath.ToJSON()});
+                newPoly.setMap(this.map);
+                
+                this.map.{_polyArr}.push({{id: '{polyId}', poly: newPoly}}); 
             ");
 
+            return polyId;
+        }
+
+        public static void RemovePolyLine(this GoogleMap map, string polyId)
+        {
+            map.Eval($@"
+
+                let exists = this.map.hasOwnProperty('{_polyArr}');                
+                if(exists == false){{
+                    return;
+                }}
+
+                let polyObj = this.map.{_polyArr}.find(p => p.id == '{polyId}');
+                if(polyObj){{
+                    let index = this.map.{_polyArr}.indexOf(polyObj);
+                    this.map.{_polyArr}.splice(index, 1);
+                    polyObj.poly.setMap(null);
+                }}
+            ");
+        }
+
+        public static void ClearPolyLines(this GoogleMap map)
+        {
+            map.Eval($@"
+
+                let exists = this.map.hasOwnProperty('{_polyArr}');                
+                if(exists == false){{
+                    return;
+                }}
+
+                for (const polyLine of this.map.{_polyArr}) {{
+                    polyLine.poly.setMap(null);
+                }}
+                
+                this.map.{_polyArr} = [];
+            ");
         }
 
     }

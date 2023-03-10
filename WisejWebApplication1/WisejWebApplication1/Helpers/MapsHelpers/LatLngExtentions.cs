@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using Wisej.Web.Ext.GoogleMaps;
 using WisejWebApplication1.DTOS;
+using WisejWebApplication1.DTOS.GoogleMaps.Direction;
+using WisejWebApplication1.DTOS.GoogleMaps.GeoCode;
 using WisejWebApplication1.DTOS.GoogleRoutes;
 using WisejWebApplication1.DTOS.GoogleRoutes.JsonObjects;
 using WisejWebApplication1.DTOS.GrassHopperApi.JsonObjects;
@@ -19,6 +22,17 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
         public static string ToGoogleMapString(this LatLng latLng)
         {
             return $"{latLng.Lat},{latLng.Lng}";
+        }
+
+        public static GraphhopperService ToGraphhopperService(this LatLng latLng)
+        {
+            string id = Guid.NewGuid().ToString();
+            return new GraphhopperService()
+            {
+                Id = id,
+                Name = $"Visit {id}",
+                Address = latLng.ToGrassHooperAddress(),
+            };
         }
 
         public static GoogleMapRouteLocation ToMapLocation(this LatLng latLng)
@@ -50,7 +64,11 @@ namespace WisejWebApplication1.Helpers.MapsHelpers
         {
             return new LatLng() { Lat = location.Lat, Lng = location.Lng };
         }
-
+        
+        public static LatLng ToLatLng(this GoogleMapsGeoCodeLocation location)
+        {
+            return new LatLng() { Lat = location.Lat, Lng = location.Lng };
+        }
     }
 
 }
