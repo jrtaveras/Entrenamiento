@@ -39,6 +39,7 @@ namespace CommonUserControls
             this.numericUpDownTotal = new Wisej.Web.NumericUpDown();
             this.numericUpDownSubTotal = new Wisej.Web.NumericUpDown();
             this.panelLeft = new Wisej.Web.Panel();
+            this.userControlSearchNumericProducts = new Common.Controls.UserControlSearchNumeric();
             this.textBoxInvoiceId = new Wisej.Web.TextBox();
             this.textBoxId = new Wisej.Web.TextBox();
             this.numericUpDownQty = new Wisej.Web.NumericUpDown();
@@ -54,7 +55,6 @@ namespace CommonUserControls
             this.toolBarButtonInfo = new Wisej.Web.ToolBarButton();
             this.toolBarButtonRecargaCombo = new Wisej.Web.ToolBarButton();
             this.dataGridViewInvoiceDetails = new Wisej.Web.DataGridView();
-            this.userControlSearchNumericProducts = new Common.Controls.UserControlSearchNumeric();
             this.panelPricipal.SuspendLayout();
             this.panelContenido.SuspendLayout();
             this.panelRight.SuspendLayout();
@@ -83,8 +83,8 @@ namespace CommonUserControls
             this.panelPricipal.TabStop = true;
             this.panelPricipal.Tag = "";
             this.panelPricipal.Text = "InvoiceDetails";
-            this.panelPricipal.PanelCollapsed += new System.EventHandler(this.panelPricipal_PanelCollapsed);
-            this.panelPricipal.PanelExpanded += new System.EventHandler(this.panelPricipal_PanelExpanded);
+            this.panelPricipal.PanelCollapsed += new System.EventHandler(this.PanelPricipal_PanelCollapsed);
+            this.panelPricipal.PanelExpanded += new System.EventHandler(this.PanelPricipal_PanelExpanded);
             // 
             // panelContenido
             // 
@@ -93,9 +93,9 @@ namespace CommonUserControls
             this.panelContenido.Dock = Wisej.Web.DockStyle.Fill;
             this.panelContenido.HeaderAlignment = Wisej.Web.HorizontalAlignment.Center;
             this.panelContenido.HeaderSize = 34;
-            this.panelContenido.Location = new System.Drawing.Point(0, 33);
+            this.panelContenido.Location = new System.Drawing.Point(0, 31);
             this.panelContenido.Name = "panelContenido";
-            this.panelContenido.Size = new System.Drawing.Size(622, 216);
+            this.panelContenido.Size = new System.Drawing.Size(622, 218);
             this.panelContenido.TabIndex = 1;
             this.panelContenido.TabStop = true;
             // 
@@ -108,7 +108,7 @@ namespace CommonUserControls
             this.panelRight.Dock = Wisej.Web.DockStyle.Left;
             this.panelRight.Location = new System.Drawing.Point(306, 0);
             this.panelRight.Name = "panelRight";
-            this.panelRight.Size = new System.Drawing.Size(306, 216);
+            this.panelRight.Size = new System.Drawing.Size(306, 218);
             this.panelRight.TabIndex = 28;
             this.panelRight.TabStop = true;
             // 
@@ -180,9 +180,16 @@ namespace CommonUserControls
             this.panelLeft.HeaderAlignment = Wisej.Web.HorizontalAlignment.Center;
             this.panelLeft.Location = new System.Drawing.Point(0, 0);
             this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(306, 216);
+            this.panelLeft.Size = new System.Drawing.Size(306, 218);
             this.panelLeft.TabIndex = 10;
             this.panelLeft.TabStop = true;
+            // 
+            // userControlSearchNumericProducts
+            // 
+            this.userControlSearchNumericProducts.Location = new System.Drawing.Point(6, 176);
+            this.userControlSearchNumericProducts.Name = "userControlSearchNumericProducts";
+            this.userControlSearchNumericProducts.Size = new System.Drawing.Size(280, 35);
+            this.userControlSearchNumericProducts.TabIndex = 7;
             // 
             // textBoxInvoiceId
             // 
@@ -249,7 +256,7 @@ namespace CommonUserControls
             this.toolBarButtonRecargaCombo});
             this.toolBar1.Location = new System.Drawing.Point(0, 0);
             this.toolBar1.Name = "toolBar1";
-            this.toolBar1.Size = new System.Drawing.Size(622, 33);
+            this.toolBar1.Size = new System.Drawing.Size(622, 31);
             this.toolBar1.TabIndex = 1;
             this.toolBar1.TabStop = false;
             // 
@@ -310,7 +317,7 @@ namespace CommonUserControls
             this.toolBarButtonRecargaCombo.ImageSource = "resource.wx/Wisej.Ext.MaterialDesign/synchronization-button-with-two-arrows.svg?c" +
     "olor=toolbarText";
             this.toolBarButtonRecargaCombo.Name = "toolBarButtonRecargaCombo";
-            this.toolBarButtonRecargaCombo.Click += new System.EventHandler(this.toolBarButtonRecargaCombo_Click);
+            this.toolBarButtonRecargaCombo.Click += new System.EventHandler(this.ToolBarButtonRecargaCombo_Click);
             // 
             // dataGridViewInvoiceDetails
             // 
@@ -320,14 +327,7 @@ namespace CommonUserControls
             this.dataGridViewInvoiceDetails.ReadOnly = true;
             this.dataGridViewInvoiceDetails.Size = new System.Drawing.Size(650, 751);
             this.dataGridViewInvoiceDetails.TabIndex = 1;
-            this.dataGridViewInvoiceDetails.DoubleClick += new System.EventHandler(this.dataGridViewInvoiceDetails_DoubleClick);
-            // 
-            // userControlSearchNumericProducts
-            // 
-            this.userControlSearchNumericProducts.Location = new System.Drawing.Point(6, 176);
-            this.userControlSearchNumericProducts.Name = "userControlSearchNumericProducts";
-            this.userControlSearchNumericProducts.Size = new System.Drawing.Size(280, 35);
-            this.userControlSearchNumericProducts.TabIndex = 7;
+            this.dataGridViewInvoiceDetails.DoubleClick += new System.EventHandler(this.DataGridViewInvoiceDetails_DoubleClick);
             // 
             // UserControlInvoiceDetails
             // 

@@ -23,201 +23,147 @@ namespace CommonUserControls
     public partial class UserControlProducts : UserControlBase, IProducts, IValidate, IDataSource
     {
 
-        private readonly IPresenter productsPresenter;
-        private readonly HelperControlsToValidate helperControls;
+        private readonly IPresenter _productsPresenter;
+        private readonly HelperControlsToValidate _helperControls;
+        
         private bool _canEdit;
-        
-      
-        private UserControlProducts(){
-             InitializeComponent();
-        }
-        
-        public UserControlProducts(IContext context):base(context)
-        {
-            Title = "Products";
-            InitializeComponent();
-            setControls();
-            productsPresenter = new ProductsPresenter(context, this);
-            helperControls = new HelperControlsToValidate(this.panelPricipal);
-            this.toolBar1.ButtonClick += toolBar1_ButtonClick;
-            CanEdit  = true;
-
-            
-            try
-            {
-               
-                fillComboBox();
-                
-            }
-            catch(Exception ex )
-            {
-				MessageBox.Show(GetMessageException() + ex.Message, GetMessageNotice(), MessageBoxButtons.OK,MessageBoxIcon.Error);
-            }
-        }
-        
-        private void fillComboBox()
-        {
-                    
-        }
-        
-     
-        private void toolBarButtonRecargaCombo_Click(object sender, EventArgs e)
-		{
-			try
-			{
-                
-				fillComboBox();
-                
-                
-				
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(GetMessageException() + ex.Message, GetMessageNotice(), MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-		}
-        
-        private void setControls()
-        {
-            textBoxId.Tag = nameof(Products.Id);
-			textBoxDescription.Tag = nameof(Products.Description);
-			checkBoxIsActivo.Tag = nameof(Products.IsActivo);
-			
-        }
-
-
-        public  bool CanEdit
+        public bool CanEdit
         {
             get
             {
                 return _canEdit;
             }
-            set {
-            
+            set
+            {
+
                 _canEdit = value;
-                
-                enableDisableControls();
+                EnableDisableControls();
             }
-        } 
-        
-        private void enableDisableControls() {
-        
-			toolBarButtonNuevo.Enabled = !CanEdit;
-			toolBarButtonSalvar.Enabled = CanEdit;
-			toolBarButtonEditar.Enabled = !CanEdit;
-			toolBarButtonCancelar.Enabled = CanEdit;
-			toolBarButtonEliminar.Enabled = !CanEdit;
+        }
 
-            textBoxId.ReadOnly = true;
-			textBoxDescription.ReadOnly = !CanEdit;
-			checkBoxIsActivo.ReadOnly = !CanEdit;
-			
-        
-		}
-        
-      
-        
-        private void panelPricipal_PanelCollapsed(object sender, EventArgs e)
-		{
-			if (this.panelPricipal.Collapsed)
-			{
-				this.panelPricipal.HeaderPosition = HeaderPosition.Top;
-			}
-		}
+        #region Properties Products
 
-		private void panelPricipal_PanelExpanded(object sender, EventArgs e)
-		{
-			if (!this.panelPricipal.Collapsed)
-			{
-				this.panelPricipal.HeaderPosition = HeaderPosition.Left;
-			}
-		}
-        
-        
-       #region Properties Products
-       
-       private int _Id;
-		public  int Id
-		{
-			get
-			{
-				bool result = int.TryParse(textBoxId.Text, out _Id);
-			    if (!result)
-			         textBoxId.Text = "0";
-				return _Id;
-			}
-			set
-			{
-				textBoxId.Text = value.ToString();
-				this.toolBarButtonInfo.ToolTipText =   $"{GetCreated()} : {Creado} {FechaCreado}  {GetModified()}: {Modificado} {FechaModificado}";
-				this.panelPricipal.Text = GetTitle() + " (" + value.ToString() + ")";
-			}
-		}
-		
-		public string Description
-		{
-			get
-			{
-				 return textBoxDescription.Text;
-			}
-			set
-			{
-				textBoxDescription.Text = value;
-			}
-		}
-		
-		public  long TenantId
-		{
-			get; set;
-		}
-		
-		public bool IsActivo
-		{
-			get
-			{
-				 return checkBoxIsActivo.Checked;
-			}
-			set
-			{
-				checkBoxIsActivo.Checked  = value;
-			}
-		}
-		
-		public  string Creado
-		{
-			get; set;
-		}
-		
-		public  DateTime FechaCreado
-		{
-			get; set;
-		}
-		
-		public  string Modificado
-		{
-			get; set;
-		}
-		
-		public  DateTime FechaModificado
-		{
-			get; set;
-		}
-        public object DataGridSource 
-        { 
-            get => dataGridViewProducts.DataSource; 
+        private int _id;
+        public int Id
+        {
+            get
+            {
+                bool result = int.TryParse(textBoxId.Text, out _id);
+                if (result == false) 
+                { 
+                  textBoxId.Text = "0";
+                }
+                return _id;
+            }
+            set
+            {
+                textBoxId.Text = value.ToString();
+                toolBarButtonInfo.ToolTipText = $"{GetCreated()} : {Creado} {FechaCreado}  {GetModified()}: {Modificado} {FechaModificado}";
+                panelPricipal.Text = GetTitle() + " (" + value.ToString() + ")";
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                return textBoxDescription.Text;
+            }
+            set
+            {
+                textBoxDescription.Text = value;
+            }
+        }
+
+        public long TenantId
+        {
+            get; set;
+        }
+
+        public bool IsActivo
+        {
+            get
+            {
+                return checkBoxIsActivo.Checked;
+            }
+            set
+            {
+                checkBoxIsActivo.Checked = value;
+            }
+        }
+
+        public string Creado
+        {
+            get; set;
+        }
+
+        public DateTime FechaCreado
+        {
+            get; set;
+        }
+
+        public string Modificado
+        {
+            get; set;
+        }
+
+        public DateTime FechaModificado
+        {
+            get; set;
+        }
+        public object DataGridSource
+        {
+            get => dataGridViewProducts.DataSource;
             set => dataGridViewProducts.DataSource = value;
         }
 
-
-
         #endregion
 
-        private void toolBar1_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
+
+        private UserControlProducts(){
+             InitializeComponent();
+        }
+        public UserControlProducts(IContext context)
+            :base(context)
+        {
+            InitializeComponent();
+            
+            Title = "Products";
+            CanEdit  = true;
+            
+            SetControls();
+            
+            _productsPresenter = new ProductsPresenter(context, this);
+            _helperControls = new HelperControlsToValidate(panelPricipal);
+            toolBar1.ButtonClick += ToolBar1_ButtonClick;
+
+        }
+        
+
+        private void ToolBarButtonRecargaCombo_Click(object sender, EventArgs e)
+		{
+
+		}
+        private void PanelPricipal_PanelCollapsed(object sender, EventArgs e)
+		{
+			if (panelPricipal.Collapsed)
+			{
+				panelPricipal.HeaderPosition = HeaderPosition.Top;
+			}
+		}
+		private void PanelPricipal_PanelExpanded(object sender, EventArgs e)
+		{
+			if (!panelPricipal.Collapsed)
+			{
+				panelPricipal.HeaderPosition = HeaderPosition.Left;
+			}
+		}
+        private void ToolBar1_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
         {
             switch (e.Button.Name)
             {
                 case ToolBarButtonConstants.Nuevo:
-                    productsPresenter.Add();
+                    _productsPresenter.Add();
                     CanEdit = true;
                     break;
 
@@ -225,7 +171,7 @@ namespace CommonUserControls
 
                     try
                     {
-                        if (productsPresenter.Save())
+                        if (_productsPresenter.Save())
                         {
                             AlertBox.Show(GetMessageSavedFields());
                             CanEdit = false;
@@ -245,14 +191,14 @@ namespace CommonUserControls
 
                 case ToolBarButtonConstants.Cancelar:
                     ClearErrorsValidations();
-                    productsPresenter.Undo();
+                    _productsPresenter.Undo();
                     CanEdit = false;
                     break;
 
                 case ToolBarButtonConstants.Eliminar:
                     try
                     {
-                        if( productsPresenter.Delete())
+                        if( _productsPresenter.Delete())
                         {
                             AlertBox.Show(GetMessageDeletedFields());
                             CanEdit = true;
@@ -260,28 +206,28 @@ namespace CommonUserControls
                     }
                     catch (Exception ex)
                     {
-                        productsPresenter.Add();
+                        _productsPresenter.Add();
                         MessageBox.Show(GetMessageException() + ex.Message, GetMessageNotice(), MessageBoxButtons.OK,MessageBoxIcon.Error);
                     }
                     break;
 
                 case ToolBarButtonConstants.Buscar:
                 
-                    WindowSearch<Products> search = new WindowSearch<Products>(GeneralSearchFactory.MakeProductsSearch(_context), GetMessageFinding() + " " + GetTitle());
+                    CommonWindowSearch<Products> search = new CommonWindowSearch<Products>(GeneralSearchFactory.MakeProductsSearch(_context), GetMessageFinding() + " " + GetTitle());
                     search.FormClosed += (senderX, eX) => {
                         try
                         {
                             if (search.Id != null)
                             {
-                                if(this.productsPresenter.Find(search.Id))
+                                if(this._productsPresenter.Find(search.Id))
                                 {
                                     CanEdit = true;
                                     ClearErrorsValidations();
-                                    toolBarButtonRecargaCombo_Click(null,null);
+                                    ToolBarButtonRecargaCombo_Click(null,null);
                                 }
                             }
 							
-							enableDisableControls();
+							EnableDisableControls();
                         }
                         catch (Exception ex)
                         {
@@ -298,7 +244,7 @@ namespace CommonUserControls
                 
                     try
                     {
-                        using (WorkBook wb = HelperDataTableToExcel.MakeDataTableToExcel(this.productsPresenter.GetDataTable()))
+                        using (WorkBook wb = HelperDataTableToExcel.MakeDataTableToExcel(this._productsPresenter.GetDataTable()))
                         {
                         	using (Stream stream = new MemoryStream())
                         	{
@@ -322,18 +268,37 @@ namespace CommonUserControls
         }
 
       
+        private void SetControls()
+        {
+            textBoxId.Tag = nameof(Products.Id);
+			textBoxDescription.Tag = nameof(Products.Description);
+			checkBoxIsActivo.Tag = nameof(Products.IsActivo);
+			
+        }
+        private void EnableDisableControls() {
+        
+			toolBarButtonNuevo.Enabled = !CanEdit;
+			toolBarButtonSalvar.Enabled = CanEdit;
+			toolBarButtonEditar.Enabled = !CanEdit;
+			toolBarButtonCancelar.Enabled = CanEdit;
+			toolBarButtonEliminar.Enabled = !CanEdit;
 
+            textBoxId.ReadOnly = true;
+			textBoxDescription.ReadOnly = !CanEdit;
+			checkBoxIsActivo.ReadOnly = !CanEdit;
+			
+        
+		}
         public void ShowErrors()
         {
-            helperControls.ValidateMembers(productsPresenter.ValidationResult);
+            _helperControls.ValidateMembers(_productsPresenter.ValidationResult);
 
         }
-
         public void ClearErrorsValidations()
         {
-            helperControls.ClearErrors(productsPresenter.ValidationResult);
+            _helperControls.ClearErrors(_productsPresenter.ValidationResult);
         }
 
-       
     }
+
 }

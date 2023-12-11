@@ -15,6 +15,9 @@ using BusinessObjects.Interfaces;
 namespace BusinessObjects.Models {
 
     public partial class InvoiceDetails  {
-       
+
+        public virtual Invoices Invoice { get; set; }
+        public virtual Products Product { get; set; }
+
     }
 }

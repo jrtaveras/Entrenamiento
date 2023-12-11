@@ -16,5 +16,8 @@ namespace BusinessObjects.Models {
 
     public partial class Invoices  {
        
+        public virtual Customers Customer { get; set; }
+        public virtual ICollection<InvoiceDetails> Details { get; set; }
+
     }
 }
