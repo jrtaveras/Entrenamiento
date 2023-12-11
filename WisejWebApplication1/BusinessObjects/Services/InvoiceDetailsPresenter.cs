@@ -50,8 +50,14 @@ namespace  BusinessObjects.Services
 				ValidationResult validationInvoiceId = new ValidationResult("Debe seleccionar el InvoiceId!!",fields);
 				ValidationResult.Add(validationInvoiceId);
 			}
-			
-			
+
+            if (invoiceDetails.productId < 1)
+            {
+                var fields = new List<string>();
+                fields.Add(nameof(InvoiceDetails.productId));
+                ValidationResult validationproductId = new ValidationResult("Debe seleccionar el Producto!!", fields);
+                ValidationResult.Add(validationproductId);
+            }
         }
         
         public bool Find(params object[] sender)

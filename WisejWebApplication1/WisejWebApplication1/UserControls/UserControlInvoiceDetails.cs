@@ -305,6 +305,8 @@ namespace CommonUserControls
             get => (int)userControlSearchNumericProducts.Value;
 			set => userControlSearchNumericProducts.Value = value; 
 		}
+
+		
         
 		public long TenantId { get; set; }
 
